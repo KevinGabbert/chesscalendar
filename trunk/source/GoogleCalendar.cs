@@ -21,8 +21,10 @@ namespace ChessCalendar
 
             return myService.Query(query);
         }
-        public static void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end)
+        public static void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar)
         {
+            _calendarToPost = calendar;
+
             try
             {
                 var entry = new EventEntry { Title = { Text = title }, Content = { Content = description } };

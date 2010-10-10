@@ -1,44 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    public class CalendarLogManager: List<RecordedGame>
+    public class CalendarLogManager : List<ChessDotComGame>
     {
-        public void Add(RecordedGame process, bool stillRunning)
+        public new void Add(ChessDotComGame process)
         {
             base.Add(process);  
         }
 
-        public void AddOrUpdate(Process process, bool stillRunning)
+        public void AddOrUpdate(RssItem rssItem, bool stillPosted)
         {
             try
             {
                 int i = 0;
-                foreach (RecordedGame entry in this.Where(entry => entry.Id == process.Id))
+                foreach (ChessDotComGame entry in this.Where(entry => entry.PubDate == rssItem.PubDate))
                 {
                     i++;
-                    entry.StartTime = process.StartTime;
-                    entry.StillRunning = stillRunning;
+                    entry.StillPosted = stillPosted;
                     break;
                 }
 
                 if (i == 0)
                 {
-                    var item = new RecordedGame();
+                    var game = new ChessDotComGame();
+                    game.Title = rssItem.Title;
+                    game.Link = rssItem.Link;
+                    game.PubDate = rssItem.PubDate;
+                    game.Comments = rssItem.Comments;
+                    game.Guid = rssItem.Guid;
 
-                    item.Id = process.Id;
-                    item.GameName = process.ProcessName;
-                    item.StartTime = process.StartTime;
-                    item.StillRunning = stillRunning;
-
-                    item.MainWindowTitle = process.MainWindowTitle.ToString();
-
-                    base.Add(item);
+                    base.Add(game);
+                    Console.WriteLine("Added " + game.Title + " " + game.PubDate);
                 }
-
             }
             catch (InvalidOperationException ix)
             {

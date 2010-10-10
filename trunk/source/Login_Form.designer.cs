@@ -41,6 +41,8 @@ namespace ChessCalendar
             this.cmbGoogleCalendar = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtChessDotComName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,7 +63,7 @@ namespace ChessCalendar
             this.checkBox1.Location = new System.Drawing.Point(12, 188);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(150, 17);
-            this.checkBox1.TabIndex = 4;
+            this.checkBox1.TabIndex = 2;
             this.checkBox1.Text = "Save Login and Password";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -70,7 +72,7 @@ namespace ChessCalendar
             this.btnOK.Location = new System.Drawing.Point(87, 211);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 5;
+            this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -88,18 +90,18 @@ namespace ChessCalendar
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(9, 98);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(33, 13);
+            this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Login";
+            this.label1.Text = "Google Login";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(9, 146);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 7;
-            this.label2.Text = "Password";
+            this.label2.Text = "Google Password";
             // 
             // txtPassword
             // 
@@ -116,16 +118,16 @@ namespace ChessCalendar
             // cmbGoogleCalendar
             // 
             this.cmbGoogleCalendar.FormattingEnabled = true;
-            this.cmbGoogleCalendar.Location = new System.Drawing.Point(13, 270);
+            this.cmbGoogleCalendar.Location = new System.Drawing.Point(12, 319);
             this.cmbGoogleCalendar.Name = "cmbGoogleCalendar";
             this.cmbGoogleCalendar.Size = new System.Drawing.Size(226, 21);
-            this.cmbGoogleCalendar.TabIndex = 8;
+            this.cmbGoogleCalendar.TabIndex = 5;
             this.cmbGoogleCalendar.Leave += new System.EventHandler(this.cmbGoogleCalendar_Leave);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 254);
+            this.label3.Location = new System.Drawing.Point(11, 303);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 13);
             this.label3.TabIndex = 9;
@@ -133,20 +135,38 @@ namespace ChessCalendar
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(87, 333);
+            this.btnStart.Location = new System.Drawing.Point(87, 357);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 10;
+            this.btnStart.TabIndex = 6;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 253);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Chess.com name";
+            // 
+            // txtChessDotComName
+            // 
+            this.txtChessDotComName.Location = new System.Drawing.Point(12, 269);
+            this.txtChessDotComName.Name = "txtChessDotComName";
+            this.txtChessDotComName.Size = new System.Drawing.Size(227, 20);
+            this.txtChessDotComName.TabIndex = 4;
             // 
             // Login_Form
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(247, 368);
+            this.ClientSize = new System.Drawing.Size(247, 392);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtChessDotComName);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cmbGoogleCalendar);
@@ -177,5 +197,7 @@ namespace ChessCalendar
         private System.Windows.Forms.ComboBox cmbGoogleCalendar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtChessDotComName;
     }
 }

@@ -1,84 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Xml.Linq;
 using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
     class Log
     {
-        public const string DETECTED_RUNNING = " detected running ";
+        public const string DETECTED = " detected ";
         public static Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full"); //default string. probably not even needed, but its helpful to know the format.
 
         public static string LogVersion { get; set; }
 
 
-        public static void Log_All_Games(Uri uriToWatch)
-        {
-            while (true)
-            {
-                var doc = RssDocument.Load(uriToWatch);
-
-                RssChannel channel = doc.Channel;
-
-                ChessDotComGame game;
-
-                foreach (RssItem item in channel.Items)
-                {
-                    game = new ChessDotComGame();
-                    game.Title = item.Title;
-                    game.Link = item.Link;
-                    game.PubDate = item.PubDate;
-                    game.Comments = item.Comments;
-
-
-                    //we need to hold these guys in memory, so make some mods later.
-
-                    //cast to RecordedGame
-                    //toDo.Add((RecordedGame)game);
-                    //Log.AddOrUpdate_Matching_Processes(toDo, processlist, processesToWatch);
-
-                    //IList<RecordedGame> presumedStoppedProcesses = (from processItem in toDo.Where(element => element.StillRunning == false)
-                    //                                                select processItem).Where(processItem => processItem.StartTime != new DateTime()).ToList();
-
-                    //for (int i = presumedStoppedProcesses.Count() - 1; i > 0; i--) //Foreach won't work here.
-                    //{
-                    //    RecordedGame current = presumedStoppedProcesses[i];
-
-                    //    //Log.Log_Stopped_Process(current, userName, password);
-                    //    //toDo.Remove(current);
-                    //}
-
-                    Console.WriteLine("Sleeping for 1 minute");
-                    Thread.Sleep(new TimeSpan(0, 0, 1, 0));
-                }
-            }
-        }
-
-
-        public static void Log_Watched_Games(IEnumerable<XElement> processesToWatch, string userName, string password, Uri logToCalendar)
+        public static void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             var toDo = new CalendarLogManager();
             _calendarToPost = logToCalendar;
 
-            while (true) //ToDo: Time limit should be set in XML
+            while (true)
             {
-                Process[] processlist = Process.GetProcesses();
+                var rssItems = RssDocument.Load(uriToWatch).Channel.Items;
 
-                Log.Reset(toDo);
-                Log.AddOrUpdate_Matching_Processes(toDo, processlist, processesToWatch);
+                Log.AddOrUpdate_Games(toDo, rssItems);
 
-                IList<RecordedGame> presumedStoppedProcesses = (from processItem in toDo.Where(element => element.StillRunning == false)
-                                                                   select processItem).Where(processItem => processItem.StartTime != new DateTime()).ToList();
+                //On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                //On remove, delete the all day reminder.
 
-                for (int i = presumedStoppedProcesses.Count() - 1; i > 0; i--) //Foreach won't work here.
+                for (int i = toDo.Count() - 1; i > -1; i--) //Foreach won't work here.
                 {
-                    RecordedGame current = presumedStoppedProcesses[i];
+                    ChessDotComGame current = toDo[i];
 
-                    Log.Log_Stopped_Process(current, userName, password);
+                    Log.Log_Game(current, userName, password);
                     toDo.Remove(current);
                 }
 
@@ -86,35 +40,39 @@ namespace ChessCalendar
                 Thread.Sleep(new TimeSpan(0, 0, 1, 0));
             }
         }
-        private static void Log_Stopped_Process(RecordedGame recordedProcess, string userName, string password)
+
+        private static void Log_Game(ChessDotComGame gameToLog, string userName, string password)
         {
-            Console.WriteLine(recordedProcess.GameName + " presumed stopped. Logging to Calendar: " + _calendarToPost.OriginalString);
-            GoogleCalendar.CreateEntry(userName, password, recordedProcess.GameName, recordedProcess.MainWindowTitle + ",  " + Log.LogVersion, recordedProcess.StartTime, DateTime.Now);
-            Console.WriteLine(recordedProcess.GameName + " activity logged " + DateTime.Now.ToShortTimeString());
+            Console.WriteLine("Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
+            GoogleCalendar.CreateEntry(userName, password, gameToLog.Title, gameToLog.Link + 
+                                                                            Environment.NewLine + 
+                                                                            gameToLog.Description + 
+                                                                            Environment.NewLine + 
+                                                                            Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
+            //DateTime.Parse(gameToLog.PubDate)
+            Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
+        }    
+        private static void AddOrUpdate_Games(CalendarLogManager toDo, IEnumerable<RssItem> gamelist)
+        {
+            Console.WriteLine("Found Games to Log @ " + DateTime.Now.ToShortTimeString());
+            foreach (RssItem game in gamelist)
+            {
+                Log.LogDetect(game);
+                toDo.AddOrUpdate(game, true);
+            }
         }
-        private static void Reset(IEnumerable<RecordedGame> toDo)
+        private static void LogDetect(RssItem game)
+        {
+            Console.WriteLine(game.Title + DETECTED + DateTime.Now.ToShortTimeString());
+        }
+
+        private static void Reset(IEnumerable<ChessDotComGame> toDo)
         {
             //we no longer know if they are still running.
-            foreach (RecordedGame process in toDo)
+            foreach (ChessDotComGame process in toDo)
             {
-                process.StillRunning = false;
+                process.StillPosted = false;
             }
-        }
-        private static void AddOrUpdate_Matching_Processes(CalendarLogManager toDo, IEnumerable<Process> processlist, IEnumerable<XElement> processes)
-        {
-            Console.WriteLine("Start " + DateTime.Now.ToShortTimeString());
-            foreach (Process processItem in from processItem in processlist
-                                            where processItem != null
-                                            from element in processes.Where(element => element.Value == processItem.ProcessName)
-                                            select processItem)
-            {
-                Log.LogDetect(processItem);
-                toDo.AddOrUpdate(processItem, true);
-            }
-        }
-        private static void LogDetect(Process processItem)
-        {
-            Console.WriteLine(processItem.ProcessName + DETECTED_RUNNING + DateTime.Now.ToShortTimeString());
         }
     }
 }
