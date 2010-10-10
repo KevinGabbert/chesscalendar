@@ -18,23 +18,44 @@ namespace ChessCalendar
 
         public static void Log_All_Games(Uri uriToWatch)
         {
-            var doc = RssDocument.Load(uriToWatch);
-
-            RssChannel channel = doc.Channel;
-
-            foreach (RssItem item in channel.Items)
+            while (true)
             {
-                
+                var doc = RssDocument.Load(uriToWatch);
+
+                RssChannel channel = doc.Channel;
+
+                ChessDotComGame game;
+
+                foreach (RssItem item in channel.Items)
+                {
+                    game = new ChessDotComGame();
+                    game.Title = item.Title;
+                    game.Link = item.Link;
+                    game.PubDate = item.PubDate;
+                    game.Comments = item.Comments;
+
+
+                    //we need to hold these guys in memory, so make some mods later.
+
+                    //cast to RecordedGame
+                    //toDo.Add((RecordedGame)game);
+                    //Log.AddOrUpdate_Matching_Processes(toDo, processlist, processesToWatch);
+
+                    //IList<RecordedGame> presumedStoppedProcesses = (from processItem in toDo.Where(element => element.StillRunning == false)
+                    //                                                select processItem).Where(processItem => processItem.StartTime != new DateTime()).ToList();
+
+                    //for (int i = presumedStoppedProcesses.Count() - 1; i > 0; i--) //Foreach won't work here.
+                    //{
+                    //    RecordedGame current = presumedStoppedProcesses[i];
+
+                    //    //Log.Log_Stopped_Process(current, userName, password);
+                    //    //toDo.Remove(current);
+                    //}
+
+                    Console.WriteLine("Sleeping for 1 minute");
+                    Thread.Sleep(new TimeSpan(0, 0, 1, 0));
+                }
             }
-
-            //foreach (RssDocument document in doc)  //IEnumerable<RssItem>
-            //{]
-            //    foreach (RssItem item in document)
-            //    {
-
-            //    }
-            //}
-
         }
 
 

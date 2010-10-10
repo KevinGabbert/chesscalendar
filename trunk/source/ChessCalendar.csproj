@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalendarLogManager.cs" />
+    <Compile Include="ChessDotComGame.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="GoogleCalendar.cs" />
     <Compile Include="Log.cs" />
