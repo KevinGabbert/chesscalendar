@@ -13,7 +13,6 @@ namespace ChessCalendar
 
         public static string LogVersion { get; set; }
 
-
         public static void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             var toDo = new CalendarLogManager();
@@ -21,9 +20,10 @@ namespace ChessCalendar
 
             while (true)
             {
-                var rssItems = RssDocument.Load(uriToWatch).Channel.Items;
+                List<RssItem> newRssItems = RssDocument.Load(uriToWatch).Channel.Items;
 
-                Log.AddOrUpdate_Games(toDo, rssItems);
+                toDo.RemoveRepetitiveItems(newRssItems);
+                Log.AddOrUpdate_Games(toDo, newRssItems);
 
                 //On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                 //On remove, delete the all day reminder.
@@ -33,7 +33,6 @@ namespace ChessCalendar
                     ChessDotComGame current = toDo[i];
 
                     Log.Log_Game(current, userName, password);
-                    toDo.Remove(current);
                 }
 
                 Console.WriteLine("Sleeping for 1 minute");
@@ -54,11 +53,18 @@ namespace ChessCalendar
         }    
         private static void AddOrUpdate_Games(CalendarLogManager toDo, IEnumerable<RssItem> gamelist)
         {
-            Console.WriteLine("Found Games to Log @ " + DateTime.Now.ToShortTimeString());
-            foreach (RssItem game in gamelist)
+            if (toDo.Count > 0)
             {
-                Log.LogDetect(game);
-                toDo.AddOrUpdate(game, true);
+                Console.WriteLine("Found " + toDo.Count.ToString() + " Games to Log: " + DateTime.Now.ToLongTimeString());
+                foreach (RssItem game in gamelist)
+                {
+                    Log.LogDetect(game);
+                    toDo.AddOrUpdate(game, true);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No new or updated games found: " + DateTime.Now.ToLongTimeString());
             }
         }
         private static void LogDetect(RssItem game)
@@ -74,5 +80,6 @@ namespace ChessCalendar
                 process.StillPosted = false;
             }
         }
+
     }
 }
