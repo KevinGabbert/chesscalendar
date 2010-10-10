@@ -72,7 +72,6 @@
     <Compile Include="Login_Form.designer.cs">
       <DependentUpon>Login_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameToRecord.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -12,6 +12,7 @@ namespace ChessCalendar
     {
         #region Properties
 
+        public string ChessDotComName { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
         public System.Uri PostURI { get; set; }
@@ -56,6 +57,7 @@ namespace ChessCalendar
         private void btnStart_Click(object sender, EventArgs e)
         {
             //do we need some kind of validation here?
+            this.ChessDotComName = txtChessDotComName.Text;
 
             this.SetPostURI();
             this.Hide();
