@@ -42,5 +42,18 @@ namespace ChessCalendar
                 
             }
         }
+        public void RemoveRepetitiveItems(List<RssItem> newRssItems)
+        {
+            foreach (var newItem in newRssItems)
+            {
+                for (int i = this.Count() - 1; i > -1; i--) //Foreach won't work here.
+                {
+                    if (this[i].PubDate == newItem.PubDate)
+                    {
+                        this.Remove(this[i]);
+                    }
+                }
+            }
+        }
     }
 }
