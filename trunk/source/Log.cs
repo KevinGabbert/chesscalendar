@@ -35,8 +35,8 @@ namespace ChessCalendar
                     Log.Log_Game(current, userName, password);
                 }
 
-                Console.WriteLine("Sleeping for 2 minutes");
-                Thread.Sleep(new TimeSpan(0, 0, 1, 0));
+                Console.WriteLine("Sleeping for 5 minutes");
+                Thread.Sleep(new TimeSpan(0, 0, 5, 0));
             }
         }
 
