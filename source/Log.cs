@@ -20,23 +20,22 @@ namespace ChessCalendar
 
             while (true)
             {
-              List<RssItem> newRssItems = RssDocument.Load(uriToWatch).Channel.Items;
+                List<RssItem> newRssItems = new List<RssItem>();
+                newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
 
-                toDo.RemoveRepetitiveItems(newRssItems);
                 Log.AddOrUpdate_Games(toDo, newRssItems);
 
                 //On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                 //On remove, delete the all day reminder.
 
-                for (int i = toDo.Count() - 1; i > -1; i--) //Foreach won't work here.
+                foreach(ChessDotComGame item in toDo)
                 {
-                    ChessDotComGame current = toDo[i];
-
+                    ChessDotComGame current = item;
                     Log.Log_Game(current, userName, password);
                 }
 
-                Console.WriteLine("Sleeping for 5 minutes");
-                Thread.Sleep(new TimeSpan(0, 0, 5, 0));
+                Console.WriteLine("Sleeping for 15 minutes");
+                Thread.Sleep(new TimeSpan(0, 0, 15, 0));
             }
         }
 
@@ -53,18 +52,21 @@ namespace ChessCalendar
         }    
         private static void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<RssItem> gamelist)
         {
-            if (gamelist.Count > 0)
+            if (gamelist != null)
             {
-                Console.WriteLine("Found " + toDo.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
-                foreach (RssItem game in gamelist)
+                if (gamelist.Count > 0)
                 {
-                    Log.LogDetect(game);
-                    toDo.AddOrUpdate(game, true);
+                    Console.WriteLine("Found " + toDo.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
+                    foreach (RssItem game in gamelist)
+                    {
+                        Log.LogDetect(game);
+                        toDo.AddOrDeletePassedDupe(game);
+                    }
                 }
-            }
-            else
-            {
-                Console.WriteLine("No new or updated games found: " + DateTime.Now.ToLongTimeString());
+                else
+                {
+                    Console.WriteLine("No new or updated games found: " + DateTime.Now.ToLongTimeString());
+                }
             }
         }
         private static void LogDetect(RssItem game)
@@ -83,3 +85,14 @@ namespace ChessCalendar
 
     }
 }
+
+                ////Remove Dupes
+                //toDo.Sort();
+                //Int32 index = 0;
+                //while (index < toDo.Count - 1)
+                //{
+                //    if (toDo[index].PubDate == toDo[index + 1].PubDate)
+                //        toDo.RemoveAt(index);
+                //    else
+                //        index++;
+                //}
