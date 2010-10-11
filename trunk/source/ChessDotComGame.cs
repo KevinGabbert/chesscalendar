@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ChessCalendar
 {
-    public class ChessDotComGame
+    public class ChessDotComGame: IComparable
     {
         public string Comments { get; set; }
         public string Description { get; set; }
@@ -19,6 +20,16 @@ namespace ChessCalendar
             {
                 return Description.Split("<br/>".ToArray(), StringSplitOptions.None)[0];
             }
-        }       
+        }
+
+        public int CompareTo(ChessDotComGame other)
+        {
+            return other.PubDate.CompareTo(this.PubDate);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return this.CompareTo((ChessDotComGame) obj);
+        }
     }
 }
