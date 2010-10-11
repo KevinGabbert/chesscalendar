@@ -20,7 +20,7 @@ namespace ChessCalendar
 
             while (true)
             {
-                List<RssItem> newRssItems = RssDocument.Load(uriToWatch).Channel.Items;
+              List<RssItem> newRssItems = RssDocument.Load(uriToWatch).Channel.Items;
 
                 toDo.RemoveRepetitiveItems(newRssItems);
                 Log.AddOrUpdate_Games(toDo, newRssItems);
@@ -35,7 +35,7 @@ namespace ChessCalendar
                     Log.Log_Game(current, userName, password);
                 }
 
-                Console.WriteLine("Sleeping for 1 minute");
+                Console.WriteLine("Sleeping for 2 minutes");
                 Thread.Sleep(new TimeSpan(0, 0, 1, 0));
             }
         }
@@ -51,11 +51,11 @@ namespace ChessCalendar
             //DateTime.Parse(gameToLog.PubDate)
             Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
         }    
-        private static void AddOrUpdate_Games(CalendarLogManager toDo, IEnumerable<RssItem> gamelist)
+        private static void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<RssItem> gamelist)
         {
-            if (toDo.Count > 0)
+            if (gamelist.Count > 0)
             {
-                Console.WriteLine("Found " + toDo.Count.ToString() + " Games to Log: " + DateTime.Now.ToLongTimeString());
+                Console.WriteLine("Found " + toDo.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
                 foreach (RssItem game in gamelist)
                 {
                     Log.LogDetect(game);

@@ -44,14 +44,25 @@ namespace ChessCalendar
         }
         public void RemoveRepetitiveItems(List<RssItem> newRssItems)
         {
-            foreach (var newItem in newRssItems)
+            bool removeNewItem = false;
+
+            //Foreach and Linq won't work when removing from the collection you are checking
+            for (int j = newRssItems.Count() - 1; j > -1; j--) 
             {
-                for (int i = this.Count() - 1; i > -1; i--) //Foreach won't work here.
+                for (int i = this.Count() - 1; i > -1; i--) 
                 {
-                    if (this[i].PubDate == newItem.PubDate)
+                    if (this[i].PubDate == newRssItems[j].PubDate)
                     {
                         this.Remove(this[i]);
+                        removeNewItem = true;
+                        break;
                     }
+                }
+
+                if (removeNewItem)
+                {
+                    newRssItems.Remove(newRssItems[j]);
+                    removeNewItem = false;
                 }
             }
         }
