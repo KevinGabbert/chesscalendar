@@ -33,7 +33,7 @@ namespace ChessCalendar
                 {
                     if (this[i].PubDate == rssItem.PubDate)
                     {
-                        this.Remove(this[i]);
+                        //this.Remove(this[i]);
                         skipAdd = true;
                         break;
                     }
