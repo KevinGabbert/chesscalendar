@@ -20,18 +20,31 @@ namespace ChessCalendar
             while (true)
             {
                 List<RssItem> newRssItems = new List<RssItem>();
-                newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
 
-                Log.AddOrUpdate_Games(toDo, newRssItems);
-
-                //On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
-                //On remove, delete the all day reminder.
-
-                foreach(ChessDotComGame item in toDo)
+                try
                 {
-                    ChessDotComGame current = item;
-                    Log.Log_Game(current, userName, password);
+                    newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+
+                    Log.AddOrUpdate_Games(toDo, newRssItems);
+
+                    //On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                    //On remove, delete the all day reminder.
+
+                    foreach (ChessDotComGame item in toDo)
+                    {
+                        ChessDotComGame current = item;
+                        Log.Log_Game(current, userName, password);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    //if 504 Invalid gateway error. Chess.com is down
+                    Console.WriteLine("error. " + ex.Message);
+
+                    GoogleCalendar.CreateEntry(userName, password, "Chess.com error", ex.Message +
+                                                                Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
+                }
+
 
                 Console.WriteLine("Sleeping for 15 minutes");
                 Thread.Sleep(new TimeSpan(0, 0, 15, 0));
