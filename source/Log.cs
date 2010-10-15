@@ -46,21 +46,20 @@ namespace ChessCalendar
                 }
 
 
-                Console.WriteLine("Sleeping for 15 minutes");
-                Thread.Sleep(new TimeSpan(0, 0, 15, 0));
+                //if debugmode Console.WriteLine("Sleeping for 5 minutes");
+                Thread.Sleep(new TimeSpan(0, 0, 5, 0));
             }
         }
 
         private static void Log_Game(ChessDotComGame gameToLog, string userName, string password)
         {
-            Console.WriteLine("Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
+            //if debugmode Console.WriteLine("Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
             GoogleCalendar.CreateEntry(userName, password, gameToLog.Title, gameToLog.Link + 
                                                                             Environment.NewLine + 
                                                                             gameToLog.Description + 
                                                                             Environment.NewLine + 
                                                                             Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
-            //DateTime.Parse(gameToLog.PubDate)
-            Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
+            //if debugmode Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
         }    
         private static void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<RssItem> gamelist)
         {
@@ -71,7 +70,6 @@ namespace ChessCalendar
                     Console.WriteLine("Found " + toDo.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
                     foreach (RssItem game in gamelist)
                     {
-                        Log.LogDetect(game);
                         toDo.ProcessItem(game);
                     }
                 }
@@ -80,10 +78,6 @@ namespace ChessCalendar
                     Console.WriteLine("No new or updated games found: " + DateTime.Now.ToLongTimeString());
                 }
             }
-        }
-        private static void LogDetect(RssItem game)
-        {
-            Console.WriteLine(game.Title + DETECTED + DateTime.Now.ToShortTimeString());
         }
 
         private static void Reset(IEnumerable<ChessDotComGame> toDo)
@@ -94,17 +88,5 @@ namespace ChessCalendar
                 process.StillPosted = false;
             }
         }
-
     }
 }
-
-                ////Remove Dupes
-                //toDo.Sort();
-                //Int32 index = 0;
-                //while (index < toDo.Count - 1)
-                //{
-                //    if (toDo[index].PubDate == toDo[index + 1].PubDate)
-                //        toDo.RemoveAt(index);
-                //    else
-                //        index++;
-                //}
