@@ -5,13 +5,26 @@ using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    public class CalendarLogManager : List<ChessDotComGame>
+    public class GameList: List<ChessDotComGame>
     {
-        public new void Add(ChessDotComGame process)
+        public void Remove_Item_With_Guid(RssGuid guid)
         {
-            base.Add(process);  
+            this.Remove_Item_With_Guid(this, guid);
         }
-        public void Add(RssItem rssItem)
+        public void Remove_Item_With_Guid(IList<ChessDotComGame> listToRemoveFrom, RssGuid guid)
+        {
+            //.Remove(select from _ignore where Guid is "x")
+            for (int i = listToRemoveFrom.Count() - 1; i > -1; i--)
+            {
+                if (listToRemoveFrom[i].Guid == guid)
+                {
+                    listToRemoveFrom.Remove(listToRemoveFrom[i]);
+                    break;
+                }
+            }
+        }
+
+        public void AddNewGame(RssItem rssItem)
         {
             var game = new ChessDotComGame();
             game.Title = rssItem.Title;
@@ -23,31 +36,68 @@ namespace ChessCalendar
             base.Add(game);
             Console.WriteLine("Added " + game.Title + " " + game.PubDate);
         }
+    }
 
-        public void AddOrDeletePassedDupe(RssItem rssItem)
+    public class CalendarLogManager : GameList
+    {
+        #region Properties
+
+            private GameList _ignore = new GameList();
+            public GameList Ignore
+            {
+                get { return _ignore; }
+                set { _ignore = value; }
+            }
+
+        #endregion
+
+        public new void Add(ChessDotComGame process)
+        {
+            base.Add(process);  
+        }
+        public void Add(RssItem rssItem)
+        {
+            this.Add(this.Ignore, rssItem);
+        }
+        public void Add(GameList list, RssItem rssItem)
         {
             try
             {
-                bool skipAdd = false;
-                for (int i = this.Count() - 1; i > -1; i--)
+                //Lets see if we can find a match
+                if (list.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any())
                 {
-                    if (this[i].PubDate == rssItem.PubDate)
-                    {
-                        //this.Remove(this[i]);
-                        skipAdd = true;
-                        break;
-                    }
+                    list.Remove_Item_With_Guid(rssItem.Guid);
                 }
-
-                if (!skipAdd)
+                else
                 {
-                    this.Add(rssItem);
+                    list.AddNewGame(rssItem);
                 }
             }
-            catch (InvalidOperationException ix)
+            catch (Exception ex)
             {
-                
+                Console.WriteLine(ex.Message);
+                throw;
             }
+        }
+
+        public void ProcessItem(RssItem rssItem)
+        {
+            this.Remove_If_Deprecated(rssItem);
+            this.Add(this, rssItem);
+        }
+
+        private void Remove_If_Deprecated(RssItem rssItem)
+        {
+           bool pubMatch = this.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
+           bool guidMatch = this.Where(thisGame => thisGame.Guid == rssItem.Guid).Any();
+
+           //Look for newer versions of old games
+           if ((guidMatch) && (!pubMatch))
+           {
+               //Then we have a new one. So lets get rid of it.
+               this.Remove_Item_With_Guid(rssItem.Guid);
+               this.Ignore.Remove_Item_With_Guid(rssItem.Guid);
+           }
         }
     }
 }

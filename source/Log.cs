@@ -72,7 +72,7 @@ namespace ChessCalendar
                     foreach (RssItem game in gamelist)
                     {
                         Log.LogDetect(game);
-                        toDo.AddOrDeletePassedDupe(game);
+                        toDo.ProcessItem(game);
                     }
                 }
                 else
