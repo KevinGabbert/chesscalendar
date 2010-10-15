@@ -44,7 +44,7 @@ namespace ChessCalendar
                 (new GDataGAuthRequestFactory("", "")).CreateRequest(GDataRequestType.Insert, _calendarToPost);
                 _service.Insert(_calendarToPost, entry);
 
-                Console.WriteLine("Event Successfully Added");
+                //if debugmode Console.WriteLine("Event Successfully Added");
             }
             catch (Exception ex)
             {
