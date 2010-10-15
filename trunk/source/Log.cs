@@ -67,7 +67,7 @@ namespace ChessCalendar
             {
                 if (gamelist.Count > 0)
                 {
-                    Console.WriteLine("Found " + toDo.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
+                    //Console.WriteLine("Found " + toDo.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
                     foreach (RssItem game in gamelist)
                     {
                         toDo.ProcessItem(game);
