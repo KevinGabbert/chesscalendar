@@ -176,7 +176,6 @@ namespace ChessCalendar
             // chkBeep
             // 
             this.chkBeep.AutoSize = true;
-            this.chkBeep.Enabled = false;
             this.chkBeep.Location = new System.Drawing.Point(12, 323);
             this.chkBeep.Name = "chkBeep";
             this.chkBeep.Size = new System.Drawing.Size(162, 17);
