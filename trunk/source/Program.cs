@@ -4,7 +4,7 @@ namespace ChessCalendar
 {
     class Program
     {
-        public const string VERSION = "Game Calendar v10.14.10 ";
+        public const string VERSION = "Game Calendar v10.15.10 ";
         public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         static void Main(string[] args)
@@ -17,6 +17,7 @@ namespace ChessCalendar
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
 
             Log.LogVersion = VERSION;
+            Log.DebugMode = userInfoForm.DebugMode;
             Log.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName), userInfoForm.User, userInfoForm.Password, userInfoForm.PostURI);
         } 
     }

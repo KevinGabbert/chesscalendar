@@ -23,21 +23,34 @@ namespace ChessCalendar
         public Login_Form()
         {
             this.InitializeComponent();
+
+            this.btnStart.Enabled = false;
+            this.btnOK.Enabled = false;
         }
 
         #region TextBoxes
         private void LoginTextControls_TextChanged(object sender, EventArgs e)
         {
-            if (((TextBoxBase)sender).Text.Contains(Environment.NewLine))
+            this.btnOK.Enabled = this.ValidateForm();
+            if (UserHitReturn(sender))
             {
-                this.btnOK_Click(sender, e);
+                if (this.btnOK.Enabled)
+                {
+                    this.btnOK_Click(sender, e);
+                    this.btnOK.Enabled = false;
+                }
             }
         }
+
         private void txtChessDotComName_TextChanged(object sender, EventArgs e)
         {
-            if (((TextBoxBase)sender).Text.Contains(Environment.NewLine))
+            this.btnStart.Enabled = this.ValidateForm();
+            if (UserHitReturn(sender))
             {
-                this.btnStart_Click(sender, e);
+                if (this.btnStart.Enabled)
+                {
+                    this.btnStart_Click(sender, e);
+                }
             }
         }
         #endregion
@@ -61,17 +74,30 @@ namespace ChessCalendar
             {
                 cmbGoogleCalendar.SelectedIndex = 0;
             }
+
+            this.btnOK.Enabled = false;
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
-            //do we need some kind of validation here?
             this.ChessDotComName = txtChessDotComName.Text;
-
+            this.DebugMode = chkDebugMode.Checked;
             this.SetPostURI();
+
             this.Hide();
         }
 
         #endregion
+
+        public bool ValidateForm()
+        {
+            bool haveChessDotComName = (this.ChessDotComName != string.Empty);
+            bool haveGoogleLogin = (this.txtLogin.TextLength > 0);
+            bool haveGooglePassword = (this.txtPassword.TextLength > 0);
+
+            bool validated = haveGoogleLogin && haveGooglePassword && haveChessDotComName;
+
+            return validated;
+        }
 
         private void cmbGoogleCalendar_Leave(object sender, EventArgs e)
         {
@@ -84,5 +110,11 @@ namespace ChessCalendar
                       ((CalendarEntry)(cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().Substring(((CalendarEntry)(cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().LastIndexOf("/") + 1) +
                       "/private/full");
         }
+
+        private static bool UserHitReturn(object sender)
+        {
+            return ((TextBoxBase)sender).Text.Contains(Environment.NewLine);
+        }
+
     }
 }

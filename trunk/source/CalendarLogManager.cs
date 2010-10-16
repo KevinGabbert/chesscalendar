@@ -13,13 +13,14 @@ namespace ChessCalendar
         }
         public void Remove_Item_With_Guid(IList<ChessDotComGame> listToRemoveFrom, string link)
         {
-            //.Remove(select from _ignore where Guid is "x")
             for (int i = listToRemoveFrom.Count() - 1; i > -1; i--)
             {
-                if (listToRemoveFrom[i].Link == link)
+                var currentGame = listToRemoveFrom[i];
+
+                if (currentGame.Link == link)
                 {
-                    listToRemoveFrom.Remove(listToRemoveFrom[i]);
-                    Console.WriteLine("Game removed: " + listToRemoveFrom[i].Title);
+                    Console.WriteLine("Removing Game: " + currentGame.Title);
+                    listToRemoveFrom.Remove(currentGame);
                     break;
                 }
             }
@@ -101,8 +102,8 @@ namespace ChessCalendar
 
         private bool IgnoreListHasIt(RssItem rssItem)
         {
-            bool ignorePubMatch = this.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
-            bool ignoreGuidMatch = this.Where(thisGame => thisGame.Link == rssItem.Link).Any();
+            bool ignorePubMatch = this.IgnoreList.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
+            bool ignoreGuidMatch = this.IgnoreList.Where(thisGame => thisGame.Link == rssItem.Link).Any();
 
             return ignorePubMatch && ignoreGuidMatch;
         }
@@ -116,13 +117,12 @@ namespace ChessCalendar
 
         private void IgnoreIfWeHaveIt(RssItem rssItem)
         {
-            if (this.HaveIt(rssItem))
+            if (!this.IgnoreListHasIt(rssItem))
             {
-                //Yep.  We have it. See if its already in our ignore list (probably not..)
-                if (!this.IgnoreListHasIt(rssItem))
+                if (this.HaveIt(rssItem))
                 {
                     this.Ignore(rssItem);
-                }  
+                }
             }
         }
 
