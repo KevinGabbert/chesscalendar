@@ -7,6 +7,8 @@ namespace ChessCalendar
 {
     public class GameList : List<ChessDotComGame>
     {
+        public bool DebugMode { get; set; }
+
         public void Remove_Item_With_Guid(string link)
         {
             this.Remove_Item_With_Guid(this, link);
@@ -19,7 +21,11 @@ namespace ChessCalendar
 
                 if (currentGame.Link == link)
                 {
-                    Console.WriteLine("Removing Game: " + currentGame.Title);
+                    if(this.DebugMode)
+                    {
+                        Console.WriteLine("Removing Game: " + currentGame.Title); ;
+                    }
+
                     listToRemoveFrom.Remove(currentGame);
                     break;
                 }

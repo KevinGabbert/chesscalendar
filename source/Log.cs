@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using RssToolkit.Rss;
 
@@ -17,6 +18,8 @@ namespace ChessCalendar
         public static void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             var toDo = new CalendarLogManager();
+            toDo.DebugMode = Log.DebugMode;
+
             _calendarToPost = logToCalendar;
 
             while (true)
@@ -31,16 +34,12 @@ namespace ChessCalendar
                     //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                     //On remove, delete the all day reminder.
 
-                    Console.WriteLine("Creating new Calendar Entries");
-                    foreach (ChessDotComGame item in toDo)
+                    foreach (ChessDotComGame current in toDo.Where(current => Log._logGames))
                     {
-                        ChessDotComGame current = item;
-
-                        if (Log._logGames)
-                        {
-                            Log.Log_Game(current, userName, password);
-                        }
+                        Log.Log_Game(current, userName, password);
                     }
+
+                    //Console.WriteLine("Games Logged to Calendar.");
                 }
                 catch (Exception ex)
                 {
@@ -51,12 +50,7 @@ namespace ChessCalendar
                                                                 Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                 }
 
-
-                if (Log.DebugMode)
-                {
-                    Console.WriteLine("Sleeping for 5 minutes");
-                }
-
+                Console.WriteLine("Sleeping for 5 minutes");
                 Thread.Sleep(new TimeSpan(0, 0, 5, 0));
             }
         }
