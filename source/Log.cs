@@ -28,9 +28,10 @@ namespace ChessCalendar
                     newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
                     Log.AddOrUpdate_Games(toDo, newRssItems);
 
-                    //On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                    //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                     //On remove, delete the all day reminder.
 
+                    Console.WriteLine("Creating new Calendar Entries");
                     foreach (ChessDotComGame item in toDo)
                     {
                         ChessDotComGame current = item;
@@ -51,20 +52,31 @@ namespace ChessCalendar
                 }
 
 
-                //if debugmode Console.WriteLine("Sleeping for 5 minutes");
+                if (Log.DebugMode)
+                {
+                    Console.WriteLine("Sleeping for 5 minutes");
+                }
+
                 Thread.Sleep(new TimeSpan(0, 0, 5, 0));
             }
         }
 
         private static void Log_Game(ChessDotComGame gameToLog, string userName, string password)
         {
-            //if debugmode Console.WriteLine("Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
+            if (Log.DebugMode)
+            {
+                Console.WriteLine("Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
+            }
+
             GoogleCalendar.CreateEntry(userName, password, gameToLog.Title, gameToLog.Link + 
                                                                             Environment.NewLine + 
                                                                             gameToLog.Description + 
                                                                             Environment.NewLine + 
                                                                             Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
-            //if debugmode Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
+            if (Log.DebugMode)
+            {
+                Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
+            }
         }    
         private static void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<RssItem> gamelist)
         {
@@ -76,7 +88,7 @@ namespace ChessCalendar
                     Console.WriteLine("Found " + gamelist.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
                     foreach (RssItem game in gamelist)
                     {
-                        toDo.ProcessItem(game);
+                        toDo.ProcessRSSItem(game);
                     }
                 }
                 else
@@ -84,15 +96,6 @@ namespace ChessCalendar
                     Console.WriteLine("No new or updated games found: " + DateTime.Now.ToLongTimeString());
                     Log._logGames = false;
                 }
-            }
-        }
-
-        private static void Reset(IEnumerable<ChessDotComGame> toDo)
-        {
-            //we no longer know if they are still running.
-            foreach (ChessDotComGame process in toDo)
-            {
-                process.StillPosted = false;
             }
         }
     }
