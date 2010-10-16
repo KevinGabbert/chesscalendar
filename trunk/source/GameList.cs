@@ -43,5 +43,15 @@ namespace ChessCalendar
 
             base.Add(game);
         }
+        public void AddGame(ChessDotComGame game)
+        {
+            game.Title = game.Title;
+            game.Link = game.Link;
+            game.PubDate = game.PubDate;
+            game.Comments = game.Comments;
+            game.Guid = game.Guid;
+
+            base.Add(game);
+        }
     }
 }
