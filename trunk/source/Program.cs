@@ -18,6 +18,7 @@ namespace ChessCalendar
 
             Log.LogVersion = VERSION;
             Log.DebugMode = userInfoForm.DebugMode;
+            Log.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
             Log.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName), userInfoForm.User, userInfoForm.Password, userInfoForm.PostURI);
         } 
     }

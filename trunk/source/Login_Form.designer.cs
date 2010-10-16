@@ -44,6 +44,7 @@ namespace ChessCalendar
             this.label4 = new System.Windows.Forms.Label();
             this.txtChessDotComName = new System.Windows.Forms.TextBox();
             this.chkDebugMode = new System.Windows.Forms.CheckBox();
+            this.chkBeep = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).BeginInit();
             this.SuspendLayout();
             // 
@@ -165,12 +166,23 @@ namespace ChessCalendar
             // 
             this.chkDebugMode.AutoSize = true;
             this.chkDebugMode.Enabled = false;
-            this.chkDebugMode.Location = new System.Drawing.Point(13, 323);
+            this.chkDebugMode.Location = new System.Drawing.Point(12, 346);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(88, 17);
             this.chkDebugMode.TabIndex = 13;
             this.chkDebugMode.Text = "Debug Mode";
             this.chkDebugMode.UseVisualStyleBackColor = true;
+            // 
+            // chkBeep
+            // 
+            this.chkBeep.AutoSize = true;
+            this.chkBeep.Enabled = false;
+            this.chkBeep.Location = new System.Drawing.Point(12, 323);
+            this.chkBeep.Name = "chkBeep";
+            this.chkBeep.Size = new System.Drawing.Size(162, 17);
+            this.chkBeep.TabIndex = 14;
+            this.chkBeep.Text = "Beep when new move found";
+            this.chkBeep.UseVisualStyleBackColor = true;
             // 
             // Login_Form
             // 
@@ -178,7 +190,8 @@ namespace ChessCalendar
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SlateGray;
-            this.ClientSize = new System.Drawing.Size(274, 382);
+            this.ClientSize = new System.Drawing.Size(274, 434);
+            this.Controls.Add(this.chkBeep);
             this.Controls.Add(this.chkDebugMode);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtChessDotComName);
@@ -215,5 +228,6 @@ namespace ChessCalendar
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtChessDotComName;
         private System.Windows.Forms.CheckBox chkDebugMode;
+        private System.Windows.Forms.CheckBox chkBeep;
     }
 }
