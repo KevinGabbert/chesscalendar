@@ -9,6 +9,7 @@ namespace ChessCalendar
     {
         public const string DETECTED = " detected ";
         public static Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full"); //default string. probably not even needed, but its helpful to know the format.
+        public static bool _logGames = false;
 
         public static string LogVersion { get; set; }
 
@@ -24,7 +25,6 @@ namespace ChessCalendar
                 try
                 {
                     newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
-
                     Log.AddOrUpdate_Games(toDo, newRssItems);
 
                     //On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
@@ -33,7 +33,11 @@ namespace ChessCalendar
                     foreach (ChessDotComGame item in toDo)
                     {
                         ChessDotComGame current = item;
-                        Log.Log_Game(current, userName, password);
+
+                        if (Log._logGames)
+                        {
+                            Log.Log_Game(current, userName, password);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -67,7 +71,8 @@ namespace ChessCalendar
             {
                 if (gamelist.Count > 0)
                 {
-                    //Console.WriteLine("Found " + toDo.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
+                    Log._logGames = true;
+                    Console.WriteLine("Found " + gamelist.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
                     foreach (RssItem game in gamelist)
                     {
                         toDo.ProcessItem(game);
@@ -76,6 +81,7 @@ namespace ChessCalendar
                 else
                 {
                     Console.WriteLine("No new or updated games found: " + DateTime.Now.ToLongTimeString());
+                    Log._logGames = false;
                 }
             }
         }

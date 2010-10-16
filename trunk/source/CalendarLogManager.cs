@@ -19,6 +19,7 @@ namespace ChessCalendar
                 if (listToRemoveFrom[i].Link == link)
                 {
                     listToRemoveFrom.Remove(listToRemoveFrom[i]);
+                    Console.WriteLine("Game removed: " + listToRemoveFrom[i].Title);
                     break;
                 }
             }
@@ -93,7 +94,7 @@ namespace ChessCalendar
             }
             else
             {
-                //if debugmode Console.WriteLine("** Already Stored: " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString());
+                Console.WriteLine("** Already Stored: " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString());
                 this.Remove_Item_With_Guid(rssItem.Link);
             }
         }

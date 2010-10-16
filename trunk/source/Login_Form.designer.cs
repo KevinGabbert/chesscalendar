@@ -31,7 +31,7 @@ namespace ChessCalendar
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login_Form));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pbTitle = new System.Windows.Forms.PictureBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.txtLogin = new System.Windows.Forms.TextBox();
@@ -43,24 +43,25 @@ namespace ChessCalendar
             this.btnStart = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtChessDotComName = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.chkDebugMode = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // pbTitle
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 8);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(227, 83);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.pbTitle.BackColor = System.Drawing.Color.Transparent;
+            this.pbTitle.Image = ((System.Drawing.Image)(resources.GetObject("pbTitle.Image")));
+            this.pbTitle.Location = new System.Drawing.Point(12, 12);
+            this.pbTitle.Name = "pbTitle";
+            this.pbTitle.Size = new System.Drawing.Size(250, 47);
+            this.pbTitle.TabIndex = 1;
+            this.pbTitle.TabStop = false;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(12, 188);
+            this.checkBox1.Location = new System.Drawing.Point(12, 165);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(150, 17);
             this.checkBox1.TabIndex = 2;
@@ -69,7 +70,7 @@ namespace ChessCalendar
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(87, 211);
+            this.btnOK.Location = new System.Drawing.Point(103, 188);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 3;
@@ -79,16 +80,16 @@ namespace ChessCalendar
             // 
             // txtLogin
             // 
-            this.txtLogin.Location = new System.Drawing.Point(12, 114);
+            this.txtLogin.Location = new System.Drawing.Point(12, 91);
             this.txtLogin.Name = "txtLogin";
-            this.txtLogin.Size = new System.Drawing.Size(227, 20);
+            this.txtLogin.Size = new System.Drawing.Size(250, 20);
             this.txtLogin.TabIndex = 0;
             this.txtLogin.TextChanged += new System.EventHandler(this.LoginTextControls_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 98);
+            this.label1.Location = new System.Drawing.Point(9, 75);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 6;
@@ -97,7 +98,7 @@ namespace ChessCalendar
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 146);
+            this.label2.Location = new System.Drawing.Point(9, 123);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 7;
@@ -106,11 +107,11 @@ namespace ChessCalendar
             // txtPassword
             // 
             this.txtPassword.AcceptsReturn = true;
-            this.txtPassword.Location = new System.Drawing.Point(13, 162);
+            this.txtPassword.Location = new System.Drawing.Point(13, 139);
             this.txtPassword.MaxLength = 50;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(226, 20);
+            this.txtPassword.Size = new System.Drawing.Size(249, 20);
             this.txtPassword.TabIndex = 1;
             this.txtPassword.UseSystemPasswordChar = true;
             this.txtPassword.TextChanged += new System.EventHandler(this.LoginTextControls_TextChanged);
@@ -118,24 +119,24 @@ namespace ChessCalendar
             // cmbGoogleCalendar
             // 
             this.cmbGoogleCalendar.FormattingEnabled = true;
-            this.cmbGoogleCalendar.Location = new System.Drawing.Point(12, 319);
+            this.cmbGoogleCalendar.Location = new System.Drawing.Point(12, 296);
             this.cmbGoogleCalendar.Name = "cmbGoogleCalendar";
-            this.cmbGoogleCalendar.Size = new System.Drawing.Size(226, 21);
+            this.cmbGoogleCalendar.Size = new System.Drawing.Size(249, 21);
             this.cmbGoogleCalendar.TabIndex = 5;
             this.cmbGoogleCalendar.Leave += new System.EventHandler(this.cmbGoogleCalendar_Leave);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 303);
+            this.label3.Location = new System.Drawing.Point(11, 280);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(97, 13);
+            this.label3.Size = new System.Drawing.Size(141, 13);
             this.label3.TabIndex = 9;
-            this.label3.Text = "Calendar to Log to:";
+            this.label3.Text = "Log to this Google Calendar:";
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(87, 357);
+            this.btnStart.Location = new System.Drawing.Point(103, 346);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 6;
@@ -146,7 +147,7 @@ namespace ChessCalendar
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 253);
+            this.label4.Location = new System.Drawing.Point(9, 230);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 13);
             this.label4.TabIndex = 12;
@@ -154,17 +155,31 @@ namespace ChessCalendar
             // 
             // txtChessDotComName
             // 
-            this.txtChessDotComName.Location = new System.Drawing.Point(12, 269);
+            this.txtChessDotComName.Location = new System.Drawing.Point(12, 246);
             this.txtChessDotComName.Name = "txtChessDotComName";
-            this.txtChessDotComName.Size = new System.Drawing.Size(227, 20);
+            this.txtChessDotComName.Size = new System.Drawing.Size(250, 20);
             this.txtChessDotComName.TabIndex = 4;
+            this.txtChessDotComName.TextChanged += new System.EventHandler(this.txtChessDotComName_TextChanged);
+            // 
+            // chkDebugMode
+            // 
+            this.chkDebugMode.AutoSize = true;
+            this.chkDebugMode.Enabled = false;
+            this.chkDebugMode.Location = new System.Drawing.Point(13, 323);
+            this.chkDebugMode.Name = "chkDebugMode";
+            this.chkDebugMode.Size = new System.Drawing.Size(88, 17);
+            this.chkDebugMode.TabIndex = 13;
+            this.chkDebugMode.Text = "Debug Mode";
+            this.chkDebugMode.UseVisualStyleBackColor = true;
             // 
             // Login_Form
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(247, 392);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(274, 382);
+            this.Controls.Add(this.chkDebugMode);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtChessDotComName);
             this.Controls.Add(this.btnStart);
@@ -176,10 +191,10 @@ namespace ChessCalendar
             this.Controls.Add(this.txtLogin);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pbTitle);
             this.Name = "Login_Form";
-            this.Text = "Process Calendar Login";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Text = "Chess Calendar Login";
+            ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -187,7 +202,7 @@ namespace ChessCalendar
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pbTitle;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.TextBox txtLogin;
@@ -199,5 +214,6 @@ namespace ChessCalendar
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtChessDotComName;
+        private System.Windows.Forms.CheckBox chkDebugMode;
     }
 }

@@ -16,6 +16,7 @@ namespace ChessCalendar
         public string User { get; set; }
         public string Password { get; set; }
         public System.Uri PostURI { get; set; }
+        public bool DebugMode { get; set; }
 
         #endregion
 
@@ -23,6 +24,24 @@ namespace ChessCalendar
         {
             this.InitializeComponent();
         }
+
+        #region TextBoxes
+        private void LoginTextControls_TextChanged(object sender, EventArgs e)
+        {
+            if (((TextBoxBase)sender).Text.Contains(Environment.NewLine))
+            {
+                this.btnOK_Click(sender, e);
+            }
+        }
+        private void txtChessDotComName_TextChanged(object sender, EventArgs e)
+        {
+            if (((TextBoxBase)sender).Text.Contains(Environment.NewLine))
+            {
+                this.btnStart_Click(sender, e);
+            }
+        }
+        #endregion
+        #region Buttons
 
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -43,17 +62,6 @@ namespace ChessCalendar
                 cmbGoogleCalendar.SelectedIndex = 0;
             }
         }
-
-        private void LoginTextControls_TextChanged(object sender, EventArgs e)
-        {
-            TextBoxBase senderTB = (TextBoxBase)sender;
-
-            if (senderTB.Text.Contains(Environment.NewLine))
-            {
-                this.btnOK_Click(sender, e);
-            }
-        }
-
         private void btnStart_Click(object sender, EventArgs e)
         {
             //do we need some kind of validation here?
@@ -62,6 +70,8 @@ namespace ChessCalendar
             this.SetPostURI();
             this.Hide();
         }
+
+        #endregion
 
         private void cmbGoogleCalendar_Leave(object sender, EventArgs e)
         {
