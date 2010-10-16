@@ -15,6 +15,8 @@ namespace ChessCalendar
                 set { _ignoreList = value; }
             }
 
+            public bool Beep_On_New_Move { get; set; }
+
         #endregion
 
         public new void Add(ChessDotComGame process)
@@ -77,6 +79,8 @@ namespace ChessCalendar
             if ((!this.HaveIt(rssItem)) && (!this.IgnoreListHasIt(rssItem)))
             {
                 //Its not in here, and we are not ignoring it..
+                if(this.Beep_On_New_Move){Console.Beep();}
+
                 Console.WriteLine("** Your Move! " + rssItem.Title + " *** " + DateTime.Now.ToShortTimeString());
                 this.Remove_Any_Older_Versions_Of(rssItem); //Do any necessary cleaning out of previous published items
                 this.Add(this, rssItem);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using RssToolkit.Rss;
 
@@ -13,12 +12,14 @@ namespace ChessCalendar
         public static bool LogGames { get; set; }
         public static string LogVersion { get; set; }
         public static bool DebugMode { get; set; }
+        public static bool Beep_On_New_Move { get; set; }
         public static CalendarLogManager ToDo { get; set; }
 
         public static void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             Log.ToDo = new CalendarLogManager();
             Log.ToDo.DebugMode = Log.DebugMode;
+            Log.ToDo.Beep_On_New_Move = Log.Beep_On_New_Move;
 
             _calendarToPost = logToCalendar;
 

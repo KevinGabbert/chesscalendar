@@ -17,6 +17,7 @@ namespace ChessCalendar
         public string Password { get; set; }
         public System.Uri PostURI { get; set; }
         public bool DebugMode { get; set; }
+        public bool Beep_On_New_Move { get; set; }
 
         #endregion
 
@@ -81,6 +82,7 @@ namespace ChessCalendar
         {
             this.ChessDotComName = txtChessDotComName.Text;
             this.DebugMode = chkDebugMode.Checked;
+            this.Beep_On_New_Move = chkBeep.Checked;
             this.SetPostURI();
 
             this.Hide();
