@@ -25,6 +25,10 @@ namespace ChessCalendar
         {
             this.Add(this.IgnoreList, rssItem);
         }
+        public void Ignore(ChessDotComGame game)
+        {
+            this.Add(this.IgnoreList, game);
+        }
         public void Add(GameList list, RssItem rssItem)
         {
             try
@@ -37,6 +41,26 @@ namespace ChessCalendar
                 else
                 {
                     list.AddNewGame(rssItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+        public void Add(GameList list, ChessDotComGame game)
+        {
+            try
+            {
+                //Lets see if we can find a match
+                if (list.Where(thisGame => thisGame.PubDate == game.PubDate).Any())
+                {
+                    list.Remove_Item_With_Guid(game.Link);
+                }
+                else
+                {
+                    list.AddGame(game);
                 }
             }
             catch (Exception ex)
@@ -95,11 +119,18 @@ namespace ChessCalendar
            bool pubMatch = this.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
            bool guidMatch = this.Where(thisGame => thisGame.Link == rssItem.Link).Any();
 
-           //Look for newer versions of old games
-           if ((guidMatch) && (!pubMatch))
+           if ((!guidMatch) && (pubMatch))
            {
                //Then we have a new one. So lets get rid of old cruft in preparation for adding.
-               this.Remove_Item_With_Guid(rssItem.Link);
+               this.Remove_Item_With_Guid(rssItem.Link);  
+           }
+
+           bool ignorePubMatch = this.IgnoreList.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
+           bool ignoreGuidMatch = this.IgnoreList.Where(thisGame => thisGame.Link == rssItem.Link).Any();
+
+           if ((ignoreGuidMatch) && (!ignorePubMatch))
+           {
+               //Then we have a new one. So lets get rid of old cruft in preparation for adding.
                this.IgnoreList.Remove_Item_With_Guid(rssItem.Link);
            }
         }
