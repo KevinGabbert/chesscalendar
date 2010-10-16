@@ -12,6 +12,7 @@ namespace ChessCalendar
         public static bool _logGames = false;
 
         public static string LogVersion { get; set; }
+        public static bool DebugMode { get; set; }
 
         public static void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {

@@ -177,7 +177,7 @@ namespace ChessCalendar
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.Color.SlateGray;
             this.ClientSize = new System.Drawing.Size(274, 382);
             this.Controls.Add(this.chkDebugMode);
             this.Controls.Add(this.label4);
