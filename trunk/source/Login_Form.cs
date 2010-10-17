@@ -18,7 +18,7 @@ namespace ChessCalendar
         public System.Uri PostURI { get; set; }
         public bool DebugMode { get; set; }
         public bool Beep_On_New_Move { get; set; }
-
+        public bool ValidatedForm { get; set; }
         #endregion
 
         public Login_Form(string version)
@@ -98,6 +98,8 @@ namespace ChessCalendar
             bool haveGooglePassword = (this.txtPassword.TextLength > 0);
 
             bool validated = haveGoogleLogin && haveGooglePassword && haveChessDotComName;
+
+            this.ValidatedForm = validated;
 
             return validated;
         }
