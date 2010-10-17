@@ -21,9 +21,10 @@ namespace ChessCalendar
 
         #endregion
 
-        public Login_Form()
+        public Login_Form(string version)
         {
             this.InitializeComponent();
+            this.lblVersion.Text = version;
 
             this.btnStart.Enabled = false;
             this.btnOK.Enabled = false;

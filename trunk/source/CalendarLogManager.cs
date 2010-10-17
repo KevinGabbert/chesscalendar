@@ -120,6 +120,8 @@ namespace ChessCalendar
 
         private void Remove_Any_Older_Versions_Of(RssItem rssItem)
         {
+           //Well, technically, this should be remove any OTHER versions of, but the point is to get rid of
+           //previously stored versions, which are older.
            bool pubMatch = this.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
            bool guidMatch = this.Where(thisGame => thisGame.Link == rssItem.Link).Any();
 

@@ -4,14 +4,14 @@ namespace ChessCalendar
 {
     class Program
     {
-        public const string VERSION = "Game Calendar v10.16.10 ";
+        public const string VERSION = "Chess Calendar v10.16.10 ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         static void Main(string[] args)
         {
             Console.WriteLine(VERSION + DateTime.Now.ToShortTimeString());
 
-            var userInfoForm = new Login_Form();
+            var userInfoForm = new Login_Form(VERSION);
             userInfoForm.ShowDialog();  
             
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
