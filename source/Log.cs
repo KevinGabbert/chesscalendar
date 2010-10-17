@@ -67,11 +67,11 @@ namespace ChessCalendar
                 Console.WriteLine("Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
             }
 
-            GoogleCalendar.CreateEntry(userName, password, gameToLog.Title + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(), gameToLog.Link + 
-                                                                            Environment.NewLine + 
-                                                                            gameToLog.Description + 
-                                                                            Environment.NewLine + 
-                                                                            Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
+            GoogleCalendar.CreateEntry(userName, password, gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(), gameToLog.Link + 
+                                                                                   Environment.NewLine + 
+                                                                                   gameToLog.Description + 
+                                                                                   Environment.NewLine + 
+                                                                                   Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
             if (Log.DebugMode)
             {
                 Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
