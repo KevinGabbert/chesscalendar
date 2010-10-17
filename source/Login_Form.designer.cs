@@ -45,6 +45,7 @@ namespace ChessCalendar
             this.txtChessDotComName = new System.Windows.Forms.TextBox();
             this.chkDebugMode = new System.Windows.Forms.CheckBox();
             this.chkBeep = new System.Windows.Forms.CheckBox();
+            this.lblVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).BeginInit();
             this.SuspendLayout();
             // 
@@ -183,6 +184,15 @@ namespace ChessCalendar
             this.chkBeep.Text = "Beep when new move found";
             this.chkBeep.UseVisualStyleBackColor = true;
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Location = new System.Drawing.Point(9, 412);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(42, 13);
+            this.lblVersion.TabIndex = 15;
+            this.lblVersion.Text = "Version";
+            // 
             // Login_Form
             // 
             this.AcceptButton = this.btnOK;
@@ -190,6 +200,7 @@ namespace ChessCalendar
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SlateGray;
             this.ClientSize = new System.Drawing.Size(274, 434);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.chkBeep);
             this.Controls.Add(this.chkDebugMode);
             this.Controls.Add(this.label4);
@@ -204,8 +215,9 @@ namespace ChessCalendar
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.pbTitle);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Login_Form";
-            this.Text = "Chess Calendar Login";
+            this.Text = "Login";
             ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -228,5 +240,6 @@ namespace ChessCalendar
         private System.Windows.Forms.TextBox txtChessDotComName;
         private System.Windows.Forms.CheckBox chkDebugMode;
         private System.Windows.Forms.CheckBox chkBeep;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
