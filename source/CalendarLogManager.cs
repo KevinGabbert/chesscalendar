@@ -81,13 +81,13 @@ namespace ChessCalendar
                 //Its not in here, and we are not ignoring it..
                 if(this.Beep_On_New_Move){Console.Beep();}
 
-                Console.WriteLine("** Your Move! " + rssItem.Title + " *** " + DateTime.Now.ToShortTimeString());
+                Console.WriteLine("** <NEW> Your Move!: " + rssItem.Title + " *** " + DateTime.Now.ToShortTimeString());
                 this.Remove_Any_Older_Versions_Of(rssItem); //Do any necessary cleaning out of previous published items
                 this.Add(this, rssItem);
             }
             else
             {
-                Console.WriteLine("** Already Stored: " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString());
+                Console.WriteLine("** Your Move! " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString());
                 this.Remove_Item_With_Guid(rssItem.Link);
             }
         }

@@ -101,7 +101,10 @@ namespace ChessCalendar
                 if (gamelist.Count > 0)
                 {
                     Log.LogGames = true;
-                    Console.WriteLine("Found " + gamelist.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
+                    Console.WriteLine(Environment.NewLine);
+                    Console.WriteLine("Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
+                    
+                    Console.WriteLine(Environment.NewLine);
                     foreach (ChessCalendarRSSItem game in gamelist)
                     {
                         toDo.ProcessRSSItem(game);
