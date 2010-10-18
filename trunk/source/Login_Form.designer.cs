@@ -121,16 +121,16 @@ namespace ChessCalendar
             // cmbGoogleCalendar
             // 
             this.cmbGoogleCalendar.FormattingEnabled = true;
-            this.cmbGoogleCalendar.Location = new System.Drawing.Point(12, 296);
+            this.cmbGoogleCalendar.Location = new System.Drawing.Point(12, 258);
             this.cmbGoogleCalendar.Name = "cmbGoogleCalendar";
             this.cmbGoogleCalendar.Size = new System.Drawing.Size(249, 21);
-            this.cmbGoogleCalendar.TabIndex = 5;
+            this.cmbGoogleCalendar.TabIndex = 4;
             this.cmbGoogleCalendar.Leave += new System.EventHandler(this.cmbGoogleCalendar_Leave);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 280);
+            this.label3.Location = new System.Drawing.Point(11, 242);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(141, 13);
             this.label3.TabIndex = 9;
@@ -138,10 +138,10 @@ namespace ChessCalendar
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(103, 346);
+            this.btnStart.Location = new System.Drawing.Point(103, 356);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 6;
+            this.btnStart.TabIndex = 8;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -149,7 +149,7 @@ namespace ChessCalendar
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 230);
+            this.label4.Location = new System.Drawing.Point(9, 291);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 13);
             this.label4.TabIndex = 12;
@@ -157,30 +157,30 @@ namespace ChessCalendar
             // 
             // txtChessDotComName
             // 
-            this.txtChessDotComName.Location = new System.Drawing.Point(12, 246);
+            this.txtChessDotComName.Location = new System.Drawing.Point(12, 307);
             this.txtChessDotComName.Name = "txtChessDotComName";
             this.txtChessDotComName.Size = new System.Drawing.Size(250, 20);
-            this.txtChessDotComName.TabIndex = 4;
+            this.txtChessDotComName.TabIndex = 5;
             this.txtChessDotComName.TextChanged += new System.EventHandler(this.txtChessDotComName_TextChanged);
             // 
             // chkDebugMode
             // 
             this.chkDebugMode.AutoSize = true;
             this.chkDebugMode.Enabled = false;
-            this.chkDebugMode.Location = new System.Drawing.Point(12, 346);
+            this.chkDebugMode.Location = new System.Drawing.Point(12, 356);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(88, 17);
-            this.chkDebugMode.TabIndex = 13;
+            this.chkDebugMode.TabIndex = 7;
             this.chkDebugMode.Text = "Debug Mode";
             this.chkDebugMode.UseVisualStyleBackColor = true;
             // 
             // chkBeep
             // 
             this.chkBeep.AutoSize = true;
-            this.chkBeep.Location = new System.Drawing.Point(12, 323);
+            this.chkBeep.Location = new System.Drawing.Point(12, 333);
             this.chkBeep.Name = "chkBeep";
             this.chkBeep.Size = new System.Drawing.Size(162, 17);
-            this.chkBeep.TabIndex = 14;
+            this.chkBeep.TabIndex = 6;
             this.chkBeep.Text = "Beep when new move found";
             this.chkBeep.UseVisualStyleBackColor = true;
             // 

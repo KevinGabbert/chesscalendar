@@ -5,7 +5,7 @@ namespace ChessCalendar
 {
     class Program
     {
-        public const string VERSION = "Chess Calendar v10.17.10 ";
+        public const string VERSION = "Chess Calendar v10.18.10 ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         static void Main(string[] args)
