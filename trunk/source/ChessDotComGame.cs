@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
+using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
 {
-    public class ChessDotComGame: IComparable
+    public class ChessDotComGame: IComparable, IChessItem
     {
+        public string Author { get; set; }
         public string Comments { get; set; }
         public string Description { get; set; }
-        public RssToolkit.Rss.RssGuid Guid { get; set; }
         public string Link { get; set; }
         public string PubDate { get; set; }
         public string Title { get; set; }
