@@ -29,7 +29,7 @@ namespace ChessCalendar
 
             //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
             //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
-            //Log.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(_calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+            //Log.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
             while (true)
             {

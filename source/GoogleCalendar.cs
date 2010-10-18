@@ -53,18 +53,27 @@ namespace ChessCalendar
             }
         }
 
-        public static GameList GetExistingChessGames(Uri calendar, DateTime startDate, DateTime endDate, string query)
+        public static GameList GetExistingChessGames(string userName, string password, Uri calendar, DateTime startDate, DateTime endDate, string query)
         {
-            EventQuery myQuery = new EventQuery(calendar.AbsoluteUri);
+            EventQuery myQuery = new EventQuery(calendar.ToString());
             myQuery.Query = query;
             myQuery.StartDate = startDate;
             myQuery.EndDate = endDate;
 
-            var myService = new CalendarService("ChessCalendar");
-            EventFeed myResultsFeed = myService.Query(myQuery);
-
             GameList queriedGames = new GameList();
-            queriedGames.AddRange(myResultsFeed.Entries.Select(entry => entry));
+
+            try
+            {
+                var myService = new CalendarService("process-calendar");
+                myService.setUserCredentials(userName, password);
+
+                EventFeed myResultsFeed = myService.Query(myQuery);
+                queriedGames.AddRange(myResultsFeed.Entries.Select(entry => entry));
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
             return queriedGames;
         }
