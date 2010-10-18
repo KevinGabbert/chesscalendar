@@ -1,4 +1,6 @@
-﻿namespace ChessCalendar.Interfaces
+﻿using System;
+
+namespace ChessCalendar.Interfaces
 {
     /// <summary>
     /// A subset of the RSSItem

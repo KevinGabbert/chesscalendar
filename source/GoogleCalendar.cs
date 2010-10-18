@@ -22,20 +22,17 @@ namespace ChessCalendar
 
             return myService.Query(query);
         }
-        public static void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar)
+        public static void CreateEntry(string userName, string password, string link, string pubDate, string title, string description, DateTime start, DateTime end, Uri calendar)
         {
             _calendarToPost = calendar;
 
             try
             {
-                var entry = new EventEntry { Title = { Text = title }, Content = { Content = description } };
-
-                // Set a location for the event.
-                Where eventLocation = new Where { ValueString = "auto-logger" };
-                entry.Locations.Add(eventLocation);
-
-                When eventTime = new When(start, end);
-                entry.Times.Add(eventTime);
+                var entry = new EventEntry();
+                entry.Title.Text = title;
+                entry.Content.Content = description;
+                entry.Locations.Add(new Where("","", "auto-logger"));
+                entry.Times.Add(new When(start, end)); //entry.Times.Add(new When()); //how to add an all day?
 
                 if (!string.IsNullOrEmpty(userName))
                 {

@@ -7,7 +7,7 @@ namespace ChessCalendar
     {
         public void Add(RssItem rssItem)
         {
-            ChessCalendarRSSItem newItem = new ChessCalendarRSSItem();
+            var newItem = new ChessCalendarRSSItem();
             newItem.Author = rssItem.Author;
             newItem.Comments = rssItem.Comments;
             newItem.Description = rssItem.Description;
@@ -15,7 +15,7 @@ namespace ChessCalendar
             newItem.PubDate = rssItem.PubDate;
             newItem.Title = rssItem.Title;
 
-            this.Add(newItem); 
+            base.Add(newItem); 
         }
         public void AddRange(IEnumerable<RssItem> rssItems)
         {

@@ -78,6 +78,7 @@ namespace ChessCalendar
             }
 
             this.btnOK.Enabled = false;
+            cmbGoogleCalendar.Focus();
         }
         private void btnStart_Click(object sender, EventArgs e)
         {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Google.GData.Calendar;
-using Google.GData.Client;
 using RssToolkit.Rss;
 
 namespace ChessCalendar
@@ -29,6 +27,8 @@ namespace ChessCalendar
 
             //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
             //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
+
+            //Console.WriteLine("Querying Calendar for older entries");
             //Log.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
             while (true)
@@ -46,6 +46,7 @@ namespace ChessCalendar
 
                     if (Log.LogGames)
                     {
+                        Console.WriteLine("Logging " + Log.ToDo.Count + "Notifications to Calendar..");
                         foreach (ChessDotComGame current in Log.ToDo)
                         {
                             Log.Log_Game(current, userName, password);
@@ -53,14 +54,14 @@ namespace ChessCalendar
                     }
 
                     Log.ToDo.Clear();
-                    //Console.WriteLine("Games Logged to Calendar.");
+                    Console.WriteLine("----------");
                 }
                 catch (Exception ex)
                 {
                     //if 504 Invalid gateway error. Chess.com is down
                     Console.WriteLine("error. " + ex.Message);
 
-                    GoogleCalendar.CreateEntry(userName, password, "Chess.com error", ex.Message +
+                    GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
                                                                 Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                 }
 
@@ -76,11 +77,16 @@ namespace ChessCalendar
                 Console.WriteLine("Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
             }
 
-            GoogleCalendar.CreateEntry(userName, password, gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(), gameToLog.Link + 
-                                                                                   Environment.NewLine + 
-                                                                                   gameToLog.Description + 
-                                                                                   Environment.NewLine + 
-                                                                                   Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
+            GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
+                                                            gameToLog.Link, 
+                                                            gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(), 
+                                                            "|" + gameToLog.Link + 
+                                                            Environment.NewLine +
+                                                            "|" + DateTime.Parse(gameToLog.PubDate).ToLongDateString() +
+                                                            Environment.NewLine +
+                                                            "|" + gameToLog.Description +
+                                                            Environment.NewLine +
+                                                            "|" + Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
             if (Log.DebugMode)
             {
                 Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());

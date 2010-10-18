@@ -51,17 +51,26 @@ namespace ChessCalendar
 
         public void AddGame(AtomEntry atomEntry)
         {
-            var game = new ChessDotComGame();
-
-            //game.Title = atomEntry.Title;
-            //game.Link = atomEntry.Link;
-            //game.PubDate = atomEntry.PubDate;
-            //game.Comments = atomEntry.Comments;
-            //game.Guid = atomEntry.Guid;
-
-            if (!this.Contains(game))
+            foreach (AtomEntry entry in atomEntry.Feed.Entries)
             {
-                base.Add(game);
+                if (atomEntry.Content.Content.Contains("|"))
+                {
+                    var game = new ChessDotComGame();
+
+                    game.Title = entry.Title.Text.ToString();
+                    game.Link = atomEntry.Content.Content.Split('|')[1];
+                    game.Link = game.Link.Remove(game.Link.Length - 1);
+
+                    game.PubDate = atomEntry.Content.Content.Split('|')[2];
+                    game.PubDate = game.PubDate.Remove(game.PubDate.Length - 1);
+
+                    game.Description = atomEntry.Content.Content;
+
+                    if (!this.Contains(game))
+                    {
+                        base.Add(game);
+                    }
+                }
             }
         }
 
@@ -73,7 +82,7 @@ namespace ChessCalendar
             }
         }
 
-        protected bool Contains(IChessItem chessItem)
+        protected new bool Contains(IChessItem chessItem)
         {
             bool pubMatch = this.Where(thisGame => thisGame.PubDate == chessItem.PubDate).Any();
             bool guidMatch = this.Where(thisGame => thisGame.Link == chessItem.Link).Any();
