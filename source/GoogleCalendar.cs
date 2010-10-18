@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Google.GData.Calendar;
 using Google.GData.Client;
 using Google.GData.Extensions;
@@ -50,6 +51,22 @@ namespace ChessCalendar
             {
                 Console.WriteLine(ex.Message.ToString());
             }
+        }
+
+        public static GameList GetExistingChessGames(Uri calendar, DateTime startDate, DateTime endDate, string query)
+        {
+            EventQuery myQuery = new EventQuery(calendar.AbsoluteUri);
+            myQuery.Query = query;
+            myQuery.StartDate = startDate;
+            myQuery.EndDate = endDate;
+
+            var myService = new CalendarService("ChessCalendar");
+            EventFeed myResultsFeed = myService.Query(myQuery);
+
+            GameList queriedGames = new GameList();
+            queriedGames.AddRange(myResultsFeed.Entries.Select(entry => entry));
+
+            return queriedGames;
         }
     }
 }

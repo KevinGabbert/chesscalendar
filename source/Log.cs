@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Google.GData.Calendar;
+using Google.GData.Client;
 using RssToolkit.Rss;
 
 namespace ChessCalendar
@@ -23,13 +25,20 @@ namespace ChessCalendar
 
             _calendarToPost = logToCalendar;
 
+            //load up Ignore list with items already in calendar
+
+            //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
+            //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
+            //Log.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(_calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+
             while (true)
             {
-                List<RssItem> newRssItems = new List<RssItem>();
+                ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
 
                 try
                 {
                     newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+
                     Log.AddOrUpdate_Games(Log.ToDo, newRssItems);
 
                     //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
@@ -79,7 +88,7 @@ namespace ChessCalendar
 
             Log.ToDo.Ignore(gameToLog); //we won't need to log this one again, 
         }    
-        private static void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<RssItem> gamelist)
+        private static void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<ChessCalendarRSSItem> gamelist)
         {
             if (gamelist != null)
             {
@@ -87,7 +96,7 @@ namespace ChessCalendar
                 {
                     Log.LogGames = true;
                     Console.WriteLine("Found " + gamelist.Count.ToString() + " Games: " + DateTime.Now.ToLongTimeString());
-                    foreach (RssItem game in gamelist)
+                    foreach (ChessCalendarRSSItem game in gamelist)
                     {
                         toDo.ProcessRSSItem(game);
                     }

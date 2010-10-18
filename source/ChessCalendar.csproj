@@ -62,10 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalendarLogManager.cs" />
+    <Compile Include="ChessCalendarRSSItem.cs" />
+    <Compile Include="ChessCalendarRSSItems.cs" />
     <Compile Include="ChessDotComGame.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="GameList.cs" />
     <Compile Include="GoogleCalendar.cs" />
+    <Compile Include="Interfaces\IChessItem.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Login_Form.cs">
       <SubType>Form</SubType>

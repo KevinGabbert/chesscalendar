@@ -42,7 +42,7 @@ namespace ChessCalendar
                 }
                 else
                 {
-                    list.AddNewGame(rssItem);
+                    list.AddGame(rssItem);
                 }
             }
             catch (Exception ex)
@@ -72,11 +72,11 @@ namespace ChessCalendar
             }
         }
 
-        public void ProcessRSSItem(RssItem rssItem)
+        public void ProcessRSSItem(ChessCalendarRSSItem rssItem)
         {
             this.IgnoreIfWeHaveIt(rssItem);
 
-            if ((!this.HaveIt(rssItem)) && (!this.IgnoreListHasIt(rssItem)))
+            if ((!this.Contains(rssItem)) && (!this.IgnoreListHasIt(rssItem)))
             {
                 //Its not in here, and we are not ignoring it..
                 if(this.Beep_On_New_Move){Console.Beep();}
@@ -99,19 +99,12 @@ namespace ChessCalendar
 
             return ignorePubMatch && ignoreGuidMatch;
         }
-        private bool HaveIt(RssItem rssItem)
-        {
-            bool pubMatch = this.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
-            bool guidMatch = this.Where(thisGame => thisGame.Link == rssItem.Link).Any();
 
-            return pubMatch && guidMatch;
-        }
-
-        private void IgnoreIfWeHaveIt(RssItem rssItem)
+        private void IgnoreIfWeHaveIt(ChessCalendarRSSItem rssItem)
         {
             if (!this.IgnoreListHasIt(rssItem))
             {
-                if (this.HaveIt(rssItem))
+                if (this.Contains(rssItem))
                 {
                     this.Ignore(rssItem);
                 }
