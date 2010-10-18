@@ -28,8 +28,8 @@ namespace ChessCalendar
             //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
             //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
 
-            //Console.WriteLine("Querying Calendar for older entries");
-            //Log.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+            Console.WriteLine("Querying Calendar for older entries");
+            Log.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
             while (true)
             {
@@ -46,7 +46,7 @@ namespace ChessCalendar
 
                     if (Log.LogGames)
                     {
-                        Console.WriteLine("Logging " + Log.ToDo.Count + "Notifications to Calendar..");
+                        Console.WriteLine("Logging " + Log.ToDo.Count + " Notifications to Calendar..");
                         foreach (ChessDotComGame current in Log.ToDo)
                         {
                             Log.Log_Game(current, userName, password);
@@ -54,7 +54,7 @@ namespace ChessCalendar
                     }
 
                     Log.ToDo.Clear();
-                    Console.WriteLine("----------");
+                    Console.WriteLine("----------" + Environment.NewLine);
                 }
                 catch (Exception ex)
                 {
@@ -82,7 +82,7 @@ namespace ChessCalendar
                                                             gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(), 
                                                             "|" + gameToLog.Link + 
                                                             Environment.NewLine +
-                                                            "|" + DateTime.Parse(gameToLog.PubDate).ToLongDateString() +
+                                                            "|" + gameToLog.PubDate +
                                                             Environment.NewLine +
                                                             "|" + gameToLog.Description +
                                                             Environment.NewLine +
