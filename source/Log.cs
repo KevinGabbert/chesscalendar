@@ -5,15 +5,22 @@ using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    class Log
+    public class Log
     {
-        public const string DETECTED = " detected ";
-        public static Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full"); //default string. probably not even needed, but its helpful to know the format.
-        public static bool LogGames { get; set; }
-        public static string LogVersion { get; set; }
-        public static bool DebugMode { get; set; }
-        public static bool Beep_On_New_Move { get; set; }
-        public static CalendarLogManager ToDo { get; set; }
+        #region Properties
+
+            public const string DETECTED = " detected ";
+            public static Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full"); //default string. probably not even needed, but its helpful to know the format.
+            public static bool LogGames { get; set; }
+            public static string LogVersion { get; set; }
+            public static bool DebugMode { get; set; }
+            public static bool Beep_On_New_Move { get; set; }
+            public static CalendarLogManager ToDo { get; set; }
+            public static System.Windows.Forms.NotifyIcon NotifyIcon { get; set; }
+            public static System.Windows.Forms.ContextMenu ContextMenu { get; set; }
+            public static OutputMode OutputMode { get; set; }
+
+        #endregion
 
         public static void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
@@ -28,7 +35,7 @@ namespace ChessCalendar
             //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
             //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
 
-            Console.WriteLine("Querying Calendar for older entries");
+            Log.Output(string.Empty, "Querying Calendar for older entries");
             Log.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
             while (true)
@@ -46,7 +53,8 @@ namespace ChessCalendar
 
                     if (Log.LogGames)
                     {
-                        Console.WriteLine("Logging " + Log.ToDo.Count + " Notifications to Calendar..");
+                        //This should ONLY show up on the form.
+                        Log.Output(string.Empty, "Logging " + Log.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
                         foreach (ChessDotComGame current in Log.ToDo)
                         {
                             Log.Log_Game(current, userName, password);
@@ -54,27 +62,26 @@ namespace ChessCalendar
                     }
 
                     Log.ToDo.Clear();
-                    Console.WriteLine("----------" + Environment.NewLine);
+                    //Log.Output(string.Empty, "----------" + Environment.NewLine, OutputMode.Form);
                 }
                 catch (Exception ex)
                 {
                     //if 504 Invalid gateway error. Chess.com is down
-                    Console.WriteLine("error. " + ex.Message);
+                    Log.Output(string.Empty, "error. " + ex.Message);
 
                     GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
                                                                 Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                 }
 
-                Console.WriteLine("Sleeping for 5 minutes");
+                //Log.Output(string.Empty, "Sleeping for 5 minutes", OutputMode.Form);
                 Thread.Sleep(new TimeSpan(0, 0, 5, 0));
             }
         }
-
         private static void Log_Game(ChessDotComGame gameToLog, string userName, string password)
         {
             if (Log.DebugMode)
             {
-                Console.WriteLine("Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
+                Log.Output(string.Empty,"Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString, OutputMode.Form);
             }
 
             GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
@@ -89,7 +96,7 @@ namespace ChessCalendar
                                                             "|" + Log.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
             if (Log.DebugMode)
             {
-                Console.WriteLine(gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
+                Log.Output(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
             }
 
             Log.ToDo.Ignore(gameToLog); //we won't need to log this one again, 
@@ -101,10 +108,11 @@ namespace ChessCalendar
                 if (gamelist.Count > 0)
                 {
                     Log.LogGames = true;
-                    Console.WriteLine(Environment.NewLine);
-                    Console.WriteLine("Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
+                    Log.Output(string.Empty, Environment.NewLine, OutputMode.Form);
+                    Log.Output(string.Empty, "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
                     
-                    Console.WriteLine(Environment.NewLine);
+                    //if form mode
+                    Log.Output(string.Empty, Environment.NewLine, OutputMode.Form);
                     foreach (ChessCalendarRSSItem game in gamelist)
                     {
                         toDo.ProcessRSSItem(game);
@@ -112,9 +120,36 @@ namespace ChessCalendar
                 }
                 else
                 {
-                    Console.WriteLine("No new or updated games found: " + DateTime.Now.ToLongTimeString());
+                    Log.Output(string.Empty, "No new or updated games found: " + DateTime.Now.ToLongTimeString());
                     Log.LogGames = false;
                 }
+            }
+        }
+
+        public static void Output(string title, string outputMessage)
+        {
+            switch (OutputMode)
+            {
+                case OutputMode.Balloon:
+                    Log.NotifyIcon.BalloonTipText = outputMessage;
+                    Log.NotifyIcon.ShowBalloonTip(2000);
+
+                    //Now Write message to form as well.
+                    break;
+
+                case OutputMode.Form:
+                    //Write message to form.
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        public static void Output(string title, string outputMessage, OutputMode outputMode)
+        {
+            if(outputMode == OutputMode.Form)
+            {
+                //Write message to form.
             }
         }
     }

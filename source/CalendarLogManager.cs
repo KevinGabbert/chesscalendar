@@ -47,6 +47,7 @@ namespace ChessCalendar
             }
             catch (Exception ex)
             {
+                Log.Output(string.Empty, ex.Message, OutputMode.Form);
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -67,7 +68,7 @@ namespace ChessCalendar
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Output(string.Empty, ex.Message, OutputMode.Form);
                 throw;
             }
         }
@@ -81,13 +82,13 @@ namespace ChessCalendar
                 //Its not in here, and we are not ignoring it..
                 if(this.Beep_On_New_Move){Console.Beep();}
 
-                Console.WriteLine("** <NEW> Your Move!: " + rssItem.Title + " *** " + DateTime.Now.ToShortTimeString());
+                Log.Output(string.Empty, "** <NEW> Your Move!: " + rssItem.Title + " *** " + DateTime.Now.ToShortTimeString());
                 this.Remove_Any_Older_Versions_Of(rssItem); //Do any necessary cleaning out of previous published items
                 this.Add(this, rssItem);
             }
             else
             {
-                Console.WriteLine("** Your Move! " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString());
+                Log.Output(string.Empty, "** Your Move! " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString());
                 this.Remove_Item_With_Guid(rssItem.Link);
             }
         }
