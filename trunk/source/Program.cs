@@ -8,8 +8,6 @@ namespace ChessCalendar
         [STAThread]
         public static void Main(string[] args)
         {
-            //Console.WriteLine(VERSION + DateTime.Now.ToShortTimeString());
-
             Application.Run(new SysTrayApp());
         } 
     }

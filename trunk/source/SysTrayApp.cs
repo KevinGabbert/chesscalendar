@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-
 namespace ChessCalendar
 {
     public class SysTrayApp : Form
@@ -17,6 +16,7 @@ namespace ChessCalendar
             _trayMenu = new ContextMenu();
             _trayMenu.MenuItems.Add("Start", Login);//todo: animated gif with logo phasing in and out.
             //_trayMenu.MenuItems.Add("Stop", Login); //todo: this should change Icon to icon with red circle and line through it.
+            _trayMenu.MenuItems.Add("Show Log", Options); //Todo: all console notifications will go here..
             _trayMenu.MenuItems.Add("Options", Options); //Todo: all console notifications will go here..
             _trayMenu.MenuItems.Add("Exit", OnExit);
 
@@ -36,9 +36,8 @@ namespace ChessCalendar
             base.OnLoad(e);
         }
 
-        private static void Login(object sender, EventArgs e)
+        private void Login(object sender, EventArgs e)
         {
-
             var userInfoForm = new Login_Form(VERSION);
             userInfoForm.ShowDialog();
 
@@ -49,8 +48,14 @@ namespace ChessCalendar
                 Log.LogVersion = VERSION;
                 Log.DebugMode = userInfoForm.DebugMode;
                 Log.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
+                Log.NotifyIcon = _trayIcon;
+                Log.ContextMenu = _trayMenu;
+                Log.OutputMode = OutputMode.Balloon;
+                Log.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString());
                 Log.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
-                                  userInfoForm.User, userInfoForm.Password, userInfoForm.PostURI);
+                                  userInfoForm.User, 
+                                  userInfoForm.Password, 
+                                  userInfoForm.PostURI);
             }
             else
             {
