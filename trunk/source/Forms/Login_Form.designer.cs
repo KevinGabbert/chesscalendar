@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace ChessCalendar
+﻿namespace ChessCalendar.Forms
 {
     partial class Login_Form
     {

@@ -83,20 +83,20 @@
     <Compile Include="ChessCalendarRSSItem.cs" />
     <Compile Include="ChessCalendarRSSItems.cs" />
     <Compile Include="ChessDotComGame.cs" />
-    <Compile Include="ShowLog.cs">
+    <Compile Include="Forms\ShowLog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ShowLog.Designer.cs">
+    <Compile Include="Forms\ShowLog.Designer.cs">
       <DependentUpon>ShowLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Options.cs">
+    <Compile Include="Forms\Options.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Options.Designer.cs">
+    <Compile Include="Forms\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputMode.cs" />
-    <Compile Include="SysTrayApp.cs">
+    <Compile Include="Forms\SysTrayApp.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Config.cs" />
@@ -104,10 +104,10 @@
     <Compile Include="GoogleCalendar.cs" />
     <Compile Include="Interfaces\IChessItem.cs" />
     <Compile Include="Log.cs" />
-    <Compile Include="Login_Form.cs">
+    <Compile Include="Forms\Login_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login_Form.designer.cs">
+    <Compile Include="Forms\Login_Form.designer.cs">
       <DependentUpon>Login_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -122,13 +122,13 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ShowLog.resx">
+    <EmbeddedResource Include="Forms\ShowLog.resx">
       <DependentUpon>ShowLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login_Form.resx">
+    <EmbeddedResource Include="Forms\Login_Form.resx">
       <DependentUpon>Login_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Options.resx">
+    <EmbeddedResource Include="Forms\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

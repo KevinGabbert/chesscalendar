@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ChessCalendar
+namespace ChessCalendar.Forms
 {
     public partial class ShowLog : Form
     {
@@ -18,6 +18,8 @@ namespace ChessCalendar
             while (true)
             {
                 Application.DoEvents();
+
+                //TODO:  why is this 101??
                 this.pbTimeTillNextUpdate.Value = this.Log.WaitProgress;
                 this.pbTimeTillNextUpdate.Show();
                 this.percentage.Text = this.pbTimeTillNextUpdate.Value.ToString();

@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Google.GData.Calendar;
 
-namespace ChessCalendar
+namespace ChessCalendar.Forms
 {
     /// <summary>
     /// This form is designed to pop up whenever login information is not known (and pre-populated)
