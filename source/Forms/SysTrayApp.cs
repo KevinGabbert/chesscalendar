@@ -2,7 +2,8 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-namespace ChessCalendar
+
+namespace ChessCalendar.Forms
 {
     public class SysTrayApp : Form
     {

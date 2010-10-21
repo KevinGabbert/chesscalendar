@@ -1,4 +1,4 @@
-﻿namespace ChessCalendar
+﻿namespace ChessCalendar.Forms
 {
     partial class ShowLog
     {
