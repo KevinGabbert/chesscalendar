@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 namespace ChessCalendar
 {
@@ -7,6 +8,7 @@ namespace ChessCalendar
     {
         public NotifyIcon  _trayIcon;
         private ContextMenu _trayMenu;
+        private Log _runningLog = new Log();
 
         public const string VERSION = "Chess Calendar v10.18.10 SysTray";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
@@ -16,7 +18,7 @@ namespace ChessCalendar
             _trayMenu = new ContextMenu();
             _trayMenu.MenuItems.Add("Start", Login);//todo: animated gif with logo phasing in and out.
             //_trayMenu.MenuItems.Add("Stop", Login); //todo: this should change Icon to icon with red circle and line through it.
-            _trayMenu.MenuItems.Add("Show Log", Options); //Todo: all console notifications will go here..
+            _trayMenu.MenuItems.Add("Show Log", ShowLog); //Todo: all console notifications will go here..
             _trayMenu.MenuItems.Add("Options", Options); //Todo: all console notifications will go here..
             _trayMenu.MenuItems.Add("Exit", OnExit);
 
@@ -45,14 +47,15 @@ namespace ChessCalendar
 
             if (userInfoForm.ValidatedForm)
             {
-                Log.LogVersion = VERSION;
-                Log.DebugMode = userInfoForm.DebugMode;
-                Log.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
-                Log.NotifyIcon = _trayIcon;
-                Log.ContextMenu = _trayMenu;
-                Log.OutputMode = OutputMode.Balloon;
-                Log.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString());
-                Log.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
+                _runningLog = new Log();
+                _runningLog.LogVersion = VERSION;
+                _runningLog.DebugMode = userInfoForm.DebugMode;
+                _runningLog.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
+                _runningLog.NotifyIcon = _trayIcon;
+                _runningLog.ContextMenu = _trayMenu;
+                _runningLog.OutputMode = OutputMode.Balloon;
+                _runningLog.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString());
+                _runningLog.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
                                   userInfoForm.User, 
                                   userInfoForm.Password, 
                                   userInfoForm.PostURI);
@@ -62,6 +65,24 @@ namespace ChessCalendar
                 MessageBox.Show("Some of the Login information wasn't right, try again.", "ummmmmmm...");
             }
         }
+        private void ShowLog(object sender, EventArgs e)
+        {
+            Thread logForm = new Thread(threadedForm);
+            logForm.SetApartmentState(ApartmentState.STA);
+            logForm.Start();
+        }
+
+        private void threadedForm(object arg)
+        {
+            var logViewer = new ShowLog();
+            logViewer.Log = _runningLog;
+            logViewer.ShowDialog();
+
+            //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
+
+            //Application.Run(logViewer);
+        }
+
         private static void Options(object sender, EventArgs e)
         {
             var optionsForm = new Options();
@@ -71,7 +92,6 @@ namespace ChessCalendar
         {
             Application.Exit();
         }
- 
         protected override void Dispose(bool isDisposing)
         {
             if (isDisposing)

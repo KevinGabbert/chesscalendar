@@ -42,11 +42,11 @@ namespace ChessCalendar
                 (new GDataGAuthRequestFactory("", "")).CreateRequest(GDataRequestType.Insert, _calendarToPost);
                 _service.Insert(_calendarToPost, entry);
 
-                Log.Output(string.Empty, "Event Successfully Added", OutputMode.Form);
+                (new Log()).Output(string.Empty, "Event Successfully Added", OutputMode.Form);
             }
             catch (Exception ex)
             {
-                Log.Output(string.Empty, ex.Message);
+                (new Log()).Output(string.Empty, ex.Message);
             }
         }
 
