@@ -83,6 +83,12 @@
     <Compile Include="ChessCalendarRSSItem.cs" />
     <Compile Include="ChessCalendarRSSItems.cs" />
     <Compile Include="ChessDotComGame.cs" />
+    <Compile Include="ShowLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowLog.Designer.cs">
+      <DependentUpon>ShowLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Options.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +122,9 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ShowLog.resx">
+      <DependentUpon>ShowLog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login_Form.resx">
       <DependentUpon>Login_Form.cs</DependentUpon>
     </EmbeddedResource>

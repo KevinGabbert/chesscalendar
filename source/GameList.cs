@@ -25,7 +25,7 @@ namespace ChessCalendar
                 {
                     if(this.DebugMode)
                     {
-                        Log.Output(string.Empty, "Removing Game: " + currentGame.Title, OutputMode.Form);
+                        (new Log()).Output(string.Empty, "Removing Game: " + currentGame.Title, OutputMode.Form);
                     }
 
                     listToRemoveFrom.Remove(currentGame);
