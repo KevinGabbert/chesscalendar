@@ -33,10 +33,8 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
-            this.percentage = new System.Windows.Forms.TextBox();
             this.txtNextCheck = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -51,7 +49,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.percentage);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -77,14 +74,6 @@
             this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(330, 15);
             this.pbTimeTillNextUpdate.TabIndex = 1;
             // 
-            // percentage
-            // 
-            this.percentage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.percentage.Location = new System.Drawing.Point(146, 237);
-            this.percentage.Name = "percentage";
-            this.percentage.Size = new System.Drawing.Size(35, 20);
-            this.percentage.TabIndex = 2;
-            // 
             // txtNextCheck
             // 
             this.txtNextCheck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -92,6 +81,7 @@
             this.txtNextCheck.Name = "txtNextCheck";
             this.txtNextCheck.Size = new System.Drawing.Size(330, 20);
             this.txtNextCheck.TabIndex = 3;
+            this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ShowLog
             // 
@@ -109,8 +99,6 @@
             this.Text = "Log";
             this.Shown += new System.EventHandler(this.ShowLog_Shown);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,7 +110,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ProgressBar pbTimeTillNextUpdate;
-        private System.Windows.Forms.TextBox percentage;
         private System.Windows.Forms.TextBox txtNextCheck;
     }
 }

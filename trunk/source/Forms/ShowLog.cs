@@ -20,10 +20,8 @@ namespace ChessCalendar.Forms
                 this.txtNextCheck.Text = "Next check will be at: " + this.Log.NextCheck.ToShortTimeString();
                 Application.DoEvents();
 
-                //TODO:  why is this 101??
                 this.pbTimeTillNextUpdate.Value = this.Log.WaitProgress;
                 this.pbTimeTillNextUpdate.Show();
-                this.percentage.Text = this.pbTimeTillNextUpdate.Value.ToString();
             }
         }
 
