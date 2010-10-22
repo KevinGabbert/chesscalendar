@@ -8,7 +8,7 @@ namespace ChessCalendar.Forms
         {
             InitializeComponent();
 
-            this.pbTimeTillNextUpdate.Maximum = 200;
+            this.pbTimeTillNextUpdate.Maximum = 100;
             this.pbTimeTillNextUpdate.Minimum = 0;
             this.pbTimeTillNextUpdate.Increment(1);
         }
