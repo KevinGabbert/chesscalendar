@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace ChessCalendar.Forms
 {
@@ -22,7 +23,18 @@ namespace ChessCalendar.Forms
 
                 this.pbTimeTillNextUpdate.Value = this.Log.WaitProgress;
                 this.pbTimeTillNextUpdate.Show();
+
+                if(DateTime.Now > this.Log.NextCheck)
+                {
+                    this.UpdateText();
+                }
             }
+        }
+
+        private void UpdateText()
+        {
+            this.txtLog.Text += "log entries from this.Log";
+            this.Log.CheckAgain = true;
         }
 
         public Log Log { get; set; }

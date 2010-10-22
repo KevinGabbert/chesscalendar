@@ -21,6 +21,7 @@ namespace ChessCalendar
             public OutputMode OutputMode { get; set; }
             public int WaitProgress { get; set; }
             public DateTime NextCheck { get; set; }
+            public bool CheckAgain { get; set; }
 
         #endregion
 
@@ -42,41 +43,44 @@ namespace ChessCalendar
 
             while (true)
             {
-                ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
-
-                try
+                if(this.CheckAgain)
                 {
-                    newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+                    ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
 
-                    this.AddOrUpdate_Games(this.ToDo, newRssItems);
-
-                    //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
-                    //On remove, delete the all day reminder.
-
-                    if (this.LogGames)
+                    try
                     {
-                        //This should ONLY show up on the form.
-                        this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
-                        foreach (ChessDotComGame current in this.ToDo)
+                        newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+
+                        this.AddOrUpdate_Games(this.ToDo, newRssItems);
+
+                        //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                        //On remove, delete the all day reminder.
+
+                        if (this.LogGames)
                         {
-                            this.Log_Game(current, userName, password);
+                            //This should ONLY show up on the form.
+                            this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
+                            foreach (ChessDotComGame current in this.ToDo)
+                            {
+                                this.Log_Game(current, userName, password);
+                            }
                         }
+
+                        this.ToDo.Clear();
+                        //Log.Output(string.Empty, "----------" + Environment.NewLine, OutputMode.Form);
+                    }
+                    catch (Exception ex)
+                    {
+                        //if 504 Invalid gateway error. Chess.com is down
+                        this.Output(string.Empty, "error. " + ex.Message);
+
+                        GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
+                                                                    this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                     }
 
-                    this.ToDo.Clear();
-                    //Log.Output(string.Empty, "----------" + Environment.NewLine, OutputMode.Form);
+                    //Log.Output(string.Empty, "Sleeping for 5 minutes", OutputMode.Form);
+                    Wait(5);
                 }
-                catch (Exception ex)
-                {
-                    //if 504 Invalid gateway error. Chess.com is down
-                    this.Output(string.Empty, "error. " + ex.Message);
-
-                    GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
-                                                                this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
-                }
-
-                //Log.Output(string.Empty, "Sleeping for 5 minutes", OutputMode.Form);
-                Wait(5);
             }
         }
 
@@ -97,6 +101,8 @@ namespace ChessCalendar
                 this.WaitProgress = Convert.ToInt32(100 - ((difference.TotalSeconds / waitTime.TotalSeconds) * 100));
                 current = DateTime.Now;
             }
+
+            this.CheckAgain = false;
         }
 
         private void Log_Game(ChessDotComGame gameToLog, string userName, string password)
