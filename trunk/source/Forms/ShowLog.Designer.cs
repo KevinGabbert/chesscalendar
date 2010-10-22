@@ -46,16 +46,16 @@
             this.tabControl1.Location = new System.Drawing.Point(-2, 1);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(332, 299);
+            this.tabControl1.Size = new System.Drawing.Size(332, 289);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.txtNextCheck);
+            this.tabPage1.Controls.Add(this.percentage);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(324, 273);
+            this.tabPage1.Size = new System.Drawing.Size(324, 263);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Name 1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -72,15 +72,15 @@
             // 
             // pbTimeTillNextUpdate
             // 
-            this.pbTimeTillNextUpdate.Location = new System.Drawing.Point(-2, 303);
+            this.pbTimeTillNextUpdate.Location = new System.Drawing.Point(0, 315);
             this.pbTimeTillNextUpdate.Name = "pbTimeTillNextUpdate";
-            this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(332, 23);
+            this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(330, 15);
             this.pbTimeTillNextUpdate.TabIndex = 1;
             // 
             // percentage
             // 
             this.percentage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.percentage.Location = new System.Drawing.Point(145, 306);
+            this.percentage.Location = new System.Drawing.Point(146, 237);
             this.percentage.Name = "percentage";
             this.percentage.Size = new System.Drawing.Size(35, 20);
             this.percentage.TabIndex = 2;
@@ -88,18 +88,18 @@
             // txtNextCheck
             // 
             this.txtNextCheck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtNextCheck.Location = new System.Drawing.Point(30, 247);
+            this.txtNextCheck.Location = new System.Drawing.Point(0, 292);
             this.txtNextCheck.Name = "txtNextCheck";
-            this.txtNextCheck.Size = new System.Drawing.Size(258, 20);
+            this.txtNextCheck.Size = new System.Drawing.Size(330, 20);
             this.txtNextCheck.TabIndex = 3;
             // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(330, 328);
-            this.Controls.Add(this.percentage);
+            this.ClientSize = new System.Drawing.Size(330, 331);
             this.Controls.Add(this.pbTimeTillNextUpdate);
+            this.Controls.Add(this.txtNextCheck);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
