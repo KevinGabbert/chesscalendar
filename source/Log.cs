@@ -10,16 +10,17 @@ namespace ChessCalendar
         #region Properties
 
             public const string DETECTED = " detected ";
-            public  Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full"); //default string. probably not even needed, but its helpful to know the format.
-            public  bool LogGames { get; set; }
-            public  string LogVersion { get; set; }
-            public  bool DebugMode { get; set; }
-            public  bool Beep_On_New_Move { get; set; }
-            public  CalendarLogManager ToDo { get; set; }
-            public  System.Windows.Forms.NotifyIcon NotifyIcon { get; set; }
-            public  System.Windows.Forms.ContextMenu ContextMenu { get; set; }
-            public  OutputMode OutputMode { get; set; }
-            public  int WaitProgress { get; set; }
+            public Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full"); //default string. probably not even needed, but its helpful to know the format.
+            public bool LogGames { get; set; }
+            public string LogVersion { get; set; }
+            public bool DebugMode { get; set; }
+            public bool Beep_On_New_Move { get; set; }
+            public CalendarLogManager ToDo { get; set; }
+            public System.Windows.Forms.NotifyIcon NotifyIcon { get; set; }
+            public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
+            public OutputMode OutputMode { get; set; }
+            public int WaitProgress { get; set; }
+            public DateTime NextCheck { get; set; }
 
         #endregion
 
@@ -85,12 +86,16 @@ namespace ChessCalendar
             TimeSpan waitTime = new TimeSpan(0, 0, waitMinutes, 0);
 
             DateTime finish = start + waitTime;
-            while (start < finish)
+            this.NextCheck = finish;
+
+            DateTime current = DateTime.Now;
+            while (current < finish)
             {
                 Application.DoEvents();
 
                 var difference = (finish.Subtract(DateTime.Now));
                 this.WaitProgress = Convert.ToInt32(100 - ((difference.TotalSeconds / waitTime.TotalSeconds) * 100));
+                current = DateTime.Now;
             }
         }
 

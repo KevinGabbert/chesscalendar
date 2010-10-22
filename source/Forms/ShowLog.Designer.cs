@@ -34,7 +34,9 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
             this.percentage = new System.Windows.Forms.TextBox();
+            this.txtNextCheck = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -49,6 +51,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.txtNextCheck);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -82,6 +85,14 @@
             this.percentage.Size = new System.Drawing.Size(35, 20);
             this.percentage.TabIndex = 2;
             // 
+            // txtNextCheck
+            // 
+            this.txtNextCheck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtNextCheck.Location = new System.Drawing.Point(30, 247);
+            this.txtNextCheck.Name = "txtNextCheck";
+            this.txtNextCheck.Size = new System.Drawing.Size(258, 20);
+            this.txtNextCheck.TabIndex = 3;
+            // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -98,6 +109,8 @@
             this.Text = "Log";
             this.Shown += new System.EventHandler(this.ShowLog_Shown);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -110,5 +123,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ProgressBar pbTimeTillNextUpdate;
         private System.Windows.Forms.TextBox percentage;
+        private System.Windows.Forms.TextBox txtNextCheck;
     }
 }

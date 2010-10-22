@@ -8,7 +8,7 @@ namespace ChessCalendar.Forms
         {
             InitializeComponent();
 
-            this.pbTimeTillNextUpdate.Maximum = 100;
+            this.pbTimeTillNextUpdate.Maximum = 200;
             this.pbTimeTillNextUpdate.Minimum = 0;
             this.pbTimeTillNextUpdate.Increment(1);
         }
@@ -17,6 +17,7 @@ namespace ChessCalendar.Forms
         {
             while (true)
             {
+                this.txtNextCheck.Text = "Next check will be at: " + this.Log.NextCheck.ToShortTimeString();
                 Application.DoEvents();
 
                 //TODO:  why is this 101??
