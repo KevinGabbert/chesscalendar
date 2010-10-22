@@ -34,7 +34,9 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
             this.txtNextCheck = new System.Windows.Forms.TextBox();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -49,6 +51,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.txtLog);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -83,6 +86,15 @@
             this.txtNextCheck.TabIndex = 3;
             this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // txtLog
+            // 
+            this.txtLog.Location = new System.Drawing.Point(0, 0);
+            this.txtLog.MaxLength = 64000;
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.Size = new System.Drawing.Size(323, 262);
+            this.txtLog.TabIndex = 0;
+            // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,6 +111,8 @@
             this.Text = "Log";
             this.Shown += new System.EventHandler(this.ShowLog_Shown);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -111,5 +125,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ProgressBar pbTimeTillNextUpdate;
         private System.Windows.Forms.TextBox txtNextCheck;
+        private System.Windows.Forms.TextBox txtLog;
     }
 }
