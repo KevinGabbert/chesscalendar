@@ -1,0 +1,39 @@
+<rss version="2.0"> 
+<channel> 
+<title>Chess.com - Play. Learn. Share.</title> 
+<description>Online chess community where you can play chess, learn strategies and tactics, read chess news, see book reviews, find rules &amp; tips, get free downloads, and more!</description> 
+<link>http://www.chess.com/</link> 
+<copyright>2007 Chess.com</copyright> 
+    <item> 
+<title>Let&#39;s Play! - ChessKing35</title> 
+<description>Rating: 1223&#60;br /&#62;Time Left: 6 days 22 hours&#60;br /&#62;Move #: 10</description> 
+<link>http://www.chess.com/echess/game.html?id=41614865</link> 
+<pubDate>Fri, 15 Oct 2010 22:34:30 -0700</pubDate> 
+<guid>http://www.chess.com/echess/game.html?id=41614865</guid> 
+</item> 
+ 
+<item> 
+<title>Let&#39;s Play! - scrubadubdub44</title> 
+<description>Rating: 1297&#60;br /&#62;Time Left: 6 days 23 hours&#60;br /&#62;Move #: 14</description> 
+<link>http://www.chess.com/echess/game.html?id=41597400</link> 
+<pubDate>Fri, 15 Oct 2010 23:03:31 -0700</pubDate> 
+<guid>http://www.chess.com/echess/game.html?id=41597400</guid> 
+</item> 
+ 
+<item> 
+<title>Let&#39;s Play! - ChessKing35</title> 
+<description>Rating: 1223&#60;br /&#62;Time Left: 6 days 23 hours&#60;br /&#62;Move #: 8</description> 
+<link>http://www.chess.com/echess/game.html?id=41614867</link> 
+<pubDate>Fri, 15 Oct 2010 23:05:31 -0700</pubDate> 
+<guid>http://www.chess.com/echess/game.html?id=41614867</guid> 
+</item> 
+ 
+<item> 
+<title>Let&#39;s Play! - vpatil123</title> 
+<description>Rating: 1368&#60;br /&#62;Time Left: 13 days 23 hours&#60;br /&#62;Move #: 10</description> 
+<link>http://www.chess.com/echess/game.html?id=41614853</link> 
+<pubDate>Fri, 15 Oct 2010 23:03:01 -0700</pubDate> 
+<guid>http://www.chess.com/echess/game.html?id=41614853</guid> 
+</item> 
+ 
+</channel></rss>
