@@ -9,7 +9,21 @@ namespace ChessCalendar
 {
     public class GameList : List<IChessItem>
     {
-        public bool DebugMode { get; set; }
+        #region Properties
+
+            public Log Log { get; set; }
+            public bool DebugMode { get; set; }
+
+        #endregion
+
+        public GameList()
+        {
+
+        }
+        public GameList(Log logToManage)
+        {
+            this.Log = logToManage;
+        }
 
         public void Remove_Item_With_Guid(string link)
         {
@@ -25,7 +39,7 @@ namespace ChessCalendar
                 {
                     if(this.DebugMode)
                     {
-                        (new Log()).Output(string.Empty, "Removing Game: " + currentGame.Title, OutputMode.Form);
+                        this.Log.Output(string.Empty, "Removing Game: " + currentGame.Title, OutputMode.Form);
                     }
 
                     listToRemoveFrom.Remove(currentGame);

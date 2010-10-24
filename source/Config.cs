@@ -8,7 +8,7 @@ namespace ChessCalendar
     {
         public static IEnumerable<XElement> GetWatchList(string filePath)
         {
-            return from p in XElement.Load(filePath).Elements("Process")
+            return from p in XElement.Load(filePath).Elements("games")
                    select p;
         }
     }

@@ -6,7 +6,7 @@ using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    public class Log
+    public class Log: OutputClass
     {
         public Log()
         {
@@ -22,19 +22,18 @@ namespace ChessCalendar
             public bool DebugMode { get; set; }
             public bool Beep_On_New_Move { get; set; }
             public CalendarLogManager ToDo { get; set; }
-            public System.Windows.Forms.NotifyIcon NotifyIcon { get; set; }
+            
             public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
-            public OutputMode OutputMode { get; set; }
+            
             public int WaitProgress { get; set; }
             public DateTime NextCheck { get; set; }
             public bool NewMessage { get; set; }
-            public Queue<string> Messages { get; set; }
 
         #endregion
 
         public void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
-            this.ToDo = new CalendarLogManager();
+            this.ToDo = new CalendarLogManager(this);
             this.ToDo.DebugMode = this.DebugMode;
             this.ToDo.Beep_On_New_Move = this.Beep_On_New_Move;
 
@@ -75,7 +74,7 @@ namespace ChessCalendar
                         }
 
                         this.ToDo.Clear();
-                        //Log.Output(string.Empty, "----------" + Environment.NewLine, OutputMode.Form);
+                        this.Output(string.Empty, "----------" + Environment.NewLine, OutputMode.Form);
                     }
                     catch (Exception ex)
                     {
@@ -159,31 +158,6 @@ namespace ChessCalendar
                     this.LogGames = false;
                 }
             }
-        }
-
-        public void Output(string title, string outputMessage)
-        {
-            switch (this.OutputMode)
-            {
-                case OutputMode.Balloon:
-                    this.NotifyIcon.BalloonTipText = outputMessage;
-                    this.NotifyIcon.ShowBalloonTip(2000);
-
-                    //Now Write message to form as well.
-                    break;
-
-                case OutputMode.Form:
-                    this.Messages.Enqueue(outputMessage);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        public void Output(string title, string outputMessage, OutputMode outputMode)
-        {
-            this.OutputMode = outputMode;
-            this.Output(title, outputMessage);
         }
     }
 }
