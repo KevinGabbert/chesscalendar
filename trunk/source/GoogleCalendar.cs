@@ -6,10 +6,22 @@ using Google.GData.Extensions;
 
 namespace ChessCalendar
 {
+    //TODO: this class needs to be instantiated
     public class GoogleCalendar
     {
+        //#region Properties
+
+        //public OutputClass Output { get; set; }
+        //#endregion
+
+
         public static Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full");
         private static readonly Google.GData.Calendar.CalendarService _service = new CalendarService("ChessMoveLogService");
+
+        //public GoogleCalendar(OutputClass output)
+        //{
+            
+        //}
 
         public static CalendarFeed RetrieveCalendars(string userName, string password)
         {

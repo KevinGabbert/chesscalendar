@@ -39,7 +39,7 @@ namespace ChessCalendar.Forms
                 {
                     if (this.Log.Messages.Count > 0)
                     {
-                        this.txtLog.Text += this.Log.Messages.Dequeue() + Environment.NewLine;
+                        this.txtLog.Text = this.Log.Messages.Dequeue() + Environment.NewLine + this.txtLog.Text;
                         this.Log.NewMessage = true;
                     }
                 }
