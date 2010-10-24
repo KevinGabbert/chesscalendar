@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using ChessCalendar.Enums;
 using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
     public class Log
     {
+        public Log()
+        {
+            this.Messages = new Queue<string>();
+        }
+
         #region Properties
 
             public const string DETECTED = " detected ";
@@ -21,7 +27,8 @@ namespace ChessCalendar
             public OutputMode OutputMode { get; set; }
             public int WaitProgress { get; set; }
             public DateTime NextCheck { get; set; }
-            public bool CheckAgain { get; set; }
+            public bool NewMessage { get; set; }
+            public Queue<string> Messages { get; set; }
 
         #endregion
 
@@ -43,10 +50,10 @@ namespace ChessCalendar
 
             while (true)
             {
-                if(this.CheckAgain)
-                {
+                //if(this.CheckAgain)
+                //{
                     ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
-
+                    
                     try
                     {
                         newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
@@ -58,6 +65,7 @@ namespace ChessCalendar
 
                         if (this.LogGames)
                         {
+                            this.NewMessage = true;
                             //This should ONLY show up on the form.
                             this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
                             foreach (ChessDotComGame current in this.ToDo)
@@ -78,9 +86,9 @@ namespace ChessCalendar
                                                                     this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                     }
 
-                    //Log.Output(string.Empty, "Sleeping for 5 minutes", OutputMode.Form);
+                    this.Output(string.Empty, "Sleeping for 5 minutes");
                     Wait(5);
-                }
+                //}
             }
         }
 
@@ -102,14 +110,14 @@ namespace ChessCalendar
                 current = DateTime.Now;
             }
 
-            this.CheckAgain = false;
+            this.NewMessage = false;
         }
 
         private void Log_Game(ChessDotComGame gameToLog, string userName, string password)
         {
             if (this.DebugMode)
             {
-                this.Output(string.Empty, "Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString, OutputMode.Form);
+                this.Output(string.Empty, "Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
             }
 
             GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
@@ -136,8 +144,7 @@ namespace ChessCalendar
                 if (gamelist.Count > 0)
                 {
                     this.LogGames = true;
-                    this.Output(string.Empty, Environment.NewLine, OutputMode.Form);
-                    this.Output(string.Empty, "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
+                    this.Output(string.Empty, Environment.NewLine + "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
                     
                     //if form mode
                     this.Output(string.Empty, Environment.NewLine, OutputMode.Form);
@@ -156,7 +163,7 @@ namespace ChessCalendar
 
         public void Output(string title, string outputMessage)
         {
-            switch (OutputMode)
+            switch (this.OutputMode)
             {
                 case OutputMode.Balloon:
                     this.NotifyIcon.BalloonTipText = outputMessage;
@@ -166,7 +173,7 @@ namespace ChessCalendar
                     break;
 
                 case OutputMode.Form:
-                    //Write message to form.
+                    this.Messages.Enqueue(outputMessage);
                     break;
 
                 default:
@@ -175,10 +182,8 @@ namespace ChessCalendar
         }
         public void Output(string title, string outputMessage, OutputMode outputMode)
         {
-            if(outputMode == OutputMode.Form)
-            {
-                //Write message to form.
-            }
+            this.OutputMode = outputMode;
+            this.Output(title, outputMessage);
         }
     }
 }

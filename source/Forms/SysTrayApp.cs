@@ -2,16 +2,17 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using ChessCalendar.Enums;
 
 namespace ChessCalendar.Forms
 {
     public class SysTrayApp : Form
     {
         public NotifyIcon  _trayIcon;
-        private ContextMenu _trayMenu;
+        private readonly ContextMenu _trayMenu;
         private Log _runningLog = new Log();
 
-        public const string VERSION = "Chess Calendar v10.18.10 SysTray";
+        public const string VERSION = "Chess Calendar v10.23.10";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public SysTrayApp()
@@ -48,6 +49,11 @@ namespace ChessCalendar.Forms
 
             if (userInfoForm.ValidatedForm)
             {
+                if(userInfoForm.AutoOpenLog)
+                {
+                    this.ShowLog(sender, e);
+                }
+
                 _runningLog = new Log();
                 _runningLog.LogVersion = VERSION;
                 _runningLog.DebugMode = userInfoForm.DebugMode;

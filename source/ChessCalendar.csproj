@@ -95,7 +95,7 @@
     <Compile Include="Forms\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="OutputMode.cs" />
+    <Compile Include="Enums\OutputMode.cs" />
     <Compile Include="Forms\SysTrayApp.cs">
       <SubType>Form</SubType>
     </Compile>

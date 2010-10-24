@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 using Google.GData.Client;
 using RssToolkit.Rss;
