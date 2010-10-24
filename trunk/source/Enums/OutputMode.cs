@@ -1,4 +1,4 @@
-﻿namespace ChessCalendar
+﻿namespace ChessCalendar.Enums
 {
     public enum OutputMode
     {

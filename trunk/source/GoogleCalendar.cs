@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ChessCalendar.Enums;
 using Google.GData.Calendar;
 using Google.GData.Client;
 using Google.GData.Extensions;

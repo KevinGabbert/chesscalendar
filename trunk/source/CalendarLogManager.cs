@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ChessCalendar.Enums;
 using RssToolkit.Rss;
 
 namespace ChessCalendar

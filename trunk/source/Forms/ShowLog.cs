@@ -24,7 +24,7 @@ namespace ChessCalendar.Forms
                 this.pbTimeTillNextUpdate.Value = this.Log.WaitProgress;
                 this.pbTimeTillNextUpdate.Show();
 
-                if(DateTime.Now > this.Log.NextCheck)
+                if((DateTime.Now > this.Log.NextCheck) || this.Log.NewMessage)
                 {
                     this.UpdateText();
                 }
@@ -33,8 +33,21 @@ namespace ChessCalendar.Forms
 
         private void UpdateText()
         {
-            this.txtLog.Text += "log entries from this.Log";
-            this.Log.CheckAgain = true;
+            if (this.Log != null)
+            {
+                if (this.Log.Messages != null)
+                {
+                    if (this.Log.Messages.Count > 0)
+                    {
+                        this.txtLog.Text += this.Log.Messages.Dequeue() + Environment.NewLine;
+                        this.Log.NewMessage = true;
+                    }
+                }
+                else
+                {
+                    this.txtLog.Text += "Log is Null" + Environment.NewLine;
+                }
+            }
         }
 
         public Log Log { get; set; }
