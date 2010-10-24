@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Google.GData.Calendar;
 
-namespace ChessCalendar.Forms
+namespace ChessCalendar
 {
     /// <summary>
     /// This form is designed to pop up whenever login information is not known (and pre-populated)
@@ -12,14 +12,13 @@ namespace ChessCalendar.Forms
     {
         #region Properties
 
-            public string ChessDotComName { get; set; }
-            public string User { get; set; }
-            public string Password { get; set; }
-            public System.Uri PostURI { get; set; }
-            public bool DebugMode { get; set; }
-            public bool Beep_On_New_Move { get; set; }
-            public bool ValidatedForm { get; set; }
-            public bool AutoOpenLog { get; set; }
+        public string ChessDotComName { get; set; }
+        public string User { get; set; }
+        public string Password { get; set; }
+        public System.Uri PostURI { get; set; }
+        public bool DebugMode { get; set; }
+        public bool Beep_On_New_Move { get; set; }
+        public bool ValidatedForm { get; set; }
         #endregion
 
         public Login_Form(string version)
@@ -86,7 +85,6 @@ namespace ChessCalendar.Forms
             this.ChessDotComName = txtChessDotComName.Text;
             this.DebugMode = chkDebugMode.Checked;
             this.Beep_On_New_Move = chkBeep.Checked;
-            this.AutoOpenLog = this.chkLogFormOpen.Checked;
             this.SetPostURI();
 
             this.Hide();

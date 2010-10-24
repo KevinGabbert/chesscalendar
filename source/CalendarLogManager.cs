@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using ChessCalendar.Enums;
 using RssToolkit.Rss;
 
 namespace ChessCalendar
@@ -8,19 +7,21 @@ namespace ChessCalendar
     public class CalendarLogManager : GameList
     {
         #region Properties
-            public GameList IgnoreList { get; set; }
+
+            private GameList _ignoreList = new GameList();
+            public GameList IgnoreList
+            {
+                get { return _ignoreList; }
+                set { _ignoreList = value; }
+            }
+
             public bool Beep_On_New_Move { get; set; }
+
         #endregion
 
-        public CalendarLogManager(Log logToManage)
+        public new void Add(ChessDotComGame process)
         {
-            this.Log = logToManage;
-            this.IgnoreList = new GameList(logToManage);
-        }
-
-        public new void Add(ChessDotComGame game)
-        {
-            base.Add(game);  
+            base.Add(process);  
         }
         public void Ignore(RssItem rssItem)
         {
@@ -46,7 +47,6 @@ namespace ChessCalendar
             }
             catch (Exception ex)
             {
-                this.Log.Output(string.Empty, ex.Message, OutputMode.Form);
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -67,7 +67,7 @@ namespace ChessCalendar
             }
             catch (Exception ex)
             {
-                this.Log.Output(string.Empty, ex.Message, OutputMode.Form);
+                Console.WriteLine(ex.Message);
                 throw;
             }
         }
@@ -81,16 +81,17 @@ namespace ChessCalendar
                 //Its not in here, and we are not ignoring it..
                 if(this.Beep_On_New_Move){Console.Beep();}
 
-                this.Log.Output(string.Empty, "** <NEW> Your Move!: " + rssItem.Title + " *** " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+                Console.WriteLine("** <NEW> Your Move!: " + rssItem.Title + " *** " + DateTime.Now.ToShortTimeString());
                 this.Remove_Any_Older_Versions_Of(rssItem); //Do any necessary cleaning out of previous published items
                 this.Add(this, rssItem);
             }
             else
             {
-                this.Log.Output(string.Empty, "** Your Move! " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+                Console.WriteLine("** Your Move! " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString());
                 this.Remove_Item_With_Guid(rssItem.Link);
             }
         }
+
         private bool IgnoreListHasIt(RssItem rssItem)
         {
             bool ignorePubMatch = this.IgnoreList.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
@@ -98,6 +99,7 @@ namespace ChessCalendar
 
             return ignorePubMatch && ignoreGuidMatch;
         }
+
         private void IgnoreIfWeHaveIt(ChessCalendarRSSItem rssItem)
         {
             if (!this.IgnoreListHasIt(rssItem))
@@ -108,6 +110,7 @@ namespace ChessCalendar
                 }
             }
         }
+
         private void Remove_Any_Older_Versions_Of(RssItem rssItem)
         {
            //Well, technically, this should be remove any OTHER versions of, but the point is to get rid of

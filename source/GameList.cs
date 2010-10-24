@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 using Google.GData.Client;
 using RssToolkit.Rss;
@@ -9,21 +9,7 @@ namespace ChessCalendar
 {
     public class GameList : List<IChessItem>
     {
-        #region Properties
-
-            public Log Log { get; set; }
-            public bool DebugMode { get; set; }
-
-        #endregion
-
-        public GameList()
-        {
-
-        }
-        public GameList(Log logToManage)
-        {
-            this.Log = logToManage;
-        }
+        public bool DebugMode { get; set; }
 
         public void Remove_Item_With_Guid(string link)
         {
@@ -39,7 +25,7 @@ namespace ChessCalendar
                 {
                     if(this.DebugMode)
                     {
-                        this.Log.Output(string.Empty, "Removing Game: " + currentGame.Title, OutputMode.Form);
+                        Console.WriteLine("Removing Game: " + currentGame.Title); ;
                     }
 
                     listToRemoveFrom.Remove(currentGame);

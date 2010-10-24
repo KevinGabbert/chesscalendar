@@ -1,4 +1,6 @@
-﻿namespace ChessCalendar.Forms
+﻿using System.Drawing;
+
+namespace ChessCalendar
 {
     partial class Login_Form
     {
@@ -44,7 +46,6 @@
             this.chkDebugMode = new System.Windows.Forms.CheckBox();
             this.chkBeep = new System.Windows.Forms.CheckBox();
             this.lblVersion = new System.Windows.Forms.Label();
-            this.chkLogFormOpen = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).BeginInit();
             this.SuspendLayout();
             // 
@@ -137,7 +138,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(99, 379);
+            this.btnStart.Location = new System.Drawing.Point(103, 356);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 8;
@@ -166,7 +167,7 @@
             // 
             this.chkDebugMode.AutoSize = true;
             this.chkDebugMode.Enabled = false;
-            this.chkDebugMode.Location = new System.Drawing.Point(11, 379);
+            this.chkDebugMode.Location = new System.Drawing.Point(12, 356);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(88, 17);
             this.chkDebugMode.TabIndex = 7;
@@ -192,19 +193,6 @@
             this.lblVersion.TabIndex = 15;
             this.lblVersion.Text = "Version";
             // 
-            // chkLogFormOpen
-            // 
-            this.chkLogFormOpen.AutoSize = true;
-            this.chkLogFormOpen.Checked = true;
-            this.chkLogFormOpen.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkLogFormOpen.Enabled = false;
-            this.chkLogFormOpen.Location = new System.Drawing.Point(11, 356);
-            this.chkLogFormOpen.Name = "chkLogFormOpen";
-            this.chkLogFormOpen.Size = new System.Drawing.Size(144, 17);
-            this.chkLogFormOpen.TabIndex = 16;
-            this.chkLogFormOpen.Text = "Start with Log Form open";
-            this.chkLogFormOpen.UseVisualStyleBackColor = true;
-            // 
             // Login_Form
             // 
             this.AcceptButton = this.btnOK;
@@ -212,7 +200,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SlateGray;
             this.ClientSize = new System.Drawing.Size(274, 434);
-            this.Controls.Add(this.chkLogFormOpen);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.chkBeep);
             this.Controls.Add(this.chkDebugMode);
@@ -254,6 +241,5 @@
         private System.Windows.Forms.CheckBox chkDebugMode;
         private System.Windows.Forms.CheckBox chkBeep;
         private System.Windows.Forms.Label lblVersion;
-        private System.Windows.Forms.CheckBox chkLogFormOpen;
     }
 }
