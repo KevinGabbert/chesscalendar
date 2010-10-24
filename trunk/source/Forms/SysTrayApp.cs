@@ -20,7 +20,7 @@ namespace ChessCalendar.Forms
             _trayMenu = new ContextMenu();
             _trayMenu.MenuItems.Add("Start", Login);//todo: animated gif with logo phasing in and out.
             //_trayMenu.MenuItems.Add("Stop", Login); //todo: this should change Icon to icon with red circle and line through it.
-            _trayMenu.MenuItems.Add("Show Log", ShowLog); //Todo: all console notifications will go here..
+            //_trayMenu.MenuItems.Add("Show Log", ShowLog); //Todo: all console notifications will go here..
             _trayMenu.MenuItems.Add("Options", Options); //Todo: all console notifications will go here..
             _trayMenu.MenuItems.Add("Exit", OnExit);
 
