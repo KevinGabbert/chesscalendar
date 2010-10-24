@@ -12,7 +12,7 @@ namespace ChessCalendar.Forms
         private readonly ContextMenu _trayMenu;
         private Log _runningLog = new Log();
 
-        public const string VERSION = "Chess Calendar v10.23.10";
+        public const string VERSION = "Chess Calendar v10.24.10";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public SysTrayApp()
@@ -60,8 +60,8 @@ namespace ChessCalendar.Forms
                 _runningLog.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
                 _runningLog.NotifyIcon = _trayIcon;
                 _runningLog.ContextMenu = _trayMenu;
-                _runningLog.OutputMode = OutputMode.Balloon;
-                _runningLog.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString());
+                _runningLog.OutputMode = OutputMode.Form;
+                _runningLog.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
                 _runningLog.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
                                   userInfoForm.User, 
                                   userInfoForm.Password, 

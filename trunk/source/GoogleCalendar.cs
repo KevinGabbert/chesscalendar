@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Linq;
-using ChessCalendar.Enums;
 using Google.GData.Calendar;
 using Google.GData.Client;
 using Google.GData.Extensions;
 
 namespace ChessCalendar
 {
-    class GoogleCalendar
+    public class GoogleCalendar
     {
         public static Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full");
-        private static readonly Google.GData.Calendar.CalendarService _service = new CalendarService("processLogService");
+        private static readonly Google.GData.Calendar.CalendarService _service = new CalendarService("ChessMoveLogService");
 
         public static CalendarFeed RetrieveCalendars(string userName, string password)
         {
             // Create a CalenderService and authenticate
-            var myService = new CalendarService("process-calendar");
-            myService.setUserCredentials(userName, password);
+            _service.setUserCredentials(userName, password);
 
             var query = new CalendarQuery();
             query.Uri = new Uri("http://www.google.com/calendar/feeds/default/owncalendars/full");
 
-            return myService.Query(query);
+            return _service.Query(query);
         }
         public static void CreateEntry(string userName, string password, string link, string pubDate, string title, string description, DateTime start, DateTime end, Uri calendar)
         {
@@ -43,11 +41,11 @@ namespace ChessCalendar
                 (new GDataGAuthRequestFactory("", "")).CreateRequest(GDataRequestType.Insert, _calendarToPost);
                 _service.Insert(_calendarToPost, entry);
 
-                (new Log()).Output(string.Empty, "Event Successfully Added", OutputMode.Form);
+                //this.Log.Output(string.Empty, "Event Successfully Added", OutputMode.Form);
             }
             catch (Exception ex)
             {
-                (new Log()).Output(string.Empty, ex.Message);
+                //this.Log.Output(string.Empty, ex.Message);
             }
         }
 
@@ -62,10 +60,9 @@ namespace ChessCalendar
 
             try
             {
-                var myService = new CalendarService("process-calendar");
-                myService.setUserCredentials(userName, password);
+                _service.setUserCredentials(userName, password);
 
-                EventFeed myResultsFeed = myService.Query(myQuery);
+                EventFeed myResultsFeed = _service.Query(myQuery);
                 queriedGames.AddRange(myResultsFeed.Entries.Select(entry => entry));
             }
             catch (Exception ex)
