@@ -26,7 +26,8 @@ namespace ChessCalendar.Forms
 
             _trayIcon = new NotifyIcon();
             _trayIcon.Text = "Chess Calendar";
-            _trayIcon.Icon = new Icon(@"..\..\Images\Logo.ico", 50, 50);
+            //_trayIcon.Icon = new Icon(@"..\..\Images\Logo.ico", 50, 50);
+            _trayIcon.Icon = new Icon(@"Logo.ico", 50, 50);
 
             // Add menu to tray icon and show it.
             _trayIcon.ContextMenu = _trayMenu;
