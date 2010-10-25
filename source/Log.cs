@@ -49,45 +49,49 @@ namespace ChessCalendar
 
             while (true)
             {
-                //if(this.CheckAgain)
-                //{
-                    ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
+                ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
                     
-                    try
+                try
+                {
+                    newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+
+                    this.AddOrUpdate_Games(this.ToDo, newRssItems);
+
+                    //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                    //On remove, delete the all day reminder.
+
+                    foreach (var chessCalendarRssItem in newRssItems)
                     {
-                        newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+                        this.Output(chessCalendarRssItem); 
+                    }
 
-                        this.AddOrUpdate_Games(this.ToDo, newRssItems);
+                    if (this.LogGames)
+                    {
+                        this.NewMessage = true;
 
-                        //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
-                        //On remove, delete the all day reminder.
-
-                        if (this.LogGames)
+                        //This should ONLY show up on the form.
+                        this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
+                        foreach (ChessDotComGame current in this.ToDo)
                         {
-                            this.NewMessage = true;
-                            //This should ONLY show up on the form.
-                            this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
-                            foreach (ChessDotComGame current in this.ToDo)
-                            {
-                                this.Log_Game(current, userName, password);
-                            }
+                            this.Output(current);
+                            this.Log_Game(current, userName, password);
                         }
-
-                        this.ToDo.Clear();
-                        this.Output(string.Empty, "----------" + Environment.NewLine, OutputMode.Form);
-                    }
-                    catch (Exception ex)
-                    {
-                        //if 504 Invalid gateway error. Chess.com is down
-                        this.Output(string.Empty, "error. " + ex.Message);
-
-                        GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
-                                                                    this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                     }
 
-                    this.Output(string.Empty, "Sleeping for 5 minutes");
-                    Wait(5);
-                //}
+                    this.ToDo.Clear();
+                    this.Output(string.Empty, "----------" + Environment.NewLine, OutputMode.Form);
+                }
+                catch (Exception ex)
+                {
+                    //if 504 Invalid gateway error. Chess.com is down
+                    this.Output(string.Empty, "error. " + ex.Message);
+
+                    GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
+                                                                this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
+                }
+
+                this.Output(string.Empty, "Sleeping for 5 minutes");
+                Wait(5);
             }
         }
 

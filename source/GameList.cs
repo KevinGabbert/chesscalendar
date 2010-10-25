@@ -58,7 +58,7 @@ namespace ChessCalendar
 
             base.Add(game);
         }
-        public void AddGame(ChessDotComGame game)
+        public void AddGame(IChessItem game)
         {
             base.Add(game);
         }

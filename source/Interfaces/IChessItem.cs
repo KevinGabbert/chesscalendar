@@ -13,5 +13,7 @@ namespace ChessCalendar.Interfaces
         string Link { set; get; }
         string PubDate { set; get; }
         string Title { set; get; }
+
+        string Message { set; get; }
     }
 }

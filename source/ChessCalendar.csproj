@@ -128,6 +128,7 @@
     <Compile Include="Forms\Login_Form.designer.cs">
       <DependentUpon>Login_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="MessageList.cs" />
     <Compile Include="OutputClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

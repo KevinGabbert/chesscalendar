@@ -1,15 +1,25 @@
 ﻿using System.Collections.Generic;
 using ChessCalendar.Enums;
+using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
 {
     public class OutputClass
     {
         #region Properties
+
             public OutputMode OutputMode { get; set; }
             public Queue<string> Messages { get; set; }
+            public Queue<IChessItem> NewMoves { get; set; }
             public System.Windows.Forms.NotifyIcon NotifyIcon { get; set; }
+
         #endregion
+
+        public OutputClass()
+        {
+            this.NewMoves = new Queue<IChessItem>();
+            this.Messages = new Queue<string>();
+        }
 
         public void Output(string title, string outputMessage)
         {
@@ -24,6 +34,18 @@ namespace ChessCalendar
 
                 case OutputMode.Form:
                     this.Messages.Enqueue(outputMessage);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        public void Output(IChessItem game)
+        {
+            switch (this.OutputMode)
+            {
+                case OutputMode.Form:
+                    this.NewMoves.Enqueue(game);
                     break;
 
                 default:
