@@ -12,7 +12,7 @@ namespace ChessCalendar.Forms
         private readonly ContextMenu _trayMenu;
         private Log _runningLog = new Log();
 
-        public const string VERSION = "Chess Calendar v10.24.10";
+        public const string VERSION = "Chess Calendar v10.24.10 experimental ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public SysTrayApp()

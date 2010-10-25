@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
@@ -12,21 +11,21 @@ namespace ChessCalendar
         public string Link { get; set; }
         public string PubDate { get; set; }
         public string Title { get; set; }
+        public string Message { get; set; }
+
         public bool StillPosted { get; set; }
 
         public string Rating
         {
             get
             {
-                return Description.Split("<br/>".ToArray(), StringSplitOptions.None)[0];
+                return ""; //"Description.Split("<br/>".ToArray(), StringSplitOptions.None)[0];
             }
         }
-
         public int CompareTo(ChessDotComGame other)
         {
             return other.PubDate.CompareTo(this.PubDate);
         }
-
         public int CompareTo(object obj)
         {
             return this.CompareTo((ChessDotComGame) obj);
