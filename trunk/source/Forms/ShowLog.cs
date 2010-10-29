@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using ChessCalendar.Interfaces;
@@ -33,6 +32,11 @@ namespace ChessCalendar.Forms
         private void ShowLog_Shown(object sender, System.EventArgs e)
         {
             this.RunLoop();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Dispose();
         }
 
         #endregion
