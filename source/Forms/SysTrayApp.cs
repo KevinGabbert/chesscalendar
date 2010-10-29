@@ -87,8 +87,6 @@ namespace ChessCalendar.Forms
             logViewer.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
-
-            //Application.Run(logViewer);
         }
 
         private static void Options(object sender, EventArgs e)

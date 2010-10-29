@@ -139,9 +139,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Forms\ShowLog.resx">
       <DependentUpon>ShowLog.cs</DependentUpon>
     </EmbeddedResource>

@@ -7,8 +7,7 @@ namespace ChessCalendar.TestHarness
     {
 
         [Test]
-        public void Test()
-        {
+        public void Test(){
             
         }
     }
