@@ -12,8 +12,18 @@ namespace ChessCalendar
         public string PubDate { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
+        public string PGN { get; set; }
+        public string GameID
+        {
+            get
+            {
+                return ParseUtility.GetGameID(this.Link);
+            }
+        }
 
         public bool StillPosted { get; set; }
+
+
 
         public string Rating
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Net;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using ChessCalendar.Enums;
@@ -8,29 +10,34 @@ namespace ChessCalendar
 {
     public class Log: OutputClass
     {
-        public Log()
-        {
-            this.Messages = new Queue<string>();
-            this.WaitSeconds = 10; //300
-        }
+        public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
+        public const string GOOGLE_CALENDAR_DEFAULT = "http://www.google.com/calendar/feeds/default/private/full";
+        public const string DETECTED = " detected ";
 
         #region Properties
 
+            public Uri _calendarToPost = new Uri(GOOGLE_CALENDAR_DEFAULT);
             public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
-            public const string DETECTED = " detected ";
-            public Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full"); //default string. probably not even needed, but its helpful to know the format.
-            public bool LogGames { get; set; }
+            public CalendarLogManager ToDo { get; set; }
+
             public string LogVersion { get; set; }
-            public bool DebugMode { get; set; }
-            public bool Beep_On_New_Move { get; set; }
-            public CalendarLogManager ToDo { get; set; } 
-            
             public int WaitSeconds { get; set; }
             public int WaitProgress { get; set; }
             public DateTime NextCheck { get; set; }
+
             public bool NewMessage { get; set; }
+            public bool DebugMode { get; set; }
+            public bool Beep_On_New_Move { get; set; }
+            public bool GetPGNs { get; set; }
+            public bool LogGames { get; set; }
 
         #endregion
+
+        public Log()
+        {
+            this.Messages = new Queue<string>();
+            this.WaitSeconds = 10;
+        }
 
         public void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
@@ -61,10 +68,7 @@ namespace ChessCalendar
                     //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                     //On remove, delete the all day reminder.
 
-                    foreach (var chessCalendarRssItem in newRssItems)
-                    {
-                        this.Output(chessCalendarRssItem); 
-                    }
+                    this.ProcessNewRSSItems(newRssItems);
 
                     if (this.LogGames)
                     {
@@ -96,6 +100,14 @@ namespace ChessCalendar
             }
         }
 
+        private void ProcessNewRSSItems(IEnumerable<ChessCalendarRSSItem> newRssItems)
+        {
+            foreach (var item in newRssItems)
+            {
+                this.Output(item);
+            }
+        }
+
         private  void Wait(int waitSeconds)
         {
             DateTime start = DateTime.Now;
@@ -124,6 +136,11 @@ namespace ChessCalendar
                 this.Output(string.Empty, "Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
             }
 
+            if (this.GetPGNs)
+            {
+                this.Download_PGN(gameToLog);
+            }
+
             GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
                                                             gameToLog.Link, 
                                                             gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(), 
@@ -133,6 +150,8 @@ namespace ChessCalendar
                                                             Environment.NewLine +
                                                             "|" + gameToLog.Description +
                                                             Environment.NewLine +
+                                                            "|" + gameToLog.PGN +
+                                                            Environment.NewLine +
                                                             "|" + this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
             if (this.DebugMode)
             {
@@ -140,7 +159,21 @@ namespace ChessCalendar
             }
 
             this.ToDo.Ignore(gameToLog); //we won't need to log this one again, 
-        }    
+        }
+
+        private void Download_PGN(ChessDotComGame gameToLog)
+        {
+            this.Output(string.Empty, "Getting PGN for game: " + gameToLog.Title + " (" + gameToLog.GameID + ")");
+            WebClient client = new WebClient();
+            Stream strm = client.OpenRead(CHESS_DOT_COM_PGN_PATH + gameToLog.GameID);
+            if (strm != null)
+            {
+                var sr = new StreamReader(strm);
+                gameToLog.PGN = sr.ReadToEnd();
+                strm.Close();
+            }
+        }
+
         private void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<ChessCalendarRSSItem> gamelist)
         {
             if (gamelist != null)
@@ -150,7 +183,6 @@ namespace ChessCalendar
                     this.LogGames = true;
                     this.Output(string.Empty, Environment.NewLine + "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
                     
-                    //if form mode
                     this.Output(string.Empty, Environment.NewLine, OutputMode.Form);
                     foreach (ChessCalendarRSSItem game in gamelist)
                     {

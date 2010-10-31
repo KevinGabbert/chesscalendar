@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using ChessCalendar.Interfaces;
 
@@ -49,7 +50,17 @@ namespace ChessCalendar.Forms
 
                 Application.DoEvents();
 
-                this.pbTimeTillNextUpdate.Value = this.Log.WaitProgress;
+                if(this.Log.WaitProgress > 100)
+                {
+                    this.pbTimeTillNextUpdate.ForeColor = Color.Red;
+                    this.pbTimeTillNextUpdate.Value = 100;
+                }
+                else
+                {
+                   this.pbTimeTillNextUpdate.ForeColor = Color.Blue;
+                   this.pbTimeTillNextUpdate.Value = this.Log.WaitProgress; 
+                }
+                
                 this.pbTimeTillNextUpdate.Show();
 
                 if((DateTime.Now > this.Log.NextCheck) || this.Log.NewMessage)

@@ -16,10 +16,12 @@ namespace ChessCalendar.Forms
             public string User { get; set; }
             public string Password { get; set; }
             public System.Uri PostURI { get; set; }
+
             public bool DebugMode { get; set; }
             public bool Beep_On_New_Move { get; set; }
             public bool ValidatedForm { get; set; }
             public bool AutoOpenLog { get; set; }
+            public bool DownloadPGNs { get; set; }
         #endregion
 
         public Login_Form(string version)
@@ -87,6 +89,7 @@ namespace ChessCalendar.Forms
             this.DebugMode = chkDebugMode.Checked;
             this.Beep_On_New_Move = chkBeep.Checked;
             this.AutoOpenLog = this.chkLogFormOpen.Checked;
+            this.DownloadPGNs = this.chkDownloadPGNs.Checked;
             this.SetPostURI();
 
             this.Hide();

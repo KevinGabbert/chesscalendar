@@ -13,13 +13,18 @@ namespace ChessCalendar.Forms
         private Log _runningLog = new Log();
         private bool _loggedIn = false;
 
-        public const string VERSION = "Chess Calendar v10.30.10 Prototype ";
+        public const string VERSION = "Chess Calendar v10.31.10 Prototype ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public SysTrayApp()
         {
-            this.ReloadTray();
+            this.LoadTray();
+        }
 
+        private void LoadTray()
+        {
+            this.ReloadTray();
+            this.Login(this, null);
         }
 
         private void ReloadTray()
@@ -45,7 +50,7 @@ namespace ChessCalendar.Forms
             _trayIcon.ContextMenu = _trayMenu;
             _trayIcon.Visible = true;
 
-            _trayIcon.ShowBalloonTip(10, "Start", "Right-Click 'Start' to begin",ToolTipIcon.Info);
+            //_trayIcon.ShowBalloonTip(10, "Start", "Right-Click 'Start' to begin",ToolTipIcon.Info);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -57,38 +62,58 @@ namespace ChessCalendar.Forms
 
         private void Login(object sender, EventArgs e)
         {
-            var userInfoForm = new Login_Form(VERSION);
-            userInfoForm.ShowDialog();
+            var loginInfo = GetLoginInfo();
 
-            //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
+            if (loginInfo.AutoOpenLog)
+            {
+                this.ShowLog(sender, e);
+            }
 
+            this.ValidateAndStart(loginInfo);
+        }
+
+        private void ShowLogin()
+        {
+            Login_Form userInfoForm = GetLoginInfo();
+            this.ValidateAndStart(userInfoForm);
+        }
+
+        private void ValidateAndStart(Login_Form userInfoForm)
+        {
             if (userInfoForm.ValidatedForm)
             {
                 this._loggedIn = true;
 
-                if(userInfoForm.AutoOpenLog)
-                {
-                    this.ShowLog(sender, e);
-                }
-
                 _runningLog = new Log();
                 _runningLog.LogVersion = VERSION;
                 _runningLog.DebugMode = userInfoForm.DebugMode;
+                _runningLog.GetPGNs = userInfoForm.DownloadPGNs;
                 _runningLog.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
                 _runningLog.NotifyIcon = _trayIcon;
                 _runningLog.ContextMenu = _trayMenu;
                 _runningLog.OutputMode = OutputMode.Form;
                 _runningLog.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
                 _runningLog.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
-                                  userInfoForm.User, 
-                                  userInfoForm.Password, 
-                                  userInfoForm.PostURI);
+                                          userInfoForm.User, 
+                                          userInfoForm.Password, 
+                                          userInfoForm.PostURI);
             }
             else
             {
                 MessageBox.Show("Some of the Login information wasn't right, try again.", "ummmmmmm...");
             }
         }
+
+        private static Login_Form GetLoginInfo()
+        {
+            var userInfoForm = new Login_Form(VERSION);
+            userInfoForm.ShowDialog();
+
+            //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
+
+            return userInfoForm;
+        }
+
         private void ShowLog(object sender, EventArgs e)
         {
             Thread logForm = new Thread(threadedForm);
@@ -105,14 +130,14 @@ namespace ChessCalendar.Forms
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
         }
 
-        private void Options(object sender, EventArgs e)
+        private static void Options(object sender, EventArgs e)
         {
             var optionsForm = new Options();
             optionsForm.ShowDialog();
 
             //this.ReloadTray();
         }
-        private void OnExit(object sender, EventArgs e)
+        private static void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
         }
