@@ -15,5 +15,7 @@ namespace ChessCalendar.Interfaces
         string Title { set; get; }
 
         string Message { set; get; }
+        string GameID { get;}
+        string PGN { get; set; }
     }
 }

@@ -45,6 +45,7 @@
             this.chkBeep = new System.Windows.Forms.CheckBox();
             this.lblVersion = new System.Windows.Forms.Label();
             this.chkLogFormOpen = new System.Windows.Forms.CheckBox();
+            this.chkDownloadPGNs = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).BeginInit();
             this.SuspendLayout();
             // 
@@ -205,6 +206,16 @@
             this.chkLogFormOpen.Text = "Start with Log Form open";
             this.chkLogFormOpen.UseVisualStyleBackColor = true;
             // 
+            // chkDownloadPGNs
+            // 
+            this.chkDownloadPGNs.AutoSize = true;
+            this.chkDownloadPGNs.Location = new System.Drawing.Point(184, 356);
+            this.chkDownloadPGNs.Name = "chkDownloadPGNs";
+            this.chkDownloadPGNs.Size = new System.Drawing.Size(78, 17);
+            this.chkDownloadPGNs.TabIndex = 17;
+            this.chkDownloadPGNs.Text = "D/L PGN\'s";
+            this.chkDownloadPGNs.UseVisualStyleBackColor = true;
+            // 
             // Login_Form
             // 
             this.AcceptButton = this.btnOK;
@@ -212,6 +223,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(274, 434);
+            this.Controls.Add(this.chkDownloadPGNs);
             this.Controls.Add(this.chkLogFormOpen);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.chkBeep);
@@ -255,5 +267,6 @@
         private System.Windows.Forms.CheckBox chkBeep;
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.CheckBox chkLogFormOpen;
+        private System.Windows.Forms.CheckBox chkDownloadPGNs;
     }
 }
