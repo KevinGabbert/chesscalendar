@@ -11,20 +11,21 @@ namespace ChessCalendar
         public Log()
         {
             this.Messages = new Queue<string>();
+            this.WaitSeconds = 10; //300
         }
 
         #region Properties
 
+            public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
             public const string DETECTED = " detected ";
             public Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full"); //default string. probably not even needed, but its helpful to know the format.
             public bool LogGames { get; set; }
             public string LogVersion { get; set; }
             public bool DebugMode { get; set; }
             public bool Beep_On_New_Move { get; set; }
-            public CalendarLogManager ToDo { get; set; }
+            public CalendarLogManager ToDo { get; set; } 
             
-            public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
-            
+            public int WaitSeconds { get; set; }
             public int WaitProgress { get; set; }
             public DateTime NextCheck { get; set; }
             public bool NewMessage { get; set; }
@@ -90,15 +91,15 @@ namespace ChessCalendar
                                                                 this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                 }
 
-                this.Output(string.Empty, "Sleeping for 5 minutes");
-                Wait(5);
+                this.Output(string.Empty, "Sleeping for " + this.WaitSeconds + " seconds.");
+                Wait(this.WaitSeconds);
             }
         }
 
-        private  void Wait(int waitMinutes)
+        private  void Wait(int waitSeconds)
         {
             DateTime start = DateTime.Now;
-            TimeSpan waitTime = new TimeSpan(0, 0, waitMinutes, 0);
+            TimeSpan waitTime = new TimeSpan(0, 0, 0, waitSeconds);
 
             DateTime finish = start + waitTime;
             this.NextCheck = finish;

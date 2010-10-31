@@ -9,19 +9,31 @@ namespace ChessCalendar.Forms
     public class SysTrayApp : Form
     {
         public NotifyIcon  _trayIcon;
-        private readonly ContextMenu _trayMenu;
+        private ContextMenu _trayMenu;
         private Log _runningLog = new Log();
+        private bool _loggedIn = false;
 
-        public const string VERSION = "Chess Calendar v10.24.10 experimental ";
+        public const string VERSION = "Chess Calendar v10.30.10 Prototype ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public SysTrayApp()
         {
+            this.ReloadTray();
+
+        }
+
+        private void ReloadTray()
+        {
             _trayMenu = new ContextMenu();
             _trayMenu.MenuItems.Add("Start", Login);//todo: animated gif with logo phasing in and out.
             //_trayMenu.MenuItems.Add("Stop", Login); //todo: this should change Icon to icon with red circle and line through it.
-            //_trayMenu.MenuItems.Add("Show Log", ShowLog); //Todo: all console notifications will go here..
-            _trayMenu.MenuItems.Add("Options", Options); //Todo: all console notifications will go here..
+
+            if (_loggedIn)
+            {
+                _trayMenu.MenuItems.Add("Show Log", ShowLog);
+            }
+
+            _trayMenu.MenuItems.Add("Options", Options);
             _trayMenu.MenuItems.Add("Exit", OnExit);
 
             _trayIcon = new NotifyIcon();
@@ -32,6 +44,8 @@ namespace ChessCalendar.Forms
             // Add menu to tray icon and show it.
             _trayIcon.ContextMenu = _trayMenu;
             _trayIcon.Visible = true;
+
+            _trayIcon.ShowBalloonTip(10, "Start", "Right-Click 'Start' to begin",ToolTipIcon.Info);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -50,6 +64,8 @@ namespace ChessCalendar.Forms
 
             if (userInfoForm.ValidatedForm)
             {
+                this._loggedIn = true;
+
                 if(userInfoForm.AutoOpenLog)
                 {
                     this.ShowLog(sender, e);
@@ -89,12 +105,14 @@ namespace ChessCalendar.Forms
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
         }
 
-        private static void Options(object sender, EventArgs e)
+        private void Options(object sender, EventArgs e)
         {
             var optionsForm = new Options();
             optionsForm.ShowDialog();
+
+            //this.ReloadTray();
         }
-        private static void OnExit(object sender, EventArgs e)
+        private void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
         }

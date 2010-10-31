@@ -71,7 +71,13 @@ namespace ChessCalendar.Forms
                 {
                     if (this.Log.NewMoves.Count > 0)
                     {
-                        this.MessageList.Add(this.Log.NewMoves.Dequeue());
+                        this.MessageList.Clear();
+
+                        for (int i = this.Log.NewMoves.Count; i > 0; i--)
+                        {
+                            this.MessageList.Add(this.Log.NewMoves.Dequeue()); 
+                        }
+
                         this.SetMovesDataSource(this.MessageList);
                         this.Log.NewMessage = true;
                     }
