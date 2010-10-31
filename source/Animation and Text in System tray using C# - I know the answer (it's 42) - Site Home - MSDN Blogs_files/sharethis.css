@@ -1,0 +1,74 @@
+.ShareThisMainPanel
+{
+	background-color: #ffffff;
+	vertical-align: bottom;
+	float: right;
+	width: 130px;
+	text-align: left;
+	margin-left: 10px;
+	z-index: 2000;
+}
+.ShareThis_ChildRootPanel
+{
+	text-align: left;
+}
+.tierOnePanel
+{
+	width: 100%;
+	text-align: left;
+}
+.tierTwoPanel
+{
+	display: none;
+	width: 100%;
+	text-align: left;
+}
+
+.tierTwoRowPanel
+{
+	width: 100%;
+	text-align: left;
+}
+
+.buttonPanel
+{
+	vertical-align: top;
+	float: left;
+	font-size: 0px;
+	margin: 5px;
+}
+.iconsOnPanel
+{
+	height: 16px;
+	width: 16px;
+	text-align: left;
+}
+.buttonPanelHyperLink
+{
+
+}
+
+.ShowMoreLessButtonsPanel
+{
+	vertical-align: top;
+	float: right;
+	font-size: 0px;
+	margin: 3px;
+}
+div.ShowMoreLessButtonsPanel a[id=btn_less]
+{
+	display: none;
+}
+
+.buttonMoreLess
+{
+	height: 11px;
+	width: 33px;
+	text-align: left;
+	margin-right: 2px;
+}
+
+.ShareClearFloatsPanel
+{
+	clear: both;
+}

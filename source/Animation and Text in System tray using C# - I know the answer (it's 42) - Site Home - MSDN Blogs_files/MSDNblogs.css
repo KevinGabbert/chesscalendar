@@ -1,0 +1,444 @@
+﻿@import url('../../../msdn/css/msdn.css');
+.header-fragments {
+	background:url("../../../msdn/Images/msdn/header_blog2.png") no-repeat scroll center top transparent;
+	height:89px;
+	margin:0 auto;
+}
+.header-fragment.user-welcome-without-login a {
+	font-weight:normal;
+}
+.header-fragments a, .header-fragments a:link, .header-fragments a:visited {
+	color:#FFFFFF;
+	cursor:pointer;
+	text-decoration:none;
+}
+.search fieldset {
+	left:29px;
+	position:absolute;
+	top:54px;
+}
+.header-fragments-footer {
+	display:none
+/* REMOVED 7-9-2010
+	background:url("../Images/group-nav-sep.png") repeat-x scroll center top transparent;
+	height:12px;
+	width:924px;
+	position:relative;
+	top:-38px;
+	left:0px;
+	margin:-6px auto;
+	z-index:10;
+*/
+}
+.header-fragment.search fieldset {
+	border:medium none;
+	margin:0;
+	top:-43px;
+	left:297px;
+}
+.header-fragment .site-logo {
+	background-image:url('../Images/MSDN/msdn-logo.png') no-repeat;
+	position:absolute;
+	top:-23px;
+	left:5px;
+}
+.blog-banner .blog-banner-name {
+	margin-left:6px;
+	position:relative;
+	top:-21px;
+	width: 620px;
+	overflow:hidden;
+	height:30px;
+}
+.blog-banner-description {
+	color:#FFFFFF;
+	height:18px;
+	overflow:hidden;
+	padding-left:6px;
+	position:relative;
+	top:-25px;
+	width:800px;
+}
+.layout {
+	min-height:768px;
+	position:relative;
+	top:0;
+}
+.layout-content {
+	/* MB2010 Changing this as there was more white space on the left side than the right. Now it's equal/balanced. */
+	margin:0 auto 0 14px;
+	/* OLD VALUES: margin:0px auto 0px 20px; */
+	width:915px;
+}
+.layout-content .layout-region-inner {
+	min-height:40px;
+}
+.content-fragment.about-blog h4 {
+	margin:0 0;
+}
+.user-defined-markup {
+	padding-right:0;
+}
+.layout-header {
+	background:none;
+}
+.group-description user-defined-markup {
+	font-size:11px;
+	margin:0;
+	padding:0 201px 0 1px;
+}
+.content-fragment-page.post .content-fragment.blog-post .full-post {
+	margin-top:0px;
+}
+.content-fragment.blog-post .full-post .post-name {
+	color:#0066dd;
+	font-size:20px;
+	font-weight:normal;
+	margin:0px 0 12px;
+	padding:0;
+}
+.content-fragment {
+	margin:0px;
+}
+.layout-content.content-left-sidebar-right .layout-region.right-sidebar {
+	float:right;
+	width:300px;
+}
+.full-post .post-content {
+	line-height:14px;
+}
+.content-fragment.blog-post .full-post .post-content {
+	border-bottom:0px;
+	border-top:0px;
+	line-height:1.5em;
+	padding: 0;
+	margin: 0;
+	margin-top: 30px;
+}
+.content-fragment.blog-post .full-post .post-author, .content-fragment.blog-post .full-post .post-date {
+	color:#666666;
+	font-size:12px;
+	font-weight:normal;
+}
+.user-defined-markup {
+	max-width:100%;
+	overflow:hidden;
+	padding-bottom:0px;
+	padding-right:0px;
+	position:relative;
+}
+.content-fragment.blog-feedback-list .content-list-name {
+	display:none
+}
+/* ******* Customize BTN ****** */
+
+.site-banner .internal-link.edit-page, .site-banner .internal-link.save-page {
+	float:right;
+	position:relative;
+	top:-4px;
+}
+/* --------Post to Blogs------ */
+.content-fragment.blog-feedback-list .full-post.user-is-author .fiji-full-post-inner .post-author .avatar {
+	left:-33px;
+	top:3px;
+}
+.content-fragment.blog-feedback-list .full-post .post-content {
+	border-bottom:0px;
+	border-top:0px;
+	margin:0px;
+}
+.content-fragment.blog-feedback-list .full-post-header.user-is-author {
+	background:none;
+}
+.content-fragment.blog-feedback-list .full-post-header.user-is-author .fiji-r {
+	background:none;
+}
+.content-fragment.blog-feedback-list .full-post.user-is-author {
+	background:none;
+}
+.content-fragment.blog-feedback-list .full-post-footer.user-is-author .fiji-r {
+	background:none;
+}
+.content-fragment.blog-feedback-list .full-post-footer.user-is-author {
+	background:none;
+}
+.content-fragment.blog-feedback-list .full-post.user-is-author .fiji-full-post-inner {
+	background:none;
+	padding:0 22px 0 14px;
+}
+.content-fragment.blog-feedback-list .full-post {
+	background:none;
+	padding-left:26px;
+}
+.content-fragment.blog-feedback-list .full-post-header {
+	background:none;
+}
+.content-fragment.blog-feedback-list .full-post-header .fiji-r {
+	background:none;
+}
+.content-fragment.blog-feedback-list .full-post-footer .fiji-r {
+	background:none;
+}
+.content-fragment.blog-feedback-list .full-post-footer {
+	background:none;
+}
+.content-fragment.blog-feedback-list .content-item {
+	padding:0 0;
+}
+.content-fragment.blog-feedback-list .full-post .post-author .avatar {
+	left:-20px;
+	top:13px;
+}
+.navigation-list .navigation-item {
+	margin:0px;
+	padding:0px;
+}
+/* ----------Watermark and Input Search---------- */
+.header-fragment.search .field-item-input input.search.empty.watermark {
+	font-style: italic;
+	color: #AAAAAA;
+}
+.header-fragment.search .field-item-input input.search {
+	font-style: normal;
+	color: #000;
+}
+.header-fragment.search .field-item-input input {
+	border:medium none;
+	color:#AAAAAA;
+	cursor:auto;
+	display:block;
+	font-size:13px;
+	font-style:italic;
+	height:18px;
+	margin-left:5px;
+	padding:2px 0px 0px;
+	width:250px;
+	font-family:inherit;
+	font-weight:inherit;
+}
+.content-fragment.search-form .search input {
+	margin-left:2px;
+	width:241px;
+	padding:3px 5px 0;
+}
+/* ----------Watermark and Input Search ENDS---------- */
+.content-fragment.search-form .search .internal-link.advanced-search {
+	display:none
+}
+.content-fragment.search-form .field-item {
+	padding-left:0
+}
+.content-fragment.search-form .search div {
+	width:280px;
+	background-position:-30px;
+}
+.content-fragment.search-form .search .field-item-input {
+	border-left:solid 1px #346b94;
+	height:24px;
+}
+.content-fragment.search-form .field-item.searchbutton {
+display:none
+}
+/* Added 5-12-2010 **************************************************************************************************/
+.content-fragment.blog-links .navigation-item .internal-link {
+	padding-bottom: .25em;
+}
+.content-fragment.captcha-blog-post-comment-form .field-item textarea {
+	color: #555;
+}
+/* Added 5-17-2010 **************************************************************************************************/
+.content-fragment.blog-post-list .content-list.standard .post-summary, .abbreviated-post .post-summary {
+	overflow-x:hidden
+}
+/* MB2010 Fixes issue with cut-off content and scrollbars appearing in post summaries in Safari/Chrome */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.content-fragment.blog-post-list .content-list.standard .post-summary, .abbreviated-post .post-summary { overflow:visible }
+}
+.content-fragment-page.postlist .abbreviated-post .post-content ul li {
+	list-style-type:disc
+}
+.content-fragment.user-banner.side-border-only {
+	min-height: 40px;
+}
+.page-editing.active .layout {
+	min-height:inherit;
+	background:#E9E9E9;
+}
+.content-fragment.blog-feedback-list .content-list-name {
+	display:inline;
+	margin-left:-14px;
+}
+.content-fragment.blog-feedback-list .content-list-name .internal-link.rss {
+	color:#260859;
+	display:inline;
+	font-family:'Segoe UI Semibold', 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:normal;
+	line-height:19px;
+	margin-top:0;
+	position:relative;
+	text-transform:none;
+	top:0;
+}
+.content-fragment.blog-feedback-list .content-list {
+	border-top:5px solid #260859;
+	margin-top:6px
+}
+.content-fragment.blog-feedback-list .content-list-name .internal-link.rss span {
+	left:120px;
+}
+.content-fragment.blog-feedback-list .content-list-name .internal-link.rss span:first-child + span {
+	background:none;
+	height:auto;
+	left:-14px;
+	width:auto;
+}
+*+html legend.field-list-description {
+	margin-left:-7px;
+}
+/* MSDN logo not aligned */
+.header-fragment .site-logo {
+	top:-16px;
+}
+.content-fragment.captcha-blog-post-comment-form .field-list {
+	margin:10px 0 0;
+}
+legend.field-list-description {
+	padding:0
+}
+.pager a {
+	font-size:16px;
+	padding:0 10px 3px;
+}
+/* BEGIN: Microsoft Translator fixes ********************************************************************************/
+.content-fragment.blog-links .navigation-item .internal-link span:first-child {
+	height:10px;
+	left:0;
+	position:absolute;
+	top:3px;
+}
+.content-fragment.blog-links .navigation-item .internal-link span:first-child {
+	width:10px;
+}
+.content-fragment.blog-links .navigation-item .internal-link.edit-application.weblog span:first-child {
+	width:10px;
+}
+.content-fragment.blog-links .navigation-item .internal-link.edit-application.weblog span:first-child + span {
+	background:none
+}
+.content-fragment.blog-links li.navigation-item a.internal-link span:first-child + span {
+	padding-bottom:0.13em;
+	display:block;
+	padding-left:0;
+	position:relative;
+	height:auto;
+	width:auto;
+	background:none;
+	top:0
+}
+.site-banner .internal-link.edit-page, .site-banner .internal-link.save-page {
+	min-width:55px;
+}
+.site-banner .internal-link.edit-page span:first-child, .site-banner .internal-link.save-page span:first-child {
+	background:url("../../../msdn/Images/customize-button.gif") no-repeat scroll left top transparent;
+	display:block;
+	height:20px;
+	left:-18px;
+	position:absolute;
+	top:0;
+	width:18px;
+}
+.site-banner .internal-link.edit-page span:first-child + span, .site-banner .internal-link.save-page span:first-child + span {
+	background-image:none;
+	background-color:transparent;
+	left:4px;
+	top:3px;
+}
+
+.content-fragment.blog-post .full-post .post-actions .navigation-list .navigation-item a.favorite-on span:first-child + span,
+.content-fragment.blog-post .full-post .post-actions .navigation-list .navigation-item a.favorite-off span:first-child + span {
+position:relative;
+background:none;
+}
+.content-fragment.captcha-blog-post-comment-form .field-item span:first-child + span {
+display:inline;
+left:0;
+position:relative;
+}
+/* END: Microsoft Translator fixes ********************************************************************************/
+
+/* Search form */
+.content-fragment.search-form label {position:relative; top:-3px; margin-right:12px}
+.content-fragment.search-form .field-list-footer input {margin-left:0; margin-top:0}
+
+.content-fragment.blog-post-list .content-list.standard .content-item .post-name a:visited {color:#777}
+/* Added 6/29 ****************/
+h1 {
+	font-size: 1.8em;
+	line-height: 130%;
+	margin: 5px 0px;
+}
+h2 {
+	font-size:1.65em;
+	margin:0 0;
+}
+h3 {
+	font-size: 1.45em;
+	margin: 3px 0px;
+}
+h4 {
+	font-size: 1.3em;
+	margin: 2px 0px;
+}
+h5 {
+	font-size: 1.15em;
+}
+h6 {
+	font-size: 1.1em;
+}
+
+.layout-content.header-top-sidebar-left-content-center-sidebar-right .content-fragment.search-form .search div,
+.layout-content.sidebar-left-content-center-sidebar-right .content-fragment.search-form .search div { 
+/* MB2010 this resolves issue with search box cutting off in 3-col layout */
+background-position:-62px 50%; 
+width:248px;
+}
+.layout-content.header-top-sidebar-left-content-center-sidebar-right .content-fragment.search-form .search input,
+.layout-content.sidebar-left-content-center-sidebar-right .content-fragment.search-form .search input {
+width:207px;
+}
+
+
+
+
+.content-fragment.search-form.full-border.with-header .search div,
+.content-fragment.search-form.full-border .search div {
+background-position:-38px 50%;
+width:272px;
+}
+/* MB2010 The style definitions above and below this comment make the search box fit within the full border settings */
+.content-fragment.search-form.full-border.with-header .search input,
+.content-fragment.search-form.full-border .search input {
+width:221px;
+}
+
+.layout-content.sidebar-left-content-center-sidebar-right {width:918px} /* MB2010 Equals out spacing between left edge/content & right edge/content */
+
+.layout-content.sidebar-left-content-center-sidebar-right .left-sidebar .content-fragment.search-form.full-border.with-header .search div, 
+.layout-content.sidebar-left-content-center-sidebar-right .left-sidebar .content-fragment.search-form.full-border .search div,
+.layout-content.sidebar-left-content-center-sidebar-right .right-sidebar .content-fragment.search-form.full-border.with-header .search div, 
+.layout-content.sidebar-left-content-center-sidebar-right .right-sidebar .content-fragment.search-form.full-border .search div  {
+background-position:-62px 50%;
+width:248px;
+}
+
+.layout-content.sidebar-left-content-center-sidebar-right .left-sidebar .content-fragment.search-form.full-border.with-header .search input, 
+.layout-content.sidebar-left-content-center-sidebar-right .left-sidebar .content-fragment.search-form.full-border .search input,
+.layout-content.sidebar-left-content-center-sidebar-right .right-sidebar .content-fragment.search-form.full-border.with-header .search input, 
+.layout-content.sidebar-left-content-center-sidebar-right .right-sidebar .content-fragment.search-form.full-border .search input  {
+width:215px;
+}
+
+
+
+
