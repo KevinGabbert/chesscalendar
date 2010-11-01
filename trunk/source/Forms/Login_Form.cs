@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using Google.GData.Calendar;
 
@@ -22,6 +23,7 @@ namespace ChessCalendar.Forms
             public bool ValidatedForm { get; set; }
             public bool AutoOpenLog { get; set; }
             public bool DownloadPGNs { get; set; }
+
         #endregion
 
         public Login_Form(string version)
@@ -37,7 +39,7 @@ namespace ChessCalendar.Forms
         private void LoginTextControls_TextChanged(object sender, EventArgs e)
         {
             this.btnOK.Enabled = this.ValidateForm();
-            if (UserHitReturn(sender))
+            if (Login_Form.UserHitReturn(sender))
             {
                 if (this.btnOK.Enabled)
                 {
@@ -50,12 +52,21 @@ namespace ChessCalendar.Forms
         private void txtChessDotComName_TextChanged(object sender, EventArgs e)
         {
             this.btnStart.Enabled = this.ValidateForm();
-            if (UserHitReturn(sender))
+            if (Login_Form.UserHitReturn(sender))
             {
                 if (this.btnStart.Enabled)
                 {
                     this.btnStart_Click(sender, e);
                 }
+                else
+                {
+                    //((TextBox)sender).
+                }
+
+                //else
+                //{
+                //    ((CancelEventArgs)e).Cancel = true;
+                //}
             }
         }
         #endregion

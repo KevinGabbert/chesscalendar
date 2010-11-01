@@ -38,6 +38,7 @@
             this.ClientSize = new System.Drawing.Size(161, 125);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Options";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Options";
             this.ResumeLayout(false);
 
