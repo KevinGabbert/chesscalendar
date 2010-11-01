@@ -13,6 +13,7 @@ namespace ChessCalendar
         public string Title { get; set; }
         public string Message { get; set; }
         public string PGN { get; set; }
+        public bool NewMove { get; set; }
         public string GameID
         {
             get

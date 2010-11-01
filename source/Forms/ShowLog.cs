@@ -27,6 +27,7 @@ namespace ChessCalendar.Forms
             this.pbTimeTillNextUpdate.Increment(1);
 
             this.MessageList = new MessageList();
+            ShowLog.FormatDataGrid(this.dgvAvailableMoves);
         }
 
         #region Events
@@ -73,6 +74,42 @@ namespace ChessCalendar.Forms
                     this.MessageList = new MessageList();
                 }
             }
+        }
+        private static void FormatDataGrid(DataGridView dataGrid)
+        {
+            dataGrid.Columns.Clear();
+            dataGrid.AutoGenerateColumns = false;
+
+            DataGridViewTextBoxColumn newMoveColumn = new DataGridViewTextBoxColumn();
+            newMoveColumn.DataPropertyName = "NewMove";
+            newMoveColumn.HeaderText = "X";
+            newMoveColumn.Width = 20;
+
+            DataGridViewTextBoxColumn pubDateColumn = new DataGridViewTextBoxColumn();
+            pubDateColumn.DataPropertyName = "PubDate";
+            pubDateColumn.HeaderText = "Pub Date";
+            pubDateColumn.Width = 150;
+
+            DataGridViewTextBoxColumn titleColumn = new DataGridViewTextBoxColumn();
+            titleColumn.DataPropertyName = "Title";
+            titleColumn.HeaderText = "Title";
+            titleColumn.Width = 170;
+
+            DataGridViewTextBoxColumn descColumn = new DataGridViewTextBoxColumn();
+            descColumn.DataPropertyName = "Description";
+            descColumn.HeaderText = "Description";
+            descColumn.Width = 300;
+
+            DataGridViewTextBoxColumn gameIDColumn = new DataGridViewTextBoxColumn();
+            gameIDColumn.DataPropertyName = "GameID";
+            gameIDColumn.HeaderText = "Game ID";
+            gameIDColumn.Width = 60;
+
+            dataGrid.Columns.Add(newMoveColumn);
+            dataGrid.Columns.Add(pubDateColumn);
+            dataGrid.Columns.Add(titleColumn);
+            dataGrid.Columns.Add(descColumn);
+            dataGrid.Columns.Add(gameIDColumn);
         }
         private void UpdateDataGridView()
         {
@@ -139,8 +176,8 @@ namespace ChessCalendar.Forms
             }
             else
             {
-                this.dgvAvailableMoves.DataSource = dataSource;
-            }
+                this.dgvAvailableMoves.DataSource = dataSource;              
+            }  
         }
     }
 }

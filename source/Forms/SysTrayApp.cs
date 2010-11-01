@@ -150,5 +150,17 @@ namespace ChessCalendar.Forms
             }
            base.Dispose(isDisposing);
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // SysTrayApp
+            // 
+            this.ClientSize = new System.Drawing.Size(104, 0);
+            this.Name = "SysTrayApp";
+            this.ResumeLayout(false);
+
+        }
     }
 }

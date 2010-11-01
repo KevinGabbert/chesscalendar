@@ -31,11 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowLog));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.txtLog = new System.Windows.Forms.TextBox();
             this.dgvAvailableMoves = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
             this.txtNextCheck = new System.Windows.Forms.TextBox();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAvailableMoves)).BeginInit();
@@ -62,22 +62,12 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // txtLog
-            // 
-            this.txtLog.Location = new System.Drawing.Point(4, 3);
-            this.txtLog.MaxLength = 64000;
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(558, 101);
-            this.txtLog.TabIndex = 2;
-            // 
             // dgvAvailableMoves
             // 
             this.dgvAvailableMoves.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAvailableMoves.Location = new System.Drawing.Point(3, 110);
+            this.dgvAvailableMoves.Location = new System.Drawing.Point(3, 29);
             this.dgvAvailableMoves.Name = "dgvAvailableMoves";
-            this.dgvAvailableMoves.Size = new System.Drawing.Size(559, 267);
+            this.dgvAvailableMoves.Size = new System.Drawing.Size(559, 348);
             this.dgvAvailableMoves.TabIndex = 0;
             // 
             // tabPage2
@@ -105,6 +95,15 @@
             this.txtNextCheck.TabIndex = 3;
             this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // txtLog
+            // 
+            this.txtLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtLog.Location = new System.Drawing.Point(3, 3);
+            this.txtLog.Name = "txtLog";
+            this.txtLog.Size = new System.Drawing.Size(559, 20);
+            this.txtLog.TabIndex = 4;
+            this.txtLog.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -118,6 +117,7 @@
             this.Name = "ShowLog";
             this.RightToLeftLayout = true;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Log";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Shown += new System.EventHandler(this.ShowLog_Shown);

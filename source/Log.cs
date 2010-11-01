@@ -52,7 +52,7 @@ namespace ChessCalendar
             //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
             //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
 
-            this.Output(string.Empty, "Querying Calendar for older entries");
+            //this.Output(string.Empty, "Querying Calendar for older entries");
             this.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
             while (true)
@@ -74,8 +74,8 @@ namespace ChessCalendar
                     {
                         this.NewMessage = true;
 
-                        //This should ONLY show up on the form.
-                        this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
+                        //TODO: this needs to be an asterisk or something on the log form.
+                        //this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
                         foreach (ChessDotComGame current in this.ToDo)
                         {
                             this.Output(current);
@@ -84,7 +84,6 @@ namespace ChessCalendar
                     }
 
                     this.ToDo.Clear();
-                    this.Output(string.Empty, "----------" + Environment.NewLine, OutputMode.Form);
                 }
                 catch (Exception ex)
                 {
@@ -95,7 +94,7 @@ namespace ChessCalendar
                                                                 this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                 }
 
-                this.Output(string.Empty, "Sleeping for " + this.WaitSeconds + " seconds.");
+                //this.Output(string.Empty, "Sleeping for " + this.WaitSeconds + " seconds.");
                 Wait(this.WaitSeconds);
             }
         }
@@ -138,7 +137,7 @@ namespace ChessCalendar
 
             if (this.GetPGNs)
             {
-                this.Download_PGN(gameToLog);
+                Log.Download_PGN(gameToLog);
             }
 
             GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
@@ -161,9 +160,9 @@ namespace ChessCalendar
             this.ToDo.Ignore(gameToLog); //we won't need to log this one again, 
         }
 
-        private void Download_PGN(ChessDotComGame gameToLog)
+        private static void Download_PGN(ChessDotComGame gameToLog)
         {
-            this.Output(string.Empty, "Getting PGN for game: " + gameToLog.Title + " (" + gameToLog.GameID + ")");
+            //this.Output(string.Empty, "Getting PGN for game: " + gameToLog.Title + " (" + gameToLog.GameID + ")");
             WebClient client = new WebClient();
             Stream strm = client.OpenRead(CHESS_DOT_COM_PGN_PATH + gameToLog.GameID);
             if (strm != null)
@@ -181,9 +180,11 @@ namespace ChessCalendar
                 if (gamelist.Count > 0)
                 {
                     this.LogGames = true;
-                    this.Output(string.Empty, Environment.NewLine + "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
                     
-                    this.Output(string.Empty, Environment.NewLine, OutputMode.Form);
+                    //TODO: this needs to be in a field in the log form
+                    //this.Output(string.Empty, Environment.NewLine + "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
+                    
+                    //this.Output(string.Empty, Environment.NewLine, OutputMode.Form);
                     foreach (ChessCalendarRSSItem game in gamelist)
                     {
                         toDo.ProcessRSSItem(game);
@@ -191,7 +192,7 @@ namespace ChessCalendar
                 }
                 else
                 {
-                    this.Output(string.Empty, "No new or updated games found: " + DateTime.Now.ToLongTimeString());
+                    //this.Output(string.Empty, "No new or updated games found: " + DateTime.Now.ToLongTimeString());
                     this.LogGames = false;
                 }
             }

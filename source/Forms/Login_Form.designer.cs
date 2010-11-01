@@ -157,7 +157,9 @@
             // 
             // txtChessDotComName
             // 
+            this.txtChessDotComName.AcceptsReturn = true;
             this.txtChessDotComName.Location = new System.Drawing.Point(12, 307);
+            this.txtChessDotComName.Multiline = true;
             this.txtChessDotComName.Name = "txtChessDotComName";
             this.txtChessDotComName.Size = new System.Drawing.Size(250, 20);
             this.txtChessDotComName.TabIndex = 5;
@@ -242,6 +244,7 @@
             this.Controls.Add(this.pbTitle);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Login_Form";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).EndInit();
             this.ResumeLayout(false);
