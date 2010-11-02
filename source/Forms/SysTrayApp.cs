@@ -13,7 +13,7 @@ namespace ChessCalendar.Forms
         private Log _runningLog = new Log();
         private bool _loggedIn = false;
 
-        public const string VERSION = "Chess Calendar v10.31.10 Prototype ";
+        public const string VERSION = "Chess Calendar v11.1.10 (Prototype) ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public SysTrayApp()
@@ -64,6 +64,16 @@ namespace ChessCalendar.Forms
         {
             var loginInfo = GetLoginInfo();
 
+            _runningLog = new Log();
+            _runningLog.LogVersion = VERSION;
+            _runningLog.DebugMode = loginInfo.DebugMode;
+            _runningLog.GetPGNs = loginInfo.DownloadPGNs;
+            _runningLog.Beep_On_New_Move = loginInfo.Beep_On_New_Move;
+            _runningLog.NotifyIcon = _trayIcon;
+            _runningLog.ContextMenu = _trayMenu;
+            _runningLog.OutputMode = OutputMode.Form;
+            _runningLog.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+
             if (loginInfo.AutoOpenLog)
             {
                 this.ShowLog(sender, e);
@@ -72,27 +82,12 @@ namespace ChessCalendar.Forms
             this.ValidateAndStart(loginInfo);
         }
 
-        private void ShowLogin()
-        {
-            Login_Form userInfoForm = GetLoginInfo();
-            this.ValidateAndStart(userInfoForm);
-        }
-
         private void ValidateAndStart(Login_Form userInfoForm)
         {
             if (userInfoForm.ValidatedForm)
             {
                 this._loggedIn = true;
 
-                _runningLog = new Log();
-                _runningLog.LogVersion = VERSION;
-                _runningLog.DebugMode = userInfoForm.DebugMode;
-                _runningLog.GetPGNs = userInfoForm.DownloadPGNs;
-                _runningLog.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
-                _runningLog.NotifyIcon = _trayIcon;
-                _runningLog.ContextMenu = _trayMenu;
-                _runningLog.OutputMode = OutputMode.Form;
-                _runningLog.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
                 _runningLog.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
                                           userInfoForm.User, 
                                           userInfoForm.Password, 
