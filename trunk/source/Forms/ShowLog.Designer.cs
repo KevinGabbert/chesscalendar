@@ -31,11 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowLog));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.dgvAvailableMoves = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
             this.txtNextCheck = new System.Windows.Forms.TextBox();
-            this.txtLog = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAvailableMoves)).BeginInit();
@@ -62,6 +62,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // txtLog
+            // 
+            this.txtLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtLog.Location = new System.Drawing.Point(3, 3);
+            this.txtLog.Name = "txtLog";
+            this.txtLog.Size = new System.Drawing.Size(559, 20);
+            this.txtLog.TabIndex = 4;
+            this.txtLog.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // dgvAvailableMoves
             // 
             this.dgvAvailableMoves.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -69,6 +78,7 @@
             this.dgvAvailableMoves.Name = "dgvAvailableMoves";
             this.dgvAvailableMoves.Size = new System.Drawing.Size(559, 348);
             this.dgvAvailableMoves.TabIndex = 0;
+            this.dgvAvailableMoves.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvAvailableMoves_CellFormatting);
             // 
             // tabPage2
             // 
@@ -94,15 +104,6 @@
             this.txtNextCheck.Size = new System.Drawing.Size(571, 20);
             this.txtNextCheck.TabIndex = 3;
             this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // txtLog
-            // 
-            this.txtLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtLog.Location = new System.Drawing.Point(3, 3);
-            this.txtLog.Name = "txtLog";
-            this.txtLog.Size = new System.Drawing.Size(559, 20);
-            this.txtLog.TabIndex = 4;
-            this.txtLog.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ShowLog
             // 

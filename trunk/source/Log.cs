@@ -36,8 +36,9 @@ namespace ChessCalendar
         public Log()
         {
             this.Messages = new Queue<string>();
-            this.WaitSeconds = 10;
+            this.WaitSeconds = 1000;
         }
+
 
         public void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {

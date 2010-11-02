@@ -28,6 +28,9 @@ namespace ChessCalendar.Forms
 
             this.MessageList = new MessageList();
             ShowLog.FormatDataGrid(this.dgvAvailableMoves);
+
+            //TODO:  make this into a popup.
+            this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
         }
 
         #region Events
@@ -39,6 +42,19 @@ namespace ChessCalendar.Forms
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Dispose();
+        }
+
+        private void dgvAvailableMoves_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (this.dgvAvailableMoves.Columns[e.ColumnIndex].DataPropertyName == "NewMove")
+            {
+                if (this.dgvAvailableMoves.DataSource != null)
+                {
+                    IChessItem item = ((BindingList<IChessItem>) this.dgvAvailableMoves.DataSource)[e.RowIndex];
+
+                    e.CellStyle.BackColor = item.NewMove == true ? Color.Green : Color.Transparent;
+                }
+            }
         }
 
         #endregion
@@ -126,7 +142,10 @@ namespace ChessCalendar.Forms
                             this.MessageList.Add(this.Log.NewMoves.Dequeue()); 
                         }
 
+                        GC.Collect();
                         this.SetMovesDataSource(this.MessageList);
+                        GC.Collect();
+
                         this.Log.NewMessage = true;
                     }
                 }
