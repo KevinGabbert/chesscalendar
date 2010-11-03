@@ -198,5 +198,24 @@ namespace ChessCalendar.Forms
                 this.dgvAvailableMoves.DataSource = dataSource;              
             }  
         }
+
+        private void ShowLog_Resize(object sender, EventArgs e)
+        {
+            //TabControl
+            this.tabs.Width = this.Width - 10;
+            this.tabs.Height = this.Height - 20;
+            
+            //Grid
+            this.dgvAvailableMoves.Width = this.Width - 20;
+            this.dgvAvailableMoves.Height = this.Height - 70;
+
+            this.txtLog.Width = this.Width - 8;
+
+            this.txtNextCheck.Top = this.Height - 67;
+            this.txtNextCheck.Width = this.Width - 8;
+
+            this.pbTimeTillNextUpdate.Top = this.Height - 45;
+            this.pbTimeTillNextUpdate.Width = this.Width - 8;
+        }
     }
 }
