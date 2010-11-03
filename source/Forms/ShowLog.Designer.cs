@@ -36,6 +36,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
             this.txtNextCheck = new System.Windows.Forms.TextBox();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAvailableMoves)).BeginInit();
@@ -48,7 +50,7 @@
             this.tabs.Location = new System.Drawing.Point(-2, 1);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(573, 406);
+            this.tabs.Size = new System.Drawing.Size(666, 451);
             this.tabs.TabIndex = 0;
             // 
             // tabPage1
@@ -58,7 +60,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(565, 380);
+            this.tabPage1.Size = new System.Drawing.Size(658, 425);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
@@ -67,7 +69,7 @@
             this.txtLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtLog.Location = new System.Drawing.Point(3, 3);
             this.txtLog.Name = "txtLog";
-            this.txtLog.Size = new System.Drawing.Size(559, 20);
+            this.txtLog.Size = new System.Drawing.Size(646, 20);
             this.txtLog.TabIndex = 4;
             this.txtLog.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -76,7 +78,8 @@
             this.dgvAvailableMoves.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAvailableMoves.Location = new System.Drawing.Point(3, 29);
             this.dgvAvailableMoves.Name = "dgvAvailableMoves";
-            this.dgvAvailableMoves.Size = new System.Drawing.Size(559, 348);
+            this.dgvAvailableMoves.RowHeadersVisible = false;
+            this.dgvAvailableMoves.Size = new System.Drawing.Size(646, 390);
             this.dgvAvailableMoves.TabIndex = 0;
             this.dgvAvailableMoves.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvAvailableMoves_CellFormatting);
             // 
@@ -85,31 +88,53 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(565, 380);
+            this.tabPage2.Size = new System.Drawing.Size(658, 425);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // pbTimeTillNextUpdate
             // 
-            this.pbTimeTillNextUpdate.Location = new System.Drawing.Point(0, 436);
+            this.pbTimeTillNextUpdate.Location = new System.Drawing.Point(-2, 507);
             this.pbTimeTillNextUpdate.Name = "pbTimeTillNextUpdate";
-            this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(571, 15);
+            this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(660, 15);
             this.pbTimeTillNextUpdate.TabIndex = 1;
             // 
             // txtNextCheck
             // 
             this.txtNextCheck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtNextCheck.Location = new System.Drawing.Point(0, 413);
+            this.txtNextCheck.Location = new System.Drawing.Point(-2, 484);
             this.txtNextCheck.Name = "txtNextCheck";
-            this.txtNextCheck.Size = new System.Drawing.Size(571, 20);
+            this.txtNextCheck.Size = new System.Drawing.Size(660, 20);
             this.txtNextCheck.TabIndex = 3;
             this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(165, 458);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(121, 23);
+            this.btnPause.TabIndex = 4;
+            this.btnPause.Text = "Pause reading RSS";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(386, 458);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(121, 23);
+            this.btnRefresh.TabIndex = 5;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(570, 453);
+            this.ClientSize = new System.Drawing.Size(663, 527);
+            this.Controls.Add(this.btnRefresh);
+            this.Controls.Add(this.btnPause);
             this.Controls.Add(this.pbTimeTillNextUpdate);
             this.Controls.Add(this.txtNextCheck);
             this.Controls.Add(this.tabs);
@@ -119,7 +144,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Log";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShowLog_FormClosing);
             this.Shown += new System.EventHandler(this.ShowLog_Shown);
             this.Resize += new System.EventHandler(this.ShowLog_Resize);
             this.tabs.ResumeLayout(false);
@@ -140,5 +165,7 @@
         private System.Windows.Forms.TextBox txtNextCheck;
         private System.Windows.Forms.DataGridView dgvAvailableMoves;
         private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }

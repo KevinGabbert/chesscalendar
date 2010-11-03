@@ -14,6 +14,8 @@ namespace ChessCalendar
         public const string GOOGLE_CALENDAR_DEFAULT = "http://www.google.com/calendar/feeds/default/private/full";
         public const string DETECTED = " detected ";
 
+        private bool _stop = false;
+
         #region Properties
 
             public Uri _calendarToPost = new Uri(GOOGLE_CALENDAR_DEFAULT);
@@ -30,7 +32,7 @@ namespace ChessCalendar
             public bool Beep_On_New_Move { get; set; }
             public bool GetPGNs { get; set; }
             public bool LogGames { get; set; }
-
+            public bool ResetWait { get; set; }
         #endregion
 
         public Log()
@@ -38,7 +40,6 @@ namespace ChessCalendar
             this.Messages = new Queue<string>();
             this.WaitSeconds = 1000;
         }
-
 
         public void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
@@ -58,45 +59,52 @@ namespace ChessCalendar
 
             while (true)
             {
-                ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
-                    
-                try
+                if (!this._stop)
                 {
-                    newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+                    ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
 
-                    this.AddOrUpdate_Games(this.ToDo, newRssItems);
-
-                    //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
-                    //On remove, delete the all day reminder.
-
-                    this.ProcessNewRSSItems(newRssItems);
-
-                    if (this.LogGames)
+                    try
                     {
-                        this.NewMessage = true;
+                        newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
 
-                        //TODO: this needs to be an asterisk or something on the log form.
-                        //this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
-                        foreach (ChessDotComGame current in this.ToDo)
+                        this.AddOrUpdate_Games(this.ToDo, newRssItems);
+
+                        //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                        //On remove, delete the all day reminder.
+
+                        this.ProcessNewRSSItems(newRssItems);
+
+                        if (this.LogGames)
                         {
-                            this.Output(current);
-                            this.Log_Game(current, userName, password);
+                            this.NewMessage = true;
+
+                            //TODO: this needs to be an asterisk or something on the log form.
+                            //this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
+                            foreach (ChessDotComGame current in this.ToDo)
+                            {
+                                this.Output(current);
+                                this.Log_Game(current, userName, password);
+                            }
                         }
+
+                        this.ToDo.Clear();
+                    }
+                    catch (Exception ex)
+                    {
+                        //if 504 Invalid gateway error. Chess.com is down
+                        this.Output(string.Empty, "error. " + ex.Message);
+
+                        GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
+                                                                    this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                     }
 
-                    this.ToDo.Clear();
+                    //this.Output(string.Empty, "Sleeping for " + this.WaitSeconds + " seconds.");
+                    this.Wait(this.WaitSeconds);
                 }
-                catch (Exception ex)
+                else
                 {
-                    //if 504 Invalid gateway error. Chess.com is down
-                    this.Output(string.Empty, "error. " + ex.Message);
-
-                    GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
-                                                                this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
+                    Application.DoEvents();
                 }
-
-                //this.Output(string.Empty, "Sleeping for " + this.WaitSeconds + " seconds.");
-                Wait(this.WaitSeconds);
             }
         }
 
@@ -124,6 +132,19 @@ namespace ChessCalendar
                 var difference = (finish.Subtract(DateTime.Now));
                 this.WaitProgress = Convert.ToInt32(100 - ((difference.TotalSeconds / waitTime.TotalSeconds) * 100));
                 current = DateTime.Now;
+
+                if(this.ResetWait)
+                {
+                    this.ResetWait = false;
+                    break;
+                }
+
+                if(this._stop)
+                {
+                    this.WaitProgress = 0;
+                    this.NextCheck = new DateTime();
+                    break;
+                }
             }
 
             this.NewMessage = false;
@@ -197,6 +218,15 @@ namespace ChessCalendar
                     this.LogGames = false;
                 }
             }
+        }
+
+        internal void Stop()
+        {
+            this._stop = true;
+        }
+        internal void Go()
+        {
+            this._stop = false;
         }
     }
 }
