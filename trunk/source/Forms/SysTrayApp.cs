@@ -13,7 +13,7 @@ namespace ChessCalendar.Forms
         private Log _runningLog = new Log();
         private bool _loggedIn = false;
 
-        public const string VERSION = "Chess Calendar v11.1.10 (Prototype) ";
+        public const string VERSION = "Chess Calendar v11.3.10 (Prototype) ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public SysTrayApp()
