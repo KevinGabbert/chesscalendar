@@ -254,7 +254,7 @@ namespace ChessCalendar.Forms
             pubDateColumn.Width = 150;
 
             DataGridViewTextBoxColumn titleColumn = new DataGridViewTextBoxColumn();
-            titleColumn.DataPropertyName = "Title";
+            titleColumn.DataPropertyName = "GameTitle";
             titleColumn.HeaderText = "Title";
             titleColumn.Width = 170;
 

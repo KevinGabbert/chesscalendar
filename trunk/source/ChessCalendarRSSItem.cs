@@ -56,6 +56,13 @@ namespace ChessCalendar
             get { throw new System.NotImplementedException(); }
         }
 
+        public string GameTitle
+        {
+            get
+            {
+                return ParseUtility.GetGameTitle(this.Title);
+            }
+        }
 
         public string Opponent
         {
