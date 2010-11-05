@@ -52,5 +52,12 @@ namespace ChessCalendar
 
             return split[split.Length - 2]; //Opponent name will always be the 2nd to last item in the title
         }
+
+        internal static string GetGameTitle(string title)
+        {
+            var split = title.Split("-".ToCharArray(), StringSplitOptions.None); //this could break if there is a hyphen in the title
+
+            return split[0]; //Title will always be the 2nd to last item in the title
+        }
     }
 }

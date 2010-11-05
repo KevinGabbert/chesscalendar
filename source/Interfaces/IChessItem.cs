@@ -19,6 +19,8 @@ namespace ChessCalendar.Interfaces
         string PGN { get; set; }
         bool NewMove { get; set; }
 
+        string GameTitle { get; }
+
         string Opponent {get; }
 
         string RatingRaw {get; }
