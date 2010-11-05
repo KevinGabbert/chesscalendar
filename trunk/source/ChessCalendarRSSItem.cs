@@ -15,7 +15,7 @@ namespace ChessCalendar
             }
         }
 
-        public string Rating
+        public string RatingRaw
         {
             get
             {
@@ -36,12 +36,23 @@ namespace ChessCalendar
                 return ParseUtility.GetTimeLeft(this.Description);
             }
         }
-        public string Move
+        public string MoveRaw
         {
             get
             {
                 return ParseUtility.GetMove(this.Description);
             }
+        }
+
+
+        public int Rating
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public int Move
+        {
+            get { throw new System.NotImplementedException(); }
         }
     }
 }

@@ -15,13 +15,13 @@ namespace ChessCalendar
 
         #endregion
 
-        public OutputClass()
+        protected OutputClass()
         {
             this.NewMoves = new Queue<IChessItem>();
             this.Messages = new Queue<string>();
         }
 
-        public void Output(string title, string outputMessage)
+        protected void Output(string title, string outputMessage)
         {
             switch (this.OutputMode)
             {
@@ -40,7 +40,8 @@ namespace ChessCalendar
                     break;
             }
         }
-        public void Output(IChessItem game)
+
+        protected void Output(IChessItem game)
         {
             switch (this.OutputMode)
             {
