@@ -38,5 +38,19 @@ namespace ChessCalendar
         {
             return description.Split("</>".ToCharArray(), StringSplitOptions.None)[6];
         }
+
+        internal static string GetOpponent(string title)
+        {
+            var split = title.Split("-".ToCharArray(), StringSplitOptions.None); //This could break if the player has '-' in his name
+
+            return split[split.Length - 1]; //Opponent name will always be the last item in the title.  
+        }
+
+        internal static string GetTournamentName(string title)
+        {
+            var split = title.Split("-".ToCharArray(), StringSplitOptions.None); //This could break if the player or tourney has '-' in his/its name
+
+            return split[split.Length - 2]; //Opponent name will always be the 2nd to last item in the title
+        }
     }
 }
