@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ChessCalendar.Enums;
+using ChessCalendar.Interfaces;
 using RssToolkit.Rss;
 
 namespace ChessCalendar
@@ -8,8 +9,8 @@ namespace ChessCalendar
     public class CalendarLogManager : GameList
     {
         #region Properties
-            public GameList IgnoreList { get; set; }
-            public bool Beep_On_New_Move { get; set; }
+            public GameList IgnoreList { private get; set; }
+            public bool Beep_On_New_Move { private get; set; }
         #endregion
 
         public CalendarLogManager(Log logToManage)
@@ -17,41 +18,11 @@ namespace ChessCalendar
             this.Log = logToManage;
             this.IgnoreList = new GameList(logToManage);
         }
-
-        public void Add(ChessDotComGame game)
-        {
-            base.Add(game);  
-        }
-        public void Ignore(RssItem rssItem)
-        {
-            this.Add(this.IgnoreList, rssItem);
-        }
-        public void Ignore(ChessDotComGame game)
+        public void Ignore(IChessItem game)
         {
             this.Add(this.IgnoreList, game);
         }
-        public void Add(GameList list, RssItem rssItem)
-        {
-            try
-            {
-                //Lets see if we can find a match
-                if (list.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any())
-                {
-                    list.Remove_Item_With_Guid(rssItem.Link);
-                }
-                else
-                {
-                    list.AddGame(rssItem);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log.Output(string.Empty, ex.Message, OutputMode.Form);
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-        }
-        public void Add(GameList list, ChessDotComGame game)
+        private void Add(GameList list, IChessItem game)
         {
             try
             {
