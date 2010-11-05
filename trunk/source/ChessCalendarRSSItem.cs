@@ -14,5 +14,34 @@ namespace ChessCalendar
                 return ParseUtility.GetGameID(this.Link);
             }
         }
+
+        public string Rating
+        {
+            get
+            {
+                return ParseUtility.GetRating(this.Description);
+            }
+        }
+        public string TimeLeftRaw
+        {
+            get
+            {
+                return ParseUtility.GetTimeLeftRaw(this.Description);
+            }
+        }
+        public System.DateTime TimeLeft
+        {
+            get
+            {
+                return ParseUtility.GetTimeLeft(this.Description);
+            }
+        }
+        public string Move
+        {
+            get
+            {
+                return ParseUtility.GetMove(this.Description);
+            }
+        }
     }
 }

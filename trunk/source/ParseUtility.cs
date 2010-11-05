@@ -15,5 +15,25 @@
             }
             return retVal;
         }
+
+        internal static string GetRating(string description)
+        {
+            throw new System.NotImplementedException(); //"Description.Split("<br/>".ToArray(), StringSplitOptions.None)[0];
+        }
+
+        internal static System.DateTime GetTimeLeft(string description)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        internal static string GetTimeLeftRaw(string description)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        internal static string GetMove(string description)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

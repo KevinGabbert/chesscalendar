@@ -159,3 +159,40 @@ namespace ChessCalendar.Forms
         }
     }
 }
+
+
+//using System;
+//using System.Windows.Forms;
+//using System.Drawing;
+
+//public class AnimatedSystemTrayIcon : System.Windows.Forms.Form {
+
+//    // (Designer code omitted.)
+
+//    Icon[] images;
+//    int offset = 0;
+
+//    private void Form1_Load(object sender, System.EventArgs e) {
+    
+//        // Load the basic set of eight icons.
+//        images = new Icon[8];
+//        images[0] = new Icon("moon01.ico");
+//        images[1] = new Icon("moon02.ico");
+//        images[2] = new Icon("moon03.ico");
+//        images[3] = new Icon("moon04.ico");
+//        images[4] = new Icon("moon05.ico");
+//        images[5] = new Icon("moon06.ico");
+//        images[6] = new Icon("moon07.ico");
+//        images[7] = new Icon("moon08.ico");
+//    }
+
+//    private void timer_Elapsed(object sender, 
+//      System.Timers.ElapsedEventArgs e) {
+    
+//        // Change the icon.
+//        // This event handler fires once every second (1000 ms).
+//        notifyIcon.Icon = images[offset];
+//        offset++;
+//        if (offset > 7) offset = 0;
+//    }
+//}
