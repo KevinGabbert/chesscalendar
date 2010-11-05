@@ -20,7 +20,10 @@ namespace ChessCalendar
         }
         public void Ignore(IChessItem game)
         {
-            this.Add(this.IgnoreList, game);
+            //if(!IgnoreListHasIt(game))
+            //{
+                this.Add(this.IgnoreList, game);
+            //}
         }
         private void Add(GameList list, IChessItem game)
         {
@@ -29,11 +32,13 @@ namespace ChessCalendar
                 //Lets see if we can find a match
                 if (list.Where(thisGame => thisGame.PubDate == game.PubDate).Any())
                 {
-                    list.Remove_Item_With_Guid(game.Link);
+                    list.AddGame(game);
+                    //list.Remove_Item_With_Guid(game.Link);
                 }
                 else
                 {
-                    list.AddGame(game);
+                    list.Remove_Item_With_Guid(game.Link);
+                    //list.AddGame(game);
                 }
             }
             catch (Exception ex)
@@ -43,7 +48,7 @@ namespace ChessCalendar
             }
         }
 
-        public void ProcessRSSItem(ChessCalendarRSSItem rssItem)
+        public void ProcessRSSItem(IChessItem rssItem)
         {
             this.IgnoreIfWeHaveIt(rssItem);
 
@@ -65,14 +70,14 @@ namespace ChessCalendar
                 this.Remove_Item_With_Guid(rssItem.Link);
             }
         }
-        private bool IgnoreListHasIt(RssItem rssItem)
+        private bool IgnoreListHasIt(IChessItem rssItem)
         {
             bool ignorePubMatch = this.IgnoreList.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
             bool ignoreGuidMatch = this.IgnoreList.Where(thisGame => thisGame.Link == rssItem.Link).Any();
 
             return ignorePubMatch && ignoreGuidMatch;
         }
-        private void IgnoreIfWeHaveIt(ChessCalendarRSSItem rssItem)
+        private void IgnoreIfWeHaveIt(IChessItem rssItem)
         {
             if (!this.IgnoreListHasIt(rssItem))
             {
@@ -82,7 +87,7 @@ namespace ChessCalendar
                 }
             }
         }
-        private void Remove_Any_Older_Versions_Of(RssItem rssItem)
+        private void Remove_Any_Older_Versions_Of(IChessItem rssItem)
         {
            //Well, technically, this should be remove any OTHER versions of, but the point is to get rid of
            //previously stored versions, which are older.

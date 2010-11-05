@@ -187,7 +187,10 @@ namespace ChessCalendar.Forms
                 {
                     if (this.Log.NewMoves.Count > 0)
                     {
-                        this.MessageList.Clear();
+                        if (this.Log.ClearList)
+                        {
+                            this.MessageList.Clear();
+                        }
 
                         for (int i = this.Log.NewMoves.Count; i > 0; i--)
                         {

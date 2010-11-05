@@ -34,6 +34,8 @@ namespace ChessCalendar
             public bool GetPGNs { get; set; }
             public bool LogGames { get; set; }
             public bool ResetWait { get; set; }
+
+            public bool ClearList { get; set; }//needs a better name.
         #endregion
 
         public Log()
@@ -73,7 +75,9 @@ namespace ChessCalendar
                         //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                         //On remove, delete the all day reminder.
 
-                        this.ProcessNewRSSItems(newRssItems);
+                        this.ClearList = false;
+
+                        this.ProcessNewRSSItems(newRssItems); //Outputting here.. //TODO this causes gridview to clear and refresh
 
                         if (this.LogGames)
                         {
@@ -83,10 +87,12 @@ namespace ChessCalendar
                             //this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
                             foreach (IChessItem current in this.ToDo)
                             {
-                                this.Output(current);
+                                this.Output(current); //TODO this causes gridview to clear and refresh
                                 this.Log_Game(current, userName, password);
                             }
                         }
+
+                        this.ClearList = true;
 
                         this.ToDo.Clear();
                     }
