@@ -19,9 +19,13 @@ namespace ChessCalendar.Interfaces
         string PGN { get; set; }
         bool NewMove { get; set; }
 
-        string Rating {get; }
+        string RatingRaw {get; }
+        int Rating { get; }
+
         string TimeLeftRaw {get; }
         DateTime TimeLeft {get; }
-        string Move {get; }
+
+        string MoveRaw {get; }
+        int Move { get; }
     }
 }

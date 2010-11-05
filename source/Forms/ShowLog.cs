@@ -9,14 +9,14 @@ namespace ChessCalendar.Forms
 {
     public partial class ShowLog : Form
     {
-        protected int _fail = 0;
-        protected bool _pause = false;
-        protected bool _progressBarFlash;
+        private int _fail = 0;
+        private bool _pause = false;
+        private bool _progressBarFlash;
 
         #region Properties
 
             public Log Log { get; set; }
-            public MessageList MessageList { get; set; }
+            private MessageList MessageList { get; set; }
             public bool DebugMode { get; set; }
             
         #endregion
@@ -258,10 +258,20 @@ namespace ChessCalendar.Forms
             titleColumn.HeaderText = "Title";
             titleColumn.Width = 170;
 
-            DataGridViewTextBoxColumn descColumn = new DataGridViewTextBoxColumn();
-            descColumn.DataPropertyName = "Description";
-            descColumn.HeaderText = "Description";
-            descColumn.Width = 300;
+            DataGridViewTextBoxColumn ratingColumn = new DataGridViewTextBoxColumn();
+            ratingColumn.DataPropertyName = "RatingRaw";
+            ratingColumn.HeaderText = "Rating";
+            ratingColumn.Width = 80;
+
+            DataGridViewTextBoxColumn timeLeftColumn = new DataGridViewTextBoxColumn();
+            timeLeftColumn.DataPropertyName = "TimeLeftRaw";
+            timeLeftColumn.HeaderText = "Time Left";
+            timeLeftColumn.Width = 150;
+
+            DataGridViewTextBoxColumn moveColumn = new DataGridViewTextBoxColumn();
+            moveColumn.DataPropertyName = "MoveRaw";
+            moveColumn.HeaderText = "Move #";
+            moveColumn.Width = 80;
 
             DataGridViewTextBoxColumn gameIDColumn = new DataGridViewTextBoxColumn();
             gameIDColumn.DataPropertyName = "GameID";
@@ -271,12 +281,14 @@ namespace ChessCalendar.Forms
             dataGrid.Columns.Add(newMoveColumn);
             dataGrid.Columns.Add(pubDateColumn);
             dataGrid.Columns.Add(titleColumn);
-            dataGrid.Columns.Add(descColumn);
+            dataGrid.Columns.Add(ratingColumn);
+            dataGrid.Columns.Add(timeLeftColumn);
+            dataGrid.Columns.Add(moveColumn);
             dataGrid.Columns.Add(gameIDColumn);
         }
 
-        protected delegate void MovesDelegate(BindingList<IChessItem> dataSource);
-        public void SetMovesDataSource(BindingList<IChessItem> dataSource)
+        private delegate void MovesDelegate(BindingList<IChessItem> dataSource);
+        private void SetMovesDataSource(BindingList<IChessItem> dataSource)
         {
             if (this.dgvAvailableMoves.InvokeRequired)
             {

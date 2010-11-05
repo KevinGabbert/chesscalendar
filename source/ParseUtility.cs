@@ -1,4 +1,7 @@
-﻿namespace ChessCalendar
+﻿using System;
+using System.Linq;
+
+namespace ChessCalendar
 {
     public static class ParseUtility
     {
@@ -18,7 +21,7 @@
 
         internal static string GetRating(string description)
         {
-            throw new System.NotImplementedException(); //"Description.Split("<br/>".ToArray(), StringSplitOptions.None)[0];
+            return description.Split("</>".ToCharArray(), StringSplitOptions.None)[0];
         }
 
         internal static System.DateTime GetTimeLeft(string description)
@@ -28,12 +31,12 @@
 
         internal static string GetTimeLeftRaw(string description)
         {
-            throw new System.NotImplementedException();
+            return description.Split("</>".ToCharArray(), StringSplitOptions.None)[3];
         }
 
         internal static string GetMove(string description)
         {
-            throw new System.NotImplementedException();
+            return description.Split("</>".ToCharArray(), StringSplitOptions.None)[6];
         }
     }
 }

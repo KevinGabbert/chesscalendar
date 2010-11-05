@@ -4,6 +4,7 @@ using System.Net;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using ChessCalendar.Enums;
+using ChessCalendar.Interfaces;
 using RssToolkit.Rss;
 
 namespace ChessCalendar
@@ -80,7 +81,7 @@ namespace ChessCalendar
 
                             //TODO: this needs to be an asterisk or something on the log form.
                             //this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
-                            foreach (ChessDotComGame current in this.ToDo)
+                            foreach (IChessItem current in this.ToDo)
                             {
                                 this.Output(current);
                                 this.Log_Game(current, userName, password);
@@ -150,7 +151,7 @@ namespace ChessCalendar
             this.NewMessage = false;
         }
 
-        private void Log_Game(ChessDotComGame gameToLog, string userName, string password)
+        private void Log_Game(IChessItem gameToLog, string userName, string password)
         {
             if (this.DebugMode)
             {
@@ -182,7 +183,7 @@ namespace ChessCalendar
             this.ToDo.Ignore(gameToLog); //we won't need to log this one again, 
         }
 
-        private static void Download_PGN(ChessDotComGame gameToLog)
+        private static void Download_PGN(IChessItem gameToLog) //TODO: GameType.ChessDotComGame
         {
             //this.Output(string.Empty, "Getting PGN for game: " + gameToLog.Title + " (" + gameToLog.GameID + ")");
             WebClient client = new WebClient();
