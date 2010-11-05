@@ -258,6 +258,11 @@ namespace ChessCalendar.Forms
             titleColumn.HeaderText = "Title";
             titleColumn.Width = 170;
 
+            DataGridViewTextBoxColumn opponentColumn = new DataGridViewTextBoxColumn();
+            opponentColumn.DataPropertyName = "Opponent";
+            opponentColumn.HeaderText = "Opponent";
+            opponentColumn.Width = 70;
+
             DataGridViewTextBoxColumn ratingColumn = new DataGridViewTextBoxColumn();
             ratingColumn.DataPropertyName = "RatingRaw";
             ratingColumn.HeaderText = "Rating";
@@ -281,6 +286,7 @@ namespace ChessCalendar.Forms
             dataGrid.Columns.Add(newMoveColumn);
             dataGrid.Columns.Add(pubDateColumn);
             dataGrid.Columns.Add(titleColumn);
+            dataGrid.Columns.Add(opponentColumn);
             dataGrid.Columns.Add(ratingColumn);
             dataGrid.Columns.Add(timeLeftColumn);
             dataGrid.Columns.Add(moveColumn);

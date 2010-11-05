@@ -1,4 +1,5 @@
-﻿using ChessCalendar.Interfaces;
+﻿using System;
+using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
 {
@@ -53,6 +54,15 @@ namespace ChessCalendar
         public int Move
         {
             get { throw new System.NotImplementedException(); }
+        }
+
+
+        public string Opponent
+        {
+            get
+            {
+                return ParseUtility.GetOpponent(this.Title);
+            }
         }
     }
 }
