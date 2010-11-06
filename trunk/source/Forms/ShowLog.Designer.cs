@@ -81,6 +81,7 @@
             this.dgvAvailableMoves.RowHeadersVisible = false;
             this.dgvAvailableMoves.Size = new System.Drawing.Size(646, 390);
             this.dgvAvailableMoves.TabIndex = 0;
+            this.dgvAvailableMoves.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAvailableMoves_CellClick);
             this.dgvAvailableMoves.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvAvailableMoves_CellFormatting);
             // 
             // tabPage2

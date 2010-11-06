@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using ChessCalendar.Interfaces;
@@ -30,7 +31,7 @@ namespace ChessCalendar.Forms
             this.pbTimeTillNextUpdate.Increment(1);
 
             this.MessageList = new MessageList();
-            ShowLog.FormatDataGrid(this.dgvAvailableMoves);
+            FormatDataGrid(this.dgvAvailableMoves);
 
             //TODO:  make this into a popup.
             this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
@@ -241,12 +242,12 @@ namespace ChessCalendar.Forms
             }
         }
 
-        private static void FormatDataGrid(DataGridView dataGrid)
+        private void FormatDataGrid(DataGridView dataGrid)
         {
             dataGrid.Columns.Clear();
             dataGrid.AutoGenerateColumns = false;
 
-            DataGridViewTextBoxColumn newMoveColumn = new DataGridViewTextBoxColumn();
+            DataGridViewLinkColumn newMoveColumn = new DataGridViewLinkColumn();
             newMoveColumn.DataPropertyName = "NewMove";
             newMoveColumn.HeaderText = "X";
             newMoveColumn.Width = 20;
@@ -256,12 +257,19 @@ namespace ChessCalendar.Forms
             pubDateColumn.HeaderText = "Pub Date";
             pubDateColumn.Width = 150;
 
-            DataGridViewTextBoxColumn titleColumn = new DataGridViewTextBoxColumn();
+            DataGridViewLinkColumn titleColumn = new DataGridViewLinkColumn();
             titleColumn.DataPropertyName = "GameTitle";
             titleColumn.HeaderText = "Title";
             titleColumn.Width = 170;
+            
+            //titleColumn.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(x);
+            //titleColumn.UseColumnTextForLinkValue = true;
+            titleColumn.LinkBehavior = LinkBehavior.SystemDefault;
+            
+            //titleColumn.Name = "http://www.chess.com/echess/profile/";
+            //titleColumn.Text = "http://www.chess.com/echess/profile/";
 
-            DataGridViewTextBoxColumn opponentColumn = new DataGridViewTextBoxColumn();
+            DataGridViewLinkColumn opponentColumn = new DataGridViewLinkColumn();
             opponentColumn.DataPropertyName = "Opponent";
             opponentColumn.HeaderText = "Opponent";
             opponentColumn.Width = 70;
@@ -281,7 +289,7 @@ namespace ChessCalendar.Forms
             moveColumn.HeaderText = "Move #";
             moveColumn.Width = 80;
 
-            DataGridViewTextBoxColumn gameIDColumn = new DataGridViewTextBoxColumn();
+            DataGridViewLinkColumn gameIDColumn = new DataGridViewLinkColumn();
             gameIDColumn.DataPropertyName = "GameID";
             gameIDColumn.HeaderText = "Game ID";
             gameIDColumn.Width = 60;
@@ -307,6 +315,30 @@ namespace ChessCalendar.Forms
             {
                 this.dgvAvailableMoves.DataSource = dataSource;              
             }  
+        }
+
+        private void dgvAvailableMoves_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 2) // 3th column is a linkcolumn
+            {
+                // access cell value, you could also access other cell values
+                //Console.WriteLine(yourDataGridView[e.ColumnIndex, e.RowIndex].Value);
+
+                // or if you want access to the bound object
+                // yourDataGridView.Rows[e.RowIndex].DataBoundItem
+
+                // do something
+                Process.Start("http://www.google.com");
+            }
+        }
+
+        private void x(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            //if (e.ColumnIndex == 0 && e.RowIndex >= 0 && e.RowIndex < 2)
+            //{
+
+            //    //(dgvAvailableMoves.Rows(e.RowIndex).Cells(e.ColumnIndex).Value);
+            //}
         }
     }
 }
