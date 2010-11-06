@@ -13,14 +13,17 @@ namespace ChessCalendar.Forms
         private Log _runningLog = new Log();
         private bool _loggedIn = false;
 
-        public const string VERSION = @"Chess Calendar v11.4.10 *Prototype* ";
+        public const string VERSION = @"Chess Calendar v11.5.10 *Prototype* ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
+
+        public Thread _log;
+        public ShowLog _logViewer;
+        public Login_Form _login;
 
         public SysTrayApp()
         {
             this.LoadTray();
         }
-
         private void LoadTray()
         {
             this.ReloadTray();
@@ -99,28 +102,26 @@ namespace ChessCalendar.Forms
             }
         }
 
-        private static Login_Form GetLoginInfo()
+        private Login_Form GetLoginInfo()
         {
-            var userInfoForm = new Login_Form(VERSION);
-            userInfoForm.ShowDialog();
+            _login = new Login_Form(VERSION);
+            _login.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
 
-            return userInfoForm;
+            return _login;
         }
-
         private void ShowLog(object sender, EventArgs e)
         {
-            Thread logForm = new Thread(threadedForm);
-            logForm.SetApartmentState(ApartmentState.STA);
-            logForm.Start();
+            _log = new Thread(newShowLogThread);
+            _log.SetApartmentState(ApartmentState.STA);
+            _log.Start();
         }
-
-        private void threadedForm(object arg)
+        private void newShowLogThread(object arg)
         {
-            var logViewer = new ShowLog();
-            logViewer.Log = _runningLog;
-            logViewer.ShowDialog();
+            _logViewer = new ShowLog();
+            _logViewer.Log = _runningLog;
+            _logViewer.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
         }
@@ -132,10 +133,12 @@ namespace ChessCalendar.Forms
 
             //this.ReloadTray();
         }
+
         private static void OnExit(object sender, EventArgs e)
         {
-            Application.Exit();
+            Environment.Exit(1);
         }
+
         protected override void Dispose(bool isDisposing)
         {
             if (isDisposing)
@@ -155,7 +158,6 @@ namespace ChessCalendar.Forms
             this.ClientSize = new System.Drawing.Size(104, 0);
             this.Name = "SysTrayApp";
             this.ResumeLayout(false);
-
         }
     }
 }
