@@ -100,7 +100,6 @@
     <Compile Include="CalendarLogManager.cs" />
     <Compile Include="ChessCalendarRSSItem.cs" />
     <Compile Include="ChessCalendarRSSItems.cs" />
-    <Compile Include="ChessDotComGame.cs" />
     <Compile Include="Forms\ShowLog.cs">
       <SubType>Form</SubType>
     </Compile>
