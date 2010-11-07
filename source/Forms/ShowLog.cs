@@ -111,6 +111,11 @@ namespace ChessCalendar.Forms
 
         private void RunLoop()
         {
+            if (this.Log != null)
+            {
+                this.dgvAvailableMoves.Parent.Text = Log.UserLogged;
+            }
+
             while (true)
             {
                 this.Update_NextCheck();
@@ -201,7 +206,6 @@ namespace ChessCalendar.Forms
                         }
 
                         GC.Collect();
-                        this.dgvAvailableMoves.Parent.Text = Log.UserLogged;
                         this.SetMovesDataSource(this.MessageList);
                         GC.Collect();
 
