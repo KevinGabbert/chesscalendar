@@ -2,7 +2,6 @@
 using System.Linq;
 using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
-using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
@@ -55,10 +54,9 @@ namespace ChessCalendar
             if ((!this.Contains(rssItem)) && (!this.IgnoreListHasIt(rssItem)))
             {
                 //Its not in here, and we are not ignoring it..
-                if(this.Beep_On_New_Move){Console.Beep();}
+                if(this.Beep_On_New_Move){Console.Beep(5000, 50);}
 
                 //This needs to color a field green on the Log form.
-                //this.Log.Output(string.Empty, "** <NEW> Your Move!: " + rssItem.Title + " *** " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
                 rssItem.NewMove = true;
                 this.Remove_Any_Older_Versions_Of(rssItem); //Do any necessary cleaning out of previous published items
                 this.Add(this, rssItem);
@@ -66,7 +64,6 @@ namespace ChessCalendar
             else
             {
                 rssItem.NewMove = false;
-                //this.Log.Output(string.Empty, "** Your Move! " + rssItem.Title + " ** " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
                 this.Remove_Item_With_Guid(rssItem.Link);
             }
         }
