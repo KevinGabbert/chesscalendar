@@ -78,8 +78,8 @@ namespace ChessCalendar
         {
             get
             {
-                return ParseUtility.GetPubDate(this.PubDate).ToString();
-            } //needed to remove that "0700" from the pubDate
+                return ParseUtility.GetPubDate(this.PubDate).ToString(); //needed to remove that "0700" from the pubDate
+            } 
         }
     }
 }

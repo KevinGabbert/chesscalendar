@@ -49,7 +49,7 @@
             this.tabs.Location = new System.Drawing.Point(-2, 1);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(776, 451);
+            this.tabs.Size = new System.Drawing.Size(797, 451);
             this.tabs.TabIndex = 0;
             // 
             // tabPage1
@@ -60,7 +60,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(768, 425);
+            this.tabPage1.Size = new System.Drawing.Size(789, 425);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
@@ -80,7 +80,7 @@
             this.txtLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtLog.Location = new System.Drawing.Point(3, 3);
             this.txtLog.Name = "txtLog";
-            this.txtLog.Size = new System.Drawing.Size(758, 20);
+            this.txtLog.Size = new System.Drawing.Size(783, 20);
             this.txtLog.TabIndex = 4;
             this.txtLog.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -90,7 +90,7 @@
             this.dgvAvailableMoves.Location = new System.Drawing.Point(3, 29);
             this.dgvAvailableMoves.Name = "dgvAvailableMoves";
             this.dgvAvailableMoves.RowHeadersVisible = false;
-            this.dgvAvailableMoves.Size = new System.Drawing.Size(758, 390);
+            this.dgvAvailableMoves.Size = new System.Drawing.Size(783, 390);
             this.dgvAvailableMoves.TabIndex = 0;
             this.dgvAvailableMoves.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAvailableMoves_CellClick);
             this.dgvAvailableMoves.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvAvailableMoves_CellFormatting);
@@ -99,7 +99,7 @@
             // 
             this.pbTimeTillNextUpdate.Location = new System.Drawing.Point(-2, 507);
             this.pbTimeTillNextUpdate.Name = "pbTimeTillNextUpdate";
-            this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(776, 15);
+            this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(797, 15);
             this.pbTimeTillNextUpdate.TabIndex = 1;
             // 
             // txtNextCheck
@@ -107,7 +107,7 @@
             this.txtNextCheck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtNextCheck.Location = new System.Drawing.Point(-2, 484);
             this.txtNextCheck.Name = "txtNextCheck";
-            this.txtNextCheck.Size = new System.Drawing.Size(776, 20);
+            this.txtNextCheck.Size = new System.Drawing.Size(797, 20);
             this.txtNextCheck.TabIndex = 3;
             this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -123,7 +123,7 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(458, 455);
+            this.btnRefresh.Location = new System.Drawing.Point(498, 455);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(121, 23);
             this.btnRefresh.TabIndex = 5;
@@ -135,7 +135,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(775, 527);
+            this.ClientSize = new System.Drawing.Size(795, 527);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnPause);
             this.Controls.Add(this.pbTimeTillNextUpdate);
