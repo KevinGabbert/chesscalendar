@@ -3,22 +3,16 @@
 namespace ChessCalendar.Interfaces
 {
     /// <summary>
-    /// A subset of the RSSItem
+    /// Common Chess props intended for use by all classes and controls
     /// </summary>
-    public interface IChessItem
+    public interface IChessItem: IRSS_Item
     {
         string Author { set; get; }
         string Comments { set; get; }
-        string Description { set; get; }
-        string Link { set; get; }
-        string PubDate { set; get; }
+
         string GetPubDate { get; }
-        string Title { set; get; }
 
         string Message { set; get; }
-        string GameID { get;}
-        string PGN { get; set; }
-        bool NewMove { get; set; }
 
         string GameTitle { get; }
         string GameLink { get; }

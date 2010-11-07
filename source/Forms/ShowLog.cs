@@ -273,18 +273,18 @@ namespace ChessCalendar.Forms
             DataGridViewTextBoxColumn pubDateColumn = new DataGridViewTextBoxColumn();
             pubDateColumn.DataPropertyName = "GetPubDate";
             pubDateColumn.HeaderText = "Pub Date";
-            pubDateColumn.Width = 150;
+            pubDateColumn.Width = 125;
 
             DataGridViewLinkColumn titleColumn = new DataGridViewLinkColumn();
             titleColumn.DataPropertyName = "GameTitle"; //GameTitle
             titleColumn.HeaderText = "Title";
-            titleColumn.Width = 170;
+            titleColumn.Width = 220;
             titleColumn.LinkBehavior = LinkBehavior.SystemDefault;
            
             DataGridViewLinkColumn opponentColumn = new DataGridViewLinkColumn();
             opponentColumn.DataPropertyName = "Opponent";
             opponentColumn.HeaderText = "Opponent";
-            opponentColumn.Width = 70;
+            opponentColumn.Width = 100;
 
             DataGridViewTextBoxColumn ratingColumn = new DataGridViewTextBoxColumn();
             ratingColumn.DataPropertyName = "RatingRaw";
