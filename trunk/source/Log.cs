@@ -23,7 +23,19 @@ namespace ChessCalendar
 
             public string LogVersion { get; set; }
             public int WaitSeconds { get; set; }
-            public int WaitProgress { get; set; }
+
+            private int _waitProgress;
+            public int WaitProgress
+            {
+                get
+                {
+                    return _waitProgress < 0 ? 0 : _waitProgress;
+                }
+                set
+                {
+                    _waitProgress = value;
+                }
+            }
             public DateTime NextCheck { get; set; }
 
             public bool NewMessage { get; set; }
