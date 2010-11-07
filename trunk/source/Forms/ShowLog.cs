@@ -269,6 +269,7 @@ namespace ChessCalendar.Forms
             newMoveColumn.DataPropertyName = "NewMove";
             newMoveColumn.HeaderText = "X";
             newMoveColumn.Width = 20;
+            newMoveColumn.Visible = false;
 
             DataGridViewTextBoxColumn pubDateColumn = new DataGridViewTextBoxColumn();
             pubDateColumn.DataPropertyName = "GetPubDate";
@@ -280,8 +281,8 @@ namespace ChessCalendar.Forms
             titleColumn.HeaderText = "Title";
             titleColumn.Width = 220;
             titleColumn.LinkBehavior = LinkBehavior.SystemDefault;
-           
-            DataGridViewLinkColumn opponentColumn = new DataGridViewLinkColumn();
+
+            DataGridViewTextBoxColumn opponentColumn = new DataGridViewTextBoxColumn();
             opponentColumn.DataPropertyName = "Opponent";
             opponentColumn.HeaderText = "Opponent";
             opponentColumn.Width = 100;
