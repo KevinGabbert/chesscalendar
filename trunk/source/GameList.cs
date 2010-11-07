@@ -50,7 +50,7 @@ namespace ChessCalendar
 
         public void AddGame(RssItem rssItem)
         {
-            var game = new ChessDotComGame();
+            var game = new ChessCalendarRSSItem();
             game.Title = rssItem.Title;
             game.Link = rssItem.Link;
             game.PubDate = rssItem.PubDate;
@@ -69,7 +69,7 @@ namespace ChessCalendar
             {
                 if (atomEntry.Content.Content.Contains("|"))
                 {
-                    var game = new ChessDotComGame();
+                    var game = new ChessCalendarRSSItem();
 
                     game.Title = entry.Title.Text.ToString();
                     game.Link = atomEntry.Content.Content.Split('|')[1];
