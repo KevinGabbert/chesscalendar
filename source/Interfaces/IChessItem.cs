@@ -20,6 +20,7 @@ namespace ChessCalendar.Interfaces
         bool NewMove { get; set; }
 
         string GameTitle { get; }
+        string GameLink { get; }
 
         string Opponent {get; }
 
