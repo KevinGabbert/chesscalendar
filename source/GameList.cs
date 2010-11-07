@@ -3,7 +3,6 @@ using System.Linq;
 using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 using Google.GData.Client;
-using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
@@ -20,6 +19,7 @@ namespace ChessCalendar
         {
 
         }
+
         public GameList(Log logToManage)
         {
             this.Log = logToManage;
@@ -29,7 +29,8 @@ namespace ChessCalendar
         {
             this.Remove_Item_With_Guid(this, link);
         }
-        public void Remove_Item_With_Guid(IList<IChessItem> listToRemoveFrom, string link)
+
+        private void Remove_Item_With_Guid(IList<IChessItem> listToRemoveFrom, string link)
         {
             for (int i = listToRemoveFrom.Count() - 1; i > -1; i--)
             {
@@ -48,22 +49,12 @@ namespace ChessCalendar
             }
         }
 
-        public void AddGame(RssItem rssItem)
-        {
-            var game = new ChessCalendarRSSItem();
-            game.Title = rssItem.Title;
-            game.Link = rssItem.Link;
-            game.PubDate = rssItem.PubDate;
-            game.Comments = rssItem.Comments;
-
-            base.Add(game);
-        }
         public void AddGame(IChessItem game)
         {
             base.Add(game);
         }
 
-        public void AddGame(AtomEntry atomEntry)
+        private void AddGame(AtomEntry atomEntry)
         {
             foreach (AtomEntry entry in atomEntry.Feed.Entries)
             {

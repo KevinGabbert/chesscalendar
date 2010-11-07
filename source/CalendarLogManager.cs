@@ -19,10 +19,7 @@ namespace ChessCalendar
         }
         public void Ignore(IChessItem game)
         {
-            //if(!IgnoreListHasIt(game))
-            //{
-                this.Add(this.IgnoreList, game);
-            //}
+             this.Add(this.IgnoreList, game);
         }
         private void Add(GameList list, IChessItem game)
         {
@@ -32,12 +29,10 @@ namespace ChessCalendar
                 if (list.Where(thisGame => thisGame.PubDate == game.PubDate).Any())
                 {
                     list.AddGame(game);
-                    //list.Remove_Item_With_Guid(game.Link);
                 }
                 else
                 {
                     list.Remove_Item_With_Guid(game.Link);
-                    //list.AddGame(game);
                 }
             }
             catch (Exception ex)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace ChessCalendar
 {
@@ -58,6 +57,11 @@ namespace ChessCalendar
             var split = title.Split("-".ToCharArray(), StringSplitOptions.None); //this could break if there is a hyphen in the title
 
             return split[0]; //Title will always be the 2nd to last item in the title
+        }
+
+        internal static DateTime GetPubDate(string stringDate)
+        {
+            return DateTime.Parse(stringDate);
         }
     }
 }

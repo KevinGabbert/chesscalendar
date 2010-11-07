@@ -33,7 +33,7 @@ namespace ChessCalendar.Forms
             this.MessageList = new MessageList();
 
             
-            this.FormatDataGrid(this.dgvAvailableMoves);
+            FormatDataGrid(this.dgvAvailableMoves);
 
             //TODO:  make this into a popup.
             this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
@@ -260,7 +260,7 @@ namespace ChessCalendar.Forms
             }
         }
 
-        private void FormatDataGrid(DataGridView dataGrid)
+        private static void FormatDataGrid(DataGridView dataGrid)
         {
             dataGrid.Columns.Clear();
             dataGrid.AutoGenerateColumns = false;
@@ -271,7 +271,7 @@ namespace ChessCalendar.Forms
             newMoveColumn.Width = 20;
 
             DataGridViewTextBoxColumn pubDateColumn = new DataGridViewTextBoxColumn();
-            pubDateColumn.DataPropertyName = "PubDate";
+            pubDateColumn.DataPropertyName = "GetPubDate";
             pubDateColumn.HeaderText = "Pub Date";
             pubDateColumn.Width = 150;
 
@@ -279,12 +279,8 @@ namespace ChessCalendar.Forms
             titleColumn.DataPropertyName = "GameTitle"; //GameTitle
             titleColumn.HeaderText = "Title";
             titleColumn.Width = 170;
-            
-            //titleColumn.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(x);
-            //titleColumn.UseColumnTextForLinkValue = true;
             titleColumn.LinkBehavior = LinkBehavior.SystemDefault;
            
-
             DataGridViewLinkColumn opponentColumn = new DataGridViewLinkColumn();
             opponentColumn.DataPropertyName = "Opponent";
             opponentColumn.HeaderText = "Opponent";
