@@ -57,11 +57,11 @@ namespace ChessCalendar
             }
             catch (Exception ex)
             {
-                //this.Log.Output(string.Empty, ex.Message);
+                throw;
             }
         }
 
-        public static GameList GetExistingChessGames(string userName, string password, Uri calendar, DateTime startDate, DateTime endDate, string query)
+        public static GameList GetAlreadyLoggedChessGames(string userName, string password, Uri calendar, DateTime startDate, DateTime endDate, string query)
         {
             EventQuery myQuery = new EventQuery(calendar.ToString());
             myQuery.Query = query;

@@ -31,7 +31,9 @@ namespace ChessCalendar.Forms
             this.pbTimeTillNextUpdate.Increment(1);
 
             this.MessageList = new MessageList();
-            FormatDataGrid(this.dgvAvailableMoves);
+
+            
+            this.FormatDataGrid(this.dgvAvailableMoves);
 
             //TODO:  make this into a popup.
             this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
@@ -199,10 +201,22 @@ namespace ChessCalendar.Forms
                         }
 
                         GC.Collect();
+                        this.dgvAvailableMoves.Parent.Text = Log.UserLogged;
                         this.SetMovesDataSource(this.MessageList);
                         GC.Collect();
 
                         this.Log.NewMessage = true;
+                    }
+                    else
+                    {
+                        if (this.Log.NewRssItems != null)
+                        {
+                            if (this.Log.NewRssItems.Count < 1)
+                            {
+                                this.MessageList.Clear();
+                                this.SetMovesDataSource(this.MessageList);
+                            }
+                        }
                     }
                 }
                 else
@@ -290,7 +304,8 @@ namespace ChessCalendar.Forms
             DataGridViewLinkColumn gameIDColumn = new DataGridViewLinkColumn();
             gameIDColumn.DataPropertyName = "GameLink"; //GameID
             gameIDColumn.HeaderText = "Game";
-            gameIDColumn.Width = 250;
+            gameIDColumn.Width = 350;
+            gameIDColumn.Visible = false;
 
             dataGrid.Columns.Add(newMoveColumn);
             dataGrid.Columns.Add(pubDateColumn);
@@ -299,6 +314,7 @@ namespace ChessCalendar.Forms
             dataGrid.Columns.Add(ratingColumn);
             dataGrid.Columns.Add(timeLeftColumn);
             dataGrid.Columns.Add(moveColumn);
+
             dataGrid.Columns.Add(gameIDColumn);
         }
 
@@ -320,7 +336,7 @@ namespace ChessCalendar.Forms
             switch(e.ColumnIndex)
             {
                 case 2:
-                    Process.Start(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value.ToString());
+                    Process.Start(dgvAvailableMoves[7, e.RowIndex].Value.ToString());
                     break;
 
                 case 7: //Game Link
@@ -335,15 +351,6 @@ namespace ChessCalendar.Forms
                     Process.Start(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value.ToString());
                     break;
             }
-        }
-
-        private void x(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            //if (e.ColumnIndex == 0 && e.RowIndex >= 0 && e.RowIndex < 2)
-            //{
-
-            //    //(dgvAvailableMoves.Rows(e.RowIndex).Cells(e.ColumnIndex).Value);
-            //}
         }
     }
 }

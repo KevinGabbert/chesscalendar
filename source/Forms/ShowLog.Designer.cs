@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowLog));
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lnkNoMovesFound = new System.Windows.Forms.LinkLabel();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.dgvAvailableMoves = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -55,6 +56,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.lnkNoMovesFound);
             this.tabPage1.Controls.Add(this.txtLog);
             this.tabPage1.Controls.Add(this.dgvAvailableMoves);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -63,6 +65,17 @@
             this.tabPage1.Size = new System.Drawing.Size(658, 425);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lnkNoMovesFound
+            // 
+            this.lnkNoMovesFound.AutoSize = true;
+            this.lnkNoMovesFound.Location = new System.Drawing.Point(238, 128);
+            this.lnkNoMovesFound.Name = "lnkNoMovesFound";
+            this.lnkNoMovesFound.Size = new System.Drawing.Size(89, 13);
+            this.lnkNoMovesFound.TabIndex = 5;
+            this.lnkNoMovesFound.TabStop = true;
+            this.lnkNoMovesFound.Text = "No Moves Found";
+            this.lnkNoMovesFound.Visible = false;
             // 
             // txtLog
             // 
@@ -168,5 +181,6 @@
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.LinkLabel lnkNoMovesFound;
     }
 }
