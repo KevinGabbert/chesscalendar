@@ -13,7 +13,7 @@ namespace ChessCalendar.Forms
         private Log _runningLog = new Log();
         private bool _loggedIn = false;
 
-        public const string VERSION = @"Chess Calendar v11.5.10 *Prototype* ";
+        public const string VERSION = @"Chess Calendar v11.6.10a *Prototype* ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public Thread _log;
@@ -70,6 +70,7 @@ namespace ChessCalendar.Forms
             _runningLog = new Log();
             _runningLog.LogVersion = VERSION;
             _runningLog.DebugMode = loginInfo.DebugMode;
+            _runningLog.UserLogged = loginInfo.ChessDotComName;
             _runningLog.GetPGNs = loginInfo.DownloadPGNs;
             _runningLog.Beep_On_New_Move = loginInfo.Beep_On_New_Move;
             _runningLog.NotifyIcon = _trayIcon;

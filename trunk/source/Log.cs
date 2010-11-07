@@ -12,14 +12,12 @@ namespace ChessCalendar
     public class Log: OutputClass
     {
         public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
-        public const string GOOGLE_CALENDAR_DEFAULT = "http://www.google.com/calendar/feeds/default/private/full";
-        public const string DETECTED = " detected ";
 
         private bool _stop = false;
 
         #region Properties
 
-            public Uri _calendarToPost = new Uri(GOOGLE_CALENDAR_DEFAULT);
+            public Uri _calendarToPost;
             public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
             public CalendarLogManager ToDo { get; set; }
 
@@ -34,7 +32,8 @@ namespace ChessCalendar
             public bool GetPGNs { get; set; }
             public bool LogGames { get; set; }
             public bool ResetWait { get; set; }
-
+            public string UserLogged { get; set; }
+            public ChessCalendarRSSItems NewRssItems { get; set; }
             public bool ClearList { get; set; }//needs a better name.
         #endregion
 
@@ -57,34 +56,32 @@ namespace ChessCalendar
             //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
             //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
 
-            //this.Output(string.Empty, "Querying Calendar for older entries");
-            this.ToDo.IgnoreList = GoogleCalendar.GetExistingChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+            this.ToDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
             while (true)
             {
                 if (!this._stop)
                 {
-                    ChessCalendarRSSItems newRssItems = new ChessCalendarRSSItems();
+                    this.NewRssItems = new ChessCalendarRSSItems();
 
                     try
                     {
-                        newRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+                        this.NewRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
 
-                        this.AddOrUpdate_Games(this.ToDo, newRssItems);
+                        this.AddOrUpdate_Games(this.ToDo, this.NewRssItems);
 
                         //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                         //On remove, delete the all day reminder.
 
                         this.ClearList = false;
 
-                        this.ProcessNewRSSItems(newRssItems); //Outputting here.. //TODO this causes gridview to clear and refresh
+                        this.ProcessNewRSSItems(this.NewRssItems); //If there are *new* entries, then the gridview will clear and refresh
+
+                        //TODO: if NO new entries, it won't clear & refresh, meaning cruft won't 
 
                         if (this.LogGames)
                         {
-                            this.NewMessage = true;
-
                             //TODO: this needs to be an asterisk or something on the log form.
-                            //this.Output(string.Empty, "Logging " + this.ToDo.Count + " Notifications to Calendar..", OutputMode.Form);
                             foreach (IChessItem current in this.ToDo)
                             {
                                 this.Output(current); //TODO this causes gridview to clear and refresh
@@ -105,7 +102,6 @@ namespace ChessCalendar
                                                                     this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
                     }
 
-                    //this.Output(string.Empty, "Sleeping for " + this.WaitSeconds + " seconds.");
                     this.Wait(this.WaitSeconds);
                 }
                 else
@@ -206,6 +202,8 @@ namespace ChessCalendar
         {
             if (gamelist != null)
             {
+                this.NewMessage = true;
+
                 if (gamelist.Count > 0)
                 {
                     this.LogGames = true;

@@ -1,5 +1,4 @@
-﻿using System;
-using ChessCalendar.Interfaces;
+﻿using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
 {
@@ -45,7 +44,6 @@ namespace ChessCalendar
             }
         }
 
-
         public int Rating
         {
             get { throw new System.NotImplementedException(); }
@@ -72,10 +70,9 @@ namespace ChessCalendar
             }
         }
 
-
         public string GameLink
         {
-            get { return "http://www.chess.com/echess/game.html?id=" + this.GameID; }
+            get { return "http://www.chess.com/echess/game.html?id=" + this.GameID; } //TODO: will need to move elsewhere when we refactor
         }
     }
 }
