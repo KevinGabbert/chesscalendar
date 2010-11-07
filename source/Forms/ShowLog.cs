@@ -301,6 +301,7 @@ namespace ChessCalendar.Forms
             moveColumn.HeaderText = "Move #";
             moveColumn.Width = 80;
 
+            //Do I *really* have to make a hidden column?
             DataGridViewLinkColumn gameIDColumn = new DataGridViewLinkColumn();
             gameIDColumn.DataPropertyName = "GameLink"; //GameID
             gameIDColumn.HeaderText = "Game";
@@ -336,19 +337,8 @@ namespace ChessCalendar.Forms
             switch(e.ColumnIndex)
             {
                 case 2:
+                    //Do we really have to use a hidden column? is this the only way?
                     Process.Start(dgvAvailableMoves[7, e.RowIndex].Value.ToString());
-                    break;
-
-                case 7: //Game Link
-
-                // access cell value, you could also access other cell values
-                //Console.WriteLine(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value);
-
-                // or if you want access to the bound object
-                // yourDataGridView.Rows[e.RowIndex].DataBoundItem
-
-                // do something
-                    Process.Start(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value.ToString());
                     break;
             }
         }
