@@ -317,8 +317,14 @@ namespace ChessCalendar.Forms
 
         private void dgvAvailableMoves_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 7) //Game Link
+            switch(e.ColumnIndex)
             {
+                case 2:
+                    Process.Start(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value.ToString());
+                    break;
+
+                case 7: //Game Link
+
                 // access cell value, you could also access other cell values
                 //Console.WriteLine(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value);
 
@@ -326,7 +332,8 @@ namespace ChessCalendar.Forms
                 // yourDataGridView.Rows[e.RowIndex].DataBoundItem
 
                 // do something
-                Process.Start(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value.ToString());
+                    Process.Start(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value.ToString());
+                    break;
             }
         }
 
