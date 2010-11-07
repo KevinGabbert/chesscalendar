@@ -71,5 +71,11 @@ namespace ChessCalendar
                 return ParseUtility.GetOpponent(this.Title);
             }
         }
+
+
+        public string GameLink
+        {
+            get { return "http://www.chess.com/echess/game.html?id=" + this.GameID; }
+        }
     }
 }

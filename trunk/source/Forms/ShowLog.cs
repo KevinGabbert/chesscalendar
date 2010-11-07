@@ -258,16 +258,14 @@ namespace ChessCalendar.Forms
             pubDateColumn.Width = 150;
 
             DataGridViewLinkColumn titleColumn = new DataGridViewLinkColumn();
-            titleColumn.DataPropertyName = "GameTitle";
+            titleColumn.DataPropertyName = "GameTitle"; //GameTitle
             titleColumn.HeaderText = "Title";
             titleColumn.Width = 170;
             
             //titleColumn.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(x);
             //titleColumn.UseColumnTextForLinkValue = true;
             titleColumn.LinkBehavior = LinkBehavior.SystemDefault;
-            
-            //titleColumn.Name = "http://www.chess.com/echess/profile/";
-            //titleColumn.Text = "http://www.chess.com/echess/profile/";
+           
 
             DataGridViewLinkColumn opponentColumn = new DataGridViewLinkColumn();
             opponentColumn.DataPropertyName = "Opponent";
@@ -290,9 +288,9 @@ namespace ChessCalendar.Forms
             moveColumn.Width = 80;
 
             DataGridViewLinkColumn gameIDColumn = new DataGridViewLinkColumn();
-            gameIDColumn.DataPropertyName = "GameID";
-            gameIDColumn.HeaderText = "Game ID";
-            gameIDColumn.Width = 60;
+            gameIDColumn.DataPropertyName = "GameLink"; //GameID
+            gameIDColumn.HeaderText = "Game";
+            gameIDColumn.Width = 250;
 
             dataGrid.Columns.Add(newMoveColumn);
             dataGrid.Columns.Add(pubDateColumn);
@@ -319,16 +317,16 @@ namespace ChessCalendar.Forms
 
         private void dgvAvailableMoves_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 2) // 3th column is a linkcolumn
+            if (e.ColumnIndex == 7) //Game Link
             {
                 // access cell value, you could also access other cell values
-                //Console.WriteLine(yourDataGridView[e.ColumnIndex, e.RowIndex].Value);
+                //Console.WriteLine(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value);
 
                 // or if you want access to the bound object
                 // yourDataGridView.Rows[e.RowIndex].DataBoundItem
 
                 // do something
-                Process.Start("http://www.google.com");
+                Process.Start(dgvAvailableMoves[e.ColumnIndex, e.RowIndex].Value.ToString());
             }
         }
 

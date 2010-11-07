@@ -7,7 +7,7 @@ namespace ChessCalendar
     {
         public bool StillPosted { get; set; }
 
-        public int CompareTo(ChessDotComGame other)
+        private int CompareTo(IChessItem other)
         {
             return other.PubDate.CompareTo(this.PubDate);
         }
