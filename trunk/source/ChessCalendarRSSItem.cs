@@ -29,6 +29,7 @@ namespace ChessCalendar
                 return ParseUtility.GetTimeLeftRaw(this.Description);
             }
         }
+
         public System.DateTime TimeLeft
         {
             get
@@ -36,6 +37,7 @@ namespace ChessCalendar
                 return ParseUtility.GetTimeLeft(this.Description);
             }
         }
+
         public string MoveRaw
         {
             get
@@ -43,7 +45,6 @@ namespace ChessCalendar
                 return ParseUtility.GetMove(this.Description);
             }
         }
-
         public int Rating
         {
             get { throw new System.NotImplementedException(); }
@@ -61,7 +62,6 @@ namespace ChessCalendar
                 return ParseUtility.GetGameTitle(this.Title);
             }
         }
-
         public string Opponent
         {
             get
@@ -69,10 +69,17 @@ namespace ChessCalendar
                 return ParseUtility.GetOpponent(this.Title);
             }
         }
-
         public string GameLink
         {
             get { return "http://www.chess.com/echess/game.html?id=" + this.GameID; } //TODO: will need to move elsewhere when we refactor
+        }
+
+        public string GetPubDate
+        {
+            get
+            {
+                return ParseUtility.GetPubDate(this.PubDate).ToString();
+            } //needed to remove that "0700" from the pubDate
         }
     }
 }

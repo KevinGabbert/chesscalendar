@@ -131,8 +131,6 @@ namespace ChessCalendar.Forms
         {
             var optionsForm = new Options();
             optionsForm.ShowDialog();
-
-            //this.ReloadTray();
         }
 
         private static void OnExit(object sender, EventArgs e)
