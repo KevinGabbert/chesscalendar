@@ -10,27 +10,27 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"Chess Calendar v11.7.10c **Prototype** ";
+        public const string VERSION = @"Chess Calendar v11.7.10d **Prototype** ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
-        private List<Thread> Logs { get; set; }
-        private ShowLog LogViewer { get; set; }
-        private Login_Form Login { get; set; }
+        public List<Thread> FeedProcessors { get; set; }
+        public ShowLog LogViewer { get; set; }
+        public Login_Form Login { get; set; }
 
         //TODO: make these into props
-        private FeedProcessor _processor = new FeedProcessor();
-        public NotifyIcon _trayIcon;
-        private ContextMenu _trayMenu;
+        public FeedProcessor FeedProcessor { get; set; }
+        public NotifyIcon TrayIcon { get; set; }
+        public ContextMenu Menu { get; set; }
 
         private bool _loggedIn = false;
 
         public ApplicationManager()
         {
             //TODO: Laying out for right now.  This will be altered later..
-            this.Logs = new List<Thread>();
-            this.Logs.Add(new Thread(newShowLogThread));
+            this.FeedProcessors = new List<Thread>();
+            this.FeedProcessors.Add(new Thread(newShowLogThread));
 
-            this.Logs[0].SetApartmentState(ApartmentState.STA); 
+            this.FeedProcessors[0].SetApartmentState(ApartmentState.STA); 
         }
 
         public void Start()
@@ -41,26 +41,26 @@ namespace ChessCalendar
 
         private void ReloadTray()
         {
-            _trayMenu = new ContextMenu();
-            _trayMenu.MenuItems.Add("Start", GetLogin);//todo: animated gif with logo phasing in and out.
+            this.Menu = new ContextMenu();
+            this.Menu.MenuItems.Add("Start", GetLogin);//todo: animated gif with logo phasing in and out.
             //_trayMenu.MenuItems.Add("Stop", Login); //todo: this should change Icon to icon with red circle and line through it.
 
             if (_loggedIn)
             {
-                _trayMenu.MenuItems.Add("Show Log", ShowLog);
+                this.Menu.MenuItems.Add("Show Log", ShowLog);
             }
 
-            _trayMenu.MenuItems.Add("Options", Options);
-            _trayMenu.MenuItems.Add("Exit", OnExit);
+            this.Menu.MenuItems.Add("Options", Options);
+            this.Menu.MenuItems.Add("Exit", OnExit);
 
-            _trayIcon = new NotifyIcon();
-            _trayIcon.Text = "Chess Calendar";
+            this.TrayIcon = new NotifyIcon();
+            this.TrayIcon.Text = "Chess Calendar";
             //_trayIcon.Icon = new Icon(@"..\..\Images\Logo.ico", 50, 50);
-            _trayIcon.Icon = new Icon(@"Logo.ico", 50, 50);
+            this.TrayIcon.Icon = new Icon(@"Logo.ico", 50, 50);
 
             // Add menu to tray icon and show it.
-            _trayIcon.ContextMenu = _trayMenu;
-            _trayIcon.Visible = true;
+            this.TrayIcon.ContextMenu = Menu;
+            this.TrayIcon.Visible = true;
 
             //_trayIcon.ShowBalloonTip(10, "Start", "Right-Click 'Start' to begin",ToolTipIcon.Info);
         }
@@ -69,16 +69,16 @@ namespace ChessCalendar
         {
             var loginInfo = GetLoginInfo();
 
-            _processor = new FeedProcessor();
-            _processor.LogVersion = VERSION;
-            _processor.DebugMode = loginInfo.DebugMode;
-            _processor.UserLogged = loginInfo.ChessDotComName;
-            _processor.GetPGNs = loginInfo.DownloadPGNs;
-            _processor.Beep_On_New_Move = loginInfo.Beep_On_New_Move;
-            _processor.NotifyIcon = _trayIcon;
-            _processor.ContextMenu = _trayMenu;
-            _processor.OutputMode = OutputMode.Form;
-            _processor.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+            this.FeedProcessor = new FeedProcessor();
+            this.FeedProcessor.LogVersion = VERSION;
+            this.FeedProcessor.DebugMode = loginInfo.DebugMode;
+            this.FeedProcessor.UserLogged = loginInfo.ChessDotComName;
+            this.FeedProcessor.GetPGNs = loginInfo.DownloadPGNs;
+            this.FeedProcessor.Beep_On_New_Move = loginInfo.Beep_On_New_Move;
+            this.FeedProcessor.NotifyIcon = TrayIcon;
+            this.FeedProcessor.ContextMenu = Menu;
+            this.FeedProcessor.OutputMode = OutputMode.Form;
+            this.FeedProcessor.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
 
             if (loginInfo.AutoOpenLog)
             {
@@ -94,7 +94,7 @@ namespace ChessCalendar
             {
                 this._loggedIn = true;
 
-                _processor.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
+                FeedProcessor.Process_Feed(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
                                           userInfoForm.User,
                                           userInfoForm.Password,
                                           userInfoForm.PostURI);
@@ -116,13 +116,13 @@ namespace ChessCalendar
         }
         private void ShowLog(object sender, EventArgs e)
         {
-            this.Logs[0].Start();
+            this.FeedProcessors[0].Start();
         }
         private void newShowLogThread(object arg)
         {
-            LogViewer = new ShowLog();
-            LogViewer.Log = _processor;
-            LogViewer.ShowDialog();
+            this.LogViewer = new ShowLog();
+            this.LogViewer.Processor = FeedProcessor;
+            this.LogViewer.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
         }
