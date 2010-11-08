@@ -3,28 +3,30 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using ChessCalendar.Enums;
+using ChessCalendar.Forms;
 
-namespace ChessCalendar.Forms
+namespace ChessCalendar
 {
-    public class SysTrayApp : Form
+    public class ApplicationManager
     {
-        public NotifyIcon  _trayIcon;
+        public NotifyIcon _trayIcon;
         private ContextMenu _trayMenu;
         private Log _runningLog = new Log();
         private bool _loggedIn = false;
 
-        public const string VERSION = @"Chess Calendar v11.7.10b ";
+        public const string VERSION = @"Chess Calendar v11.7.10c ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public Thread _log;
         public ShowLog _logViewer;
         public Login_Form _login;
 
-        public SysTrayApp()
+        public ApplicationManager()
         {
-            this.LoadTray();
+            
         }
-        private void LoadTray()
+
+        public void Start()
         {
             this.ReloadTray();
             this.Login(this, null);
@@ -56,13 +58,6 @@ namespace ChessCalendar.Forms
             //_trayIcon.ShowBalloonTip(10, "Start", "Right-Click 'Start' to begin",ToolTipIcon.Info);
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            this.Visible = false; // Hide form window.
-            this.ShowInTaskbar = false; // Remove from taskbar.
-            base.OnLoad(e);
-        }
-
         private void Login(object sender, EventArgs e)
         {
             var loginInfo = GetLoginInfo();
@@ -86,6 +81,7 @@ namespace ChessCalendar.Forms
             this.ValidateAndStart(loginInfo);
         }
 
+
         private void ValidateAndStart(Login_Form userInfoForm)
         {
             if (userInfoForm.ValidatedForm)
@@ -93,8 +89,8 @@ namespace ChessCalendar.Forms
                 this._loggedIn = true;
 
                 _runningLog.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
-                                          userInfoForm.User, 
-                                          userInfoForm.Password, 
+                                          userInfoForm.User,
+                                          userInfoForm.Password,
                                           userInfoForm.PostURI);
             }
             else
@@ -137,63 +133,5 @@ namespace ChessCalendar.Forms
         {
             Environment.Exit(1);
         }
-
-        protected override void Dispose(bool isDisposing)
-        {
-            if (isDisposing)
-            {
-               // Release the icon resource.
-               _trayIcon.Dispose();
-            }
-           base.Dispose(isDisposing);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // SysTrayApp
-            // 
-            this.ClientSize = new System.Drawing.Size(104, 0);
-            this.Name = "SysTrayApp";
-            this.ResumeLayout(false);
-        }
     }
 }
-
-
-//using System;
-//using System.Windows.Forms;
-//using System.Drawing;
-
-//public class AnimatedSystemTrayIcon : System.Windows.Forms.Form {
-
-//    // (Designer code omitted.)
-
-//    Icon[] images;
-//    int offset = 0;
-
-//    private void Form1_Load(object sender, System.EventArgs e) {
-    
-//        // Load the basic set of eight icons.
-//        images = new Icon[8];
-//        images[0] = new Icon("moon01.ico");
-//        images[1] = new Icon("moon02.ico");
-//        images[2] = new Icon("moon03.ico");
-//        images[3] = new Icon("moon04.ico");
-//        images[4] = new Icon("moon05.ico");
-//        images[5] = new Icon("moon06.ico");
-//        images[6] = new Icon("moon07.ico");
-//        images[7] = new Icon("moon08.ico");
-//    }
-
-//    private void timer_Elapsed(object sender, 
-//      System.Timers.ElapsedEventArgs e) {
-    
-//        // Change the icon.
-//        // This event handler fires once every second (1000 ms).
-//        notifyIcon.Icon = images[offset];
-//        offset++;
-//        if (offset > 7) offset = 0;
-//    }
-//}

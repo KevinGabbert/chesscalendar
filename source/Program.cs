@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Windows.Forms;
-using ChessCalendar.Forms;
 
 namespace ChessCalendar
 {
-    class Program
+    public static class Program
     {
         [STAThread]
         public static void Main(string[] args)
         {
-            Application.Run(new SysTrayApp());
+            var x = new ApplicationManager();
+            x.Start();
         } 
     }
 }
