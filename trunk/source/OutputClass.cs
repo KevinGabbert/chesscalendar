@@ -10,14 +10,14 @@ namespace ChessCalendar
 
             public OutputMode OutputMode { get; set; }
             public Queue<string> Messages { get; set; }
-            public Queue<IChessItem> NewMoves { get; set; }
+            public MessageQueue NewMoves { get; set; }
             public System.Windows.Forms.NotifyIcon NotifyIcon { get; set; }
 
         #endregion
 
         protected OutputClass()
         {
-            this.NewMoves = new Queue<IChessItem>();
+            this.NewMoves = new MessageQueue();
             this.Messages = new Queue<string>();
         }
 
@@ -46,6 +46,7 @@ namespace ChessCalendar
             switch (this.OutputMode)
             {
                 case OutputMode.Form:
+                    this.NewMoves.Updated = true;
                     this.NewMoves.Enqueue(game);
                     break;
 

@@ -129,6 +129,7 @@
       <DependentUpon>Login_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="MessageList.cs" />
+    <Compile Include="MessageQueue.cs" />
     <Compile Include="OutputClass.cs" />
     <Compile Include="ParseUtility.cs" />
     <Compile Include="PGN.cs" />

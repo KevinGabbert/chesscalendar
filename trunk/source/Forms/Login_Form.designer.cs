@@ -138,7 +138,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(99, 379);
+            this.btnStart.Location = new System.Drawing.Point(173, 399);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 8;
@@ -169,21 +169,22 @@
             // 
             this.chkDebugMode.AutoSize = true;
             this.chkDebugMode.Enabled = false;
-            this.chkDebugMode.Location = new System.Drawing.Point(11, 379);
+            this.chkDebugMode.Location = new System.Drawing.Point(173, 367);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(88, 17);
             this.chkDebugMode.TabIndex = 7;
             this.chkDebugMode.Text = "Debug Mode";
             this.chkDebugMode.UseVisualStyleBackColor = true;
+            this.chkDebugMode.Visible = false;
             // 
             // chkBeep
             // 
             this.chkBeep.AutoSize = true;
-            this.chkBeep.Location = new System.Drawing.Point(12, 333);
+            this.chkBeep.Location = new System.Drawing.Point(12, 379);
             this.chkBeep.Name = "chkBeep";
-            this.chkBeep.Size = new System.Drawing.Size(162, 17);
+            this.chkBeep.Size = new System.Drawing.Size(118, 17);
             this.chkBeep.TabIndex = 6;
-            this.chkBeep.Text = "Beep when new move found";
+            this.chkBeep.Text = "Beep on new move";
             this.chkBeep.UseVisualStyleBackColor = true;
             // 
             // lblVersion
@@ -201,7 +202,7 @@
             this.chkLogFormOpen.Checked = true;
             this.chkLogFormOpen.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkLogFormOpen.Enabled = false;
-            this.chkLogFormOpen.Location = new System.Drawing.Point(11, 356);
+            this.chkLogFormOpen.Location = new System.Drawing.Point(12, 356);
             this.chkLogFormOpen.Name = "chkLogFormOpen";
             this.chkLogFormOpen.Size = new System.Drawing.Size(144, 17);
             this.chkLogFormOpen.TabIndex = 16;
@@ -211,11 +212,11 @@
             // chkDownloadPGNs
             // 
             this.chkDownloadPGNs.AutoSize = true;
-            this.chkDownloadPGNs.Location = new System.Drawing.Point(184, 356);
+            this.chkDownloadPGNs.Location = new System.Drawing.Point(12, 333);
             this.chkDownloadPGNs.Name = "chkDownloadPGNs";
-            this.chkDownloadPGNs.Size = new System.Drawing.Size(78, 17);
+            this.chkDownloadPGNs.Size = new System.Drawing.Size(166, 17);
             this.chkDownloadPGNs.TabIndex = 17;
-            this.chkDownloadPGNs.Text = "D/L PGN\'s";
+            this.chkDownloadPGNs.Text = "Put PGN\'s in Calendar Entries";
             this.chkDownloadPGNs.UseVisualStyleBackColor = true;
             // 
             // Login_Form
