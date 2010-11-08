@@ -13,7 +13,7 @@ namespace ChessCalendar
         public const string VERSION = @"Chess Calendar v11.7.10d **Prototype** ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
-        public List<Thread> FeedProcessors { get; set; }
+        public Thread Thread { get; set; }
         public ShowLog LogViewer { get; set; }
         public Login_Form Login { get; set; }
 
@@ -27,10 +27,8 @@ namespace ChessCalendar
         public ApplicationManager()
         {
             //TODO: Laying out for right now.  This will be altered later..
-            this.FeedProcessors = new List<Thread>();
-            this.FeedProcessors.Add(new Thread(newShowLogThread));
-
-            this.FeedProcessors[0].SetApartmentState(ApartmentState.STA); 
+            this.Thread = new Thread(newShowLogThread);
+            this.Thread.SetApartmentState(ApartmentState.STA); 
         }
 
         public void Start()
@@ -116,7 +114,7 @@ namespace ChessCalendar
         }
         private void ShowLog(object sender, EventArgs e)
         {
-            this.FeedProcessors[0].Start();
+            this.Thread.Start();
         }
         private void newShowLogThread(object arg)
         {
