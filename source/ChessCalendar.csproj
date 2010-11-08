@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
+    <Compile Include="CalendarFeed.cs" />
     <Compile Include="CalendarManager.cs" />
     <Compile Include="ChessRSSItem.cs" />
     <Compile Include="Feed.cs" />

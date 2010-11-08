@@ -19,6 +19,10 @@ namespace ChessCalendar
 
             public Uri _calendarToPost;
             public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
+
+            public List<ChessCalendarFeed> CCFeeds { get; set; }
+
+            //TODO: Deprecate this
             public List<Feed> Feeds { get; set; }
 
             public CalendarManager ToDo { get; set; }
@@ -52,9 +56,8 @@ namespace ChessCalendar
  
         #endregion
 
-
         /// <summary>
-        /// This is called once per instance of the program
+        /// This object is intended to be consumed by one subscriber per instantiation.
         /// </summary>
         public FeedProcessor()
         {
@@ -64,7 +67,60 @@ namespace ChessCalendar
             this.WaitSeconds = 1000;
         }
 
-        public void Process_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar)
+        #region Under Construction
+
+        /// <summary>
+        /// //user needs to call Process_All_Feeds() to start
+        /// </summary>
+        /// <param name="uriToWatch"></param>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="logToCalendar"></param>
+        /// <param name="post"></param>
+        /// <param name="save"></param>
+        public void Add_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool post, bool save)
+        {
+            var newFeed = new ChessCalendarFeed(uriToWatch, userName, password, logToCalendar);
+            newFeed.Post = post;
+            newFeed.Save = save;
+
+            this.CCFeeds.Add(newFeed);
+        }
+
+        public void Process_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool post, bool save)
+        {
+            var newFeed = new ChessCalendarFeed(uriToWatch, userName, password, logToCalendar);
+            newFeed.Post = post;
+            newFeed.Save = save;
+
+            newFeed.Go();
+        }
+  
+        /// <summary>
+        /// Intended to take the place of Save_Single_Feed_To_Calendar
+        /// The purpose here is to parse all the feeds into this object structure, outputting to base.NewMoves so that the Subscriber can Dequeue them,
+        /// then saving to Calendar
+        /// </summary>
+        public void Process_ALL_Feeds(bool postAll, bool saveAll)
+        {
+            foreach (ChessCalendarFeed feed in this.Feeds)
+            {
+                feed.Post = postAll;
+                feed.Save = saveAll;
+                feed.Go();
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// This function will eventually be made irrelevant, and may be deleted.
+        /// </summary>
+        /// <param name="uriToWatch"></param>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="logToCalendar"></param>
+        public void Save_Single_Feed_To_Calendar(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             this.ToDo = new CalendarManager(this);
             this.ToDo.DebugMode = this.DebugMode;
@@ -118,7 +174,7 @@ namespace ChessCalendar
                     foreach (IChessItem current in this.ToDo)
                     {
                         this.Output(current); //TODO this causes gridview to clear and refresh
-                        this.Log_Game(current, userName, password);
+                        this.Save_Game_Info(current, userName, password);
                     }
                 }
 
@@ -180,7 +236,7 @@ namespace ChessCalendar
             this.NewMessage = false;
         }
 
-        private void Log_Game(IChessItem gameToLog, string userName, string password)
+        private void Save_Game_Info(IChessItem gameToLog, string userName, string password)
         {
             if (this.DebugMode)
             {

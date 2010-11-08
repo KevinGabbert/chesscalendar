@@ -10,7 +10,7 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"Chess Calendar v11.8.10 ";
+        public const string VERSION = @"Chess Calendar v11.8.10a ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public Thread Thread { get; set; }
@@ -92,7 +92,7 @@ namespace ChessCalendar
             {
                 this._loggedIn = true;
 
-                FeedProcessor.Process_Feed(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
+                FeedProcessor.Save_Single_Feed_To_Calendar(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
                                           userInfoForm.User,
                                           userInfoForm.Password,
                                           userInfoForm.PostURI);
