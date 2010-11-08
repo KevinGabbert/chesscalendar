@@ -99,8 +99,8 @@
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="CalendarLogManager.cs" />
-    <Compile Include="ChessCalendarRSSItem.cs" />
-    <Compile Include="ChessCalendarRSSItems.cs" />
+    <Compile Include="ChessRSSItem.cs" />
+    <Compile Include="Feed.cs" />
     <Compile Include="Forms\ShowLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,7 +119,7 @@
     <Compile Include="GoogleCalendar.cs" />
     <Compile Include="Interfaces\IChessItem.cs" />
     <Compile Include="Interfaces\IRSSItem.cs" />
-    <Compile Include="Log.cs" />
+    <Compile Include="FeedProcessor.cs" />
     <Compile Include="Forms\Login_Form.cs">
       <SubType>Form</SubType>
     </Compile>

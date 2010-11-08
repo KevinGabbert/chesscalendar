@@ -3,11 +3,11 @@ using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    public class ChessCalendarRSSItems : List<ChessCalendarRSSItem>
+    public class Feed : List<ChessRSSItem>
     {
         public void Add(RssItem rssItem)
         {
-            var newItem = new ChessCalendarRSSItem();
+            var newItem = new ChessRSSItem();
             newItem.Author = rssItem.Author;
             newItem.Comments = rssItem.Comments;
             newItem.Description = rssItem.Description;

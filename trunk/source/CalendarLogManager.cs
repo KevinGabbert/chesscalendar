@@ -12,7 +12,7 @@ namespace ChessCalendar
             public bool Beep_On_New_Move { private get; set; }
         #endregion
 
-        public CalendarLogManager(Log logToManage)
+        public CalendarLogManager(FeedProcessor logToManage)
         {
             this.Log = logToManage;
             this.IgnoreList = new GameList(logToManage);

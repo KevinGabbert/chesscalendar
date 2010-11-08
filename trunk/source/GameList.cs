@@ -10,7 +10,7 @@ namespace ChessCalendar
     {
         #region Properties
 
-            public Log Log { get; set; }
+            public FeedProcessor Log { get; set; }
             public bool DebugMode { get; set; }
 
         #endregion
@@ -20,7 +20,7 @@ namespace ChessCalendar
 
         }
 
-        public GameList(Log logToManage)
+        public GameList(FeedProcessor logToManage)
         {
             this.Log = logToManage;
         }
@@ -60,7 +60,7 @@ namespace ChessCalendar
             {
                 if (atomEntry.Content.Content.Contains("|"))
                 {
-                    var game = new ChessCalendarRSSItem();
+                    var game = new ChessRSSItem();
 
                     game.Title = entry.Title.Text.ToString();
                     game.Link = atomEntry.Content.Content.Split('|')[1];

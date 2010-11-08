@@ -2,7 +2,7 @@
 
 namespace ChessCalendar
 {
-    public class ChessCalendarRSSItem: RssToolkit.Rss.RssItem, IChessItem
+    public class ChessRSSItem: RssToolkit.Rss.RssItem, IChessItem
     {
         public bool NewMove { get; set; }
         public string Message { get; set; }

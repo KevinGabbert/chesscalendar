@@ -16,7 +16,7 @@ namespace ChessCalendar.Forms
 
         #region Properties
 
-            public Log Log { get; set; }
+            public FeedProcessor Log { get; set; }
             private MessageList MessageList { get; set; }
             public bool DebugMode { get; set; }
             

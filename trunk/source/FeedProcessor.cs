@@ -9,7 +9,7 @@ using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    public class Log: OutputClass
+    public class FeedProcessor: OutputClass
     {
         public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
 
@@ -45,11 +45,11 @@ namespace ChessCalendar
             public bool LogGames { get; set; }
             public bool ResetWait { get; set; }
             public string UserLogged { get; set; }
-            public ChessCalendarRSSItems NewRssItems { get; set; }
+            public Feed NewRssItems { get; set; }
             public bool ClearList { get; set; }//needs a better name.
         #endregion
 
-        public Log()
+        public FeedProcessor()
         {
             this.Messages = new Queue<string>();
             this.WaitSeconds = 1000;
@@ -74,7 +74,7 @@ namespace ChessCalendar
             {
                 if (!this._stop)
                 {
-                    this.NewRssItems = new ChessCalendarRSSItems();
+                    this.NewRssItems = new Feed();
 
                     try
                     {
@@ -123,7 +123,7 @@ namespace ChessCalendar
             }
         }
 
-        private void ProcessNewRSSItems(IEnumerable<ChessCalendarRSSItem> newRssItems)
+        private void ProcessNewRSSItems(IEnumerable<ChessRSSItem> newRssItems)
         {
             foreach (var item in newRssItems)
             {
@@ -174,7 +174,7 @@ namespace ChessCalendar
 
             if (this.GetPGNs)
             {
-                Log.Download_PGN(gameToLog);
+                FeedProcessor.Download_PGN(gameToLog);
             }
 
             GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
@@ -210,7 +210,7 @@ namespace ChessCalendar
             }
         }
 
-        private void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<ChessCalendarRSSItem> gamelist)
+        private void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<ChessRSSItem> gamelist)
         {
             if (gamelist != null)
             {
@@ -224,7 +224,7 @@ namespace ChessCalendar
                     //this.Output(string.Empty, Environment.NewLine + "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
                     
                     //this.Output(string.Empty, Environment.NewLine, OutputMode.Form);
-                    foreach (ChessCalendarRSSItem game in gamelist)
+                    foreach (ChessRSSItem game in gamelist)
                     {
                         toDo.ProcessRSSItem(game);
                     }

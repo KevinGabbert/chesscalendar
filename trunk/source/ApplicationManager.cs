@@ -18,7 +18,7 @@ namespace ChessCalendar
         private Login_Form Login { get; set; }
 
         //TODO: make these into props
-        private Log _runningLog = new Log();
+        private FeedProcessor _processor = new FeedProcessor();
         public NotifyIcon _trayIcon;
         private ContextMenu _trayMenu;
 
@@ -69,16 +69,16 @@ namespace ChessCalendar
         {
             var loginInfo = GetLoginInfo();
 
-            _runningLog = new Log();
-            _runningLog.LogVersion = VERSION;
-            _runningLog.DebugMode = loginInfo.DebugMode;
-            _runningLog.UserLogged = loginInfo.ChessDotComName;
-            _runningLog.GetPGNs = loginInfo.DownloadPGNs;
-            _runningLog.Beep_On_New_Move = loginInfo.Beep_On_New_Move;
-            _runningLog.NotifyIcon = _trayIcon;
-            _runningLog.ContextMenu = _trayMenu;
-            _runningLog.OutputMode = OutputMode.Form;
-            _runningLog.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+            _processor = new FeedProcessor();
+            _processor.LogVersion = VERSION;
+            _processor.DebugMode = loginInfo.DebugMode;
+            _processor.UserLogged = loginInfo.ChessDotComName;
+            _processor.GetPGNs = loginInfo.DownloadPGNs;
+            _processor.Beep_On_New_Move = loginInfo.Beep_On_New_Move;
+            _processor.NotifyIcon = _trayIcon;
+            _processor.ContextMenu = _trayMenu;
+            _processor.OutputMode = OutputMode.Form;
+            _processor.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
 
             if (loginInfo.AutoOpenLog)
             {
@@ -94,7 +94,7 @@ namespace ChessCalendar
             {
                 this._loggedIn = true;
 
-                _runningLog.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
+                _processor.Log_All_Games(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
                                           userInfoForm.User,
                                           userInfoForm.Password,
                                           userInfoForm.PostURI);
@@ -121,7 +121,7 @@ namespace ChessCalendar
         private void newShowLogThread(object arg)
         {
             LogViewer = new ShowLog();
-            LogViewer.Log = _runningLog;
+            LogViewer.Log = _processor;
             LogViewer.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
