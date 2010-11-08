@@ -31,8 +31,7 @@ namespace ChessCalendar.Forms
             this.pbTimeTillNextUpdate.Increment(1);
 
             this.MessageList = new MessageList();
-
-            
+       
             FormatDataGrid(this.dgvAvailableMoves);
 
             //TODO:  make this into a popup.
