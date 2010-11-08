@@ -22,9 +22,11 @@ namespace ChessCalendar.Forms
             
         #endregion
 
-        public ShowLog()
+        public ShowLog(FeedProcessor feedProcessor)
         {
             InitializeComponent();
+
+            this.Processor = feedProcessor;
 
             this.pbTimeTillNextUpdate.Maximum = 100;
             this.pbTimeTillNextUpdate.Minimum = 0;
