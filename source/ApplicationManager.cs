@@ -10,7 +10,7 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"Chess Calendar v11.7.10d **Prototype** ";
+        public const string VERSION = @"Chess Calendar v11.8.10 ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public Thread Thread { get; set; }
@@ -118,8 +118,7 @@ namespace ChessCalendar
         }
         private void newShowLogThread(object arg)
         {
-            this.LogViewer = new ShowLog();
-            this.LogViewer.Processor = FeedProcessor;
+            this.LogViewer = new ShowLog(this.FeedProcessor);
             this.LogViewer.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
