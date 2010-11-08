@@ -193,7 +193,7 @@ namespace ChessCalendar.Forms
             {
                 if (this.Log.NewMoves != null)
                 {
-                    if (this.Log.NewMoves.Count > 0)
+                    if (this.Log.NewMoves.Updated)
                     {
                         if (this.Log.ClearList)
                         {
