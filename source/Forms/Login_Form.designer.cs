@@ -138,9 +138,9 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(173, 399);
+            this.btnStart.Location = new System.Drawing.Point(174, 379);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 23);
+            this.btnStart.Size = new System.Drawing.Size(88, 23);
             this.btnStart.TabIndex = 8;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -169,7 +169,7 @@
             // 
             this.chkDebugMode.AutoSize = true;
             this.chkDebugMode.Enabled = false;
-            this.chkDebugMode.Location = new System.Drawing.Point(173, 367);
+            this.chkDebugMode.Location = new System.Drawing.Point(174, 356);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(88, 17);
             this.chkDebugMode.TabIndex = 7;

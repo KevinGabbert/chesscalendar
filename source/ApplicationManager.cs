@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -9,33 +10,39 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public NotifyIcon _trayIcon;
-        private ContextMenu _trayMenu;
-        private Log _runningLog = new Log();
-        private bool _loggedIn = false;
-
-        public const string VERSION = @"Chess Calendar v11.7.10c ";
+        public const string VERSION = @"Chess Calendar v11.7.10c **Prototype** ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
-        public Thread _log;
-        public ShowLog _logViewer;
-        public Login_Form _login;
+        private List<Thread> Logs { get; set; }
+        private ShowLog LogViewer { get; set; }
+        private Login_Form Login { get; set; }
+
+        //TODO: make these into props
+        private Log _runningLog = new Log();
+        public NotifyIcon _trayIcon;
+        private ContextMenu _trayMenu;
+
+        private bool _loggedIn = false;
 
         public ApplicationManager()
         {
-            
+            //TODO: Laying out for right now.  This will be altered later..
+            this.Logs = new List<Thread>();
+            this.Logs.Add(new Thread(newShowLogThread));
+
+            this.Logs[0].SetApartmentState(ApartmentState.STA); 
         }
 
         public void Start()
         {
             this.ReloadTray();
-            this.Login(this, null);
+            this.GetLogin(this, null);
         }
 
         private void ReloadTray()
         {
             _trayMenu = new ContextMenu();
-            _trayMenu.MenuItems.Add("Start", Login);//todo: animated gif with logo phasing in and out.
+            _trayMenu.MenuItems.Add("Start", GetLogin);//todo: animated gif with logo phasing in and out.
             //_trayMenu.MenuItems.Add("Stop", Login); //todo: this should change Icon to icon with red circle and line through it.
 
             if (_loggedIn)
@@ -58,7 +65,7 @@ namespace ChessCalendar
             //_trayIcon.ShowBalloonTip(10, "Start", "Right-Click 'Start' to begin",ToolTipIcon.Info);
         }
 
-        private void Login(object sender, EventArgs e)
+        private void GetLogin(object sender, EventArgs e)
         {
             var loginInfo = GetLoginInfo();
 
@@ -81,7 +88,6 @@ namespace ChessCalendar
             this.ValidateAndStart(loginInfo);
         }
 
-
         private void ValidateAndStart(Login_Form userInfoForm)
         {
             if (userInfoForm.ValidatedForm)
@@ -101,24 +107,22 @@ namespace ChessCalendar
 
         private Login_Form GetLoginInfo()
         {
-            _login = new Login_Form(VERSION);
-            _login.ShowDialog();
+            Login = new Login_Form(VERSION);
+            Login.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
 
-            return _login;
+            return Login;
         }
         private void ShowLog(object sender, EventArgs e)
         {
-            _log = new Thread(newShowLogThread);
-            _log.SetApartmentState(ApartmentState.STA);
-            _log.Start();
+            this.Logs[0].Start();
         }
         private void newShowLogThread(object arg)
         {
-            _logViewer = new ShowLog();
-            _logViewer.Log = _runningLog;
-            _logViewer.ShowDialog();
+            LogViewer = new ShowLog();
+            LogViewer.Log = _runningLog;
+            LogViewer.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
         }
