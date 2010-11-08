@@ -16,7 +16,7 @@ namespace ChessCalendar.Forms
 
         #region Properties
 
-            public FeedProcessor Log { get; set; }
+            public FeedProcessor Processor { get; set; }
             private MessageList MessageList { get; set; }
             public bool DebugMode { get; set; }
             
@@ -95,25 +95,25 @@ namespace ChessCalendar.Forms
 
             if (this._pause)
             {
-                this.Log.Stop();
+                this.Processor.Stop();
             }
             else
             {
-                this.Log.Go();
+                this.Processor.Go();
             }
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            this.Log.ResetWait = true;
+            this.Processor.ResetWait = true;
         }
 
         #endregion
 
         private void RunLoop()
         {
-            if (this.Log != null)
+            if (this.Processor != null)
             {
-                this.dgvAvailableMoves.Parent.Text = Log.UserLogged;
+                this.dgvAvailableMoves.Parent.Text = Processor.UserLogged;
             }
 
             while (true)
@@ -128,7 +128,7 @@ namespace ChessCalendar.Forms
 
         private void Update_GridView()
         {
-            if((DateTime.Now > this.Log.NextCheck) || this.Log.NewMessage)
+            if((DateTime.Now > this.Processor.NextCheck) || this.Processor.NewMessage)
             {
                 this.UpdateText();
                 this.UpdateDataGridView();    
@@ -140,7 +140,7 @@ namespace ChessCalendar.Forms
         }
         private void Update_ProgressBar()
         {
-            if (this.Log.NextCheck == new DateTime())
+            if (this.Processor.NextCheck == new DateTime())
             {
                 this._progressBarFlash = !this._progressBarFlash;
 
@@ -162,7 +162,7 @@ namespace ChessCalendar.Forms
             }
             else
             {
-                if (this.Log.WaitProgress > 100)
+                if (this.Processor.WaitProgress > 100)
                 {
                     this.pbTimeTillNextUpdate.ForeColor = Color.Red;
                     this.pbTimeTillNextUpdate.Value = 100;
@@ -170,7 +170,7 @@ namespace ChessCalendar.Forms
                 else
                 {
                     this.pbTimeTillNextUpdate.ForeColor = Color.Blue;
-                    this.pbTimeTillNextUpdate.Value = this.Log.WaitProgress;
+                    this.pbTimeTillNextUpdate.Value = this.Processor.WaitProgress;
                 }
 
                 this.pbTimeTillNextUpdate.Show();
@@ -178,47 +178,51 @@ namespace ChessCalendar.Forms
         }
         private void Update_NextCheck()
         {
-            if(this.Log.NextCheck == new DateTime())
+            if(this.Processor.NextCheck == new DateTime())
             {
                 this.txtNextCheck.Text = "Unknown";
             }
             else
             {
-                this.txtNextCheck.Text = "Next check will be at: " + this.Log.NextCheck.ToShortTimeString();
+                this.txtNextCheck.Text = "Next check will be at: " + this.Processor.NextCheck.ToShortTimeString();
             }
         }
         private void UpdateDataGridView()
         {
-            if (this.Log != null)
+            if (this.Processor != null)
             {
-                if (this.Log.NewMoves != null)
+                if (this.Processor.NewMoves != null)
                 {
-                    if (this.Log.NewMoves.Updated)
+                    if (this.Processor.NewMoves.Updated)
                     {
-                        if (this.Log.ClearList)
+                        if (this.Processor.ClearList)
                         {
                             this.MessageList.Clear();
                         }
 
-                        for (int i = this.Log.NewMoves.Count; i > 0; i--)
+                        for (int i = this.Processor.NewMoves.Count; i > 0; i--)
                         {
-                            this.MessageList.Add(this.Log.NewMoves.Dequeue()); 
+                            this.MessageList.Add(this.Processor.NewMoves.Dequeue()); 
                         }
 
                         GC.Collect();
                         this.SetMovesDataSource(this.MessageList);
                         GC.Collect();
 
-                        this.Log.NewMessage = true;
+                        this.Processor.NewMessage = true;
                     }
                     else
                     {
-                        if (this.Log.NewRssItems != null)
+                        //TODO: this needs to support multiple feeds
+                        if (this.Processor.Feeds != null)
                         {
-                            if (this.Log.NewRssItems.Count < 1)
+                            if (this.Processor.Feeds.Count > 0)
                             {
-                                this.MessageList.Clear();
-                                this.SetMovesDataSource(this.MessageList);
+                                if (this.Processor.Feeds[0].Count < 1)
+                                {
+                                    this.MessageList.Clear();
+                                    this.SetMovesDataSource(this.MessageList);
+                                }
                             }
                         }
                     }
@@ -237,20 +241,20 @@ namespace ChessCalendar.Forms
         }
         private void UpdateText()
         {
-            if (this.Log != null)
+            if (this.Processor != null)
             {
-                if (this.Log.Messages != null)
+                if (this.Processor.Messages != null)
                 {
-                    if (this.Log.Messages.Count > 0)
+                    if (this.Processor.Messages.Count > 0)
                     {
-                        this.txtLog.Text = (this.Log.Messages.Dequeue() + Environment.NewLine + this.txtLog.Text);
+                        this.txtLog.Text = (this.Processor.Messages.Dequeue() + Environment.NewLine + this.txtLog.Text);
 
                         if (this.txtLog.Text.Length > 5001)
                         {
                             this.txtLog.Text.Remove(5000);
                         }
 
-                        this.Log.NewMessage = true;
+                        this.Processor.NewMessage = true;
                     }
                 }
                 else

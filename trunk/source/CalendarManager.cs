@@ -5,14 +5,14 @@ using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
 {
-    public class CalendarLogManager : GameList
+    public class CalendarManager : GameList
     {
         #region Properties
             public GameList IgnoreList { private get; set; }
             public bool Beep_On_New_Move { private get; set; }
         #endregion
 
-        public CalendarLogManager(FeedProcessor logToManage)
+        public CalendarManager(FeedProcessor logToManage)
         {
             this.Log = logToManage;
             this.IgnoreList = new GameList(logToManage);
@@ -62,7 +62,7 @@ namespace ChessCalendar
                 this.Remove_Item_With_Guid(rssItem.Link);
             }
         }
-        private bool IgnoreListHasIt(IChessItem rssItem)
+        private bool IgnoreListHasIt(IRSS_Item rssItem)
         {
             bool ignorePubMatch = this.IgnoreList.Where(thisGame => thisGame.PubDate == rssItem.PubDate).Any();
             bool ignoreGuidMatch = this.IgnoreList.Where(thisGame => thisGame.Link == rssItem.Link).Any();
@@ -79,7 +79,7 @@ namespace ChessCalendar
                 }
             }
         }
-        private void Remove_Any_Older_Versions_Of(IChessItem rssItem)
+        private void Remove_Any_Older_Versions_Of(IRSS_Item rssItem)
         {
            //Well, technically, this should be remove any OTHER versions of, but the point is to get rid of
            //previously stored versions, which are older.

@@ -19,7 +19,9 @@ namespace ChessCalendar
 
             public Uri _calendarToPost;
             public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
-            public CalendarLogManager ToDo { get; set; }
+            public List<Feed> Feeds { get; set; }
+
+            public CalendarManager ToDo { get; set; }
 
             public string LogVersion { get; set; }
             public int WaitSeconds { get; set; }
@@ -45,19 +47,26 @@ namespace ChessCalendar
             public bool LogGames { get; set; }
             public bool ResetWait { get; set; }
             public string UserLogged { get; set; }
-            public Feed NewRssItems { get; set; }
+           
             public bool ClearList { get; set; }//needs a better name.
+ 
         #endregion
 
+
+        /// <summary>
+        /// This is called once per instance of the program
+        /// </summary>
         public FeedProcessor()
         {
+            this.Feeds = new List<Feed>();
             this.Messages = new Queue<string>();
+
             this.WaitSeconds = 1000;
         }
 
-        public void Log_All_Games(Uri uriToWatch, string userName, string password, Uri logToCalendar)
+        public void Process_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
-            this.ToDo = new CalendarLogManager(this);
+            this.ToDo = new CalendarManager(this);
             this.ToDo.DebugMode = this.DebugMode;
             this.ToDo.Beep_On_New_Move = this.Beep_On_New_Move;
 
@@ -74,53 +83,59 @@ namespace ChessCalendar
             {
                 if (!this._stop)
                 {
-                    this.NewRssItems = new Feed();
+                    var newFeed = new Feed();
+                    this.Feeds.Add(newFeed);
 
-                    try
-                    {
-                        this.NewRssItems.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
-
-                        this.AddOrUpdate_Games(this.ToDo, this.NewRssItems);
-
-                        //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
-                        //On remove, delete the all day reminder.
-
-                        this.ClearList = false;
-
-                        this.ProcessNewRSSItems(this.NewRssItems); //If there are *new* entries, then the gridview will clear and refresh
-
-                        //TODO: if NO new entries, it won't clear & refresh, meaning cruft won't 
-
-                        if (this.LogGames)
-                        {
-                            //TODO: this needs to be an asterisk or something on the log form.
-                            foreach (IChessItem current in this.ToDo)
-                            {
-                                this.Output(current); //TODO this causes gridview to clear and refresh
-                                this.Log_Game(current, userName, password);
-                            }
-                        }
-
-                        this.ClearList = true;
-
-                        this.ToDo.Clear();
-                    }
-                    catch (Exception ex)
-                    {
-                        //if 504 Invalid gateway error. Chess.com is down
-                        this.Output(string.Empty, "error. " + ex.Message);
-
-                        GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
-                                                                    this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
-                    }
-
-                    this.Wait(this.WaitSeconds);
+                    this.Save_To_Calendar(newFeed, userName, password, uriToWatch);
                 }
                 else
                 {
                     Application.DoEvents();
                 }
             }
+        }
+
+        private void Save_To_Calendar(Feed feedToSave, string userName, string password, Uri uriToWatch)
+        {
+            try
+            {
+                feedToSave.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+
+                this.AddOrUpdate_Games(this.ToDo, feedToSave);
+
+                //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                //On remove, delete the all day reminder.
+
+                this.ClearList = false;
+
+                this.ProcessNewRSSItems(feedToSave); //If there are *new* entries, then the gridview will clear and refresh
+
+                //TODO: if NO new entries, it won't clear & refresh, meaning cruft won't 
+
+                if (this.LogGames)
+                {
+                    //TODO: this needs to be an asterisk or something on the log form.
+                    foreach (IChessItem current in this.ToDo)
+                    {
+                        this.Output(current); //TODO this causes gridview to clear and refresh
+                        this.Log_Game(current, userName, password);
+                    }
+                }
+
+                this.ClearList = true;
+
+                this.ToDo.Clear();
+            }
+            catch (Exception ex)
+            {
+                //if 504 Invalid gateway error. Chess.com is down
+                this.Output(string.Empty, "error. " + ex.Message);
+
+                GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
+                                                                                                    this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
+            }
+
+            this.Wait(this.WaitSeconds);
         }
 
         private void ProcessNewRSSItems(IEnumerable<ChessRSSItem> newRssItems)
@@ -210,7 +225,7 @@ namespace ChessCalendar
             }
         }
 
-        private void AddOrUpdate_Games(CalendarLogManager toDo, ICollection<ChessRSSItem> gamelist)
+        private void AddOrUpdate_Games(CalendarManager toDo, ICollection<ChessRSSItem> gamelist)
         {
             if (gamelist != null)
             {
