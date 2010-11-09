@@ -15,6 +15,8 @@ namespace ChessCalendar
         public string UserName { get; set; }
         public string Password { get; set; }
 
+        public string WatchUser { get; set; }
+
         public bool Post { get; set; }
         public bool Save { get; set; }
 
@@ -39,6 +41,15 @@ namespace ChessCalendar
             this.UserName = userName;
             this.Password = password;
             this.Calendar = logToCalendar;
+        }
+
+        public CalendarProcessor(Uri uriToWatch, string userToWatch, string userName, string password, Uri logToCalendar)
+        {
+            this.Uri = uriToWatch;
+            this.UserName = userName;
+            this.Password = password;
+            this.Calendar = logToCalendar;
+            this.WatchUser = userToWatch;
         }
 
         public void Pull_Feed_Info()
@@ -118,6 +129,12 @@ namespace ChessCalendar
             throw new System.NotImplementedException();
         }
 
+        internal EntryManager Post_NewMoves(string userToWatch)
+        {
+            //returns a list of Entries specific to that user.
+            throw new System.NotImplementedException();
+        }
+
         private void AddOrUpdate_Games(EntryManager toDo, ICollection<ChessRSSItem> gamelist)
         {
             if (gamelist != null)
@@ -149,7 +166,7 @@ namespace ChessCalendar
         {
             foreach (var item in newRssItems)
             {
-                //this.Output(item);
+                this.Output.NewMoves.Enqueue(item); //?
             }
         }
         private void Save_To_Calendar(EntryManager x, Feed feedToSave, string userName, string password, Uri uriToWatch)
