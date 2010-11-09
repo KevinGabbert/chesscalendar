@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Linq;
-using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
 {
-    public class CalendarManager : GameList
+    public class EntryManager : GameList
     {
         #region Properties
             public GameList IgnoreList { private get; set; }
             public bool Beep_On_New_Move { private get; set; }
         #endregion
 
-        public CalendarManager(FeedProcessor logToManage)
+        public EntryManager()
         {
-            this.Log = logToManage;
-            this.IgnoreList = new GameList(logToManage);
+            this.IgnoreList = new GameList();
         }
         public void Ignore(IChessItem game)
         {
@@ -37,7 +35,7 @@ namespace ChessCalendar
             }
             catch (Exception ex)
             {
-                this.Log.Output(string.Empty, ex.Message, OutputMode.Form);
+                //this.Processor.Output(string.Empty, ex.Message, OutputMode.Form);
                 throw;
             }
         }

@@ -9,7 +9,7 @@ using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    public class FeedProcessor: OutputClass
+    public class Processor: OutputClass
     {
         public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
 
@@ -20,12 +20,12 @@ namespace ChessCalendar
             public Uri _calendarToPost;
             public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
 
-            public List<ChessCalendarFeed> CCFeeds { get; set; }
+            public List<CalendarProcessor> CCFeeds { get; set; }
 
             //TODO: Deprecate this
             public List<Feed> Feeds { get; set; }
 
-            public CalendarManager ToDo { get; set; }
+            public EntryManager ToDo { get; set; }
 
             public string LogVersion { get; set; }
             public int WaitSeconds { get; set; }
@@ -59,7 +59,7 @@ namespace ChessCalendar
         /// <summary>
         /// This object is intended to be consumed by one subscriber per instantiation.
         /// </summary>
-        public FeedProcessor()
+        public Processor()
         {
             this.Feeds = new List<Feed>();
             this.Messages = new Queue<string>();
@@ -80,7 +80,7 @@ namespace ChessCalendar
         /// <param name="save"></param>
         public void Add_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool post, bool save)
         {
-            var newFeed = new ChessCalendarFeed(uriToWatch, userName, password, logToCalendar);
+            var newFeed = new CalendarProcessor(uriToWatch, userName, password, logToCalendar);
             newFeed.Post = post;
             newFeed.Save = save;
 
@@ -89,7 +89,7 @@ namespace ChessCalendar
 
         public void Process_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool post, bool save)
         {
-            var newFeed = new ChessCalendarFeed(uriToWatch, userName, password, logToCalendar);
+            var newFeed = new CalendarProcessor(uriToWatch, userName, password, logToCalendar);
             newFeed.Post = post;
             newFeed.Save = save;
 
@@ -103,7 +103,7 @@ namespace ChessCalendar
         /// </summary>
         public void Process_ALL_Feeds(bool postAll, bool saveAll)
         {
-            foreach (ChessCalendarFeed feed in this.Feeds)
+            foreach (CalendarProcessor feed in this.Feeds)
             {
                 feed.Post = postAll;
                 feed.Save = saveAll;
@@ -122,7 +122,7 @@ namespace ChessCalendar
         /// <param name="logToCalendar"></param>
         public void Save_Single_Feed_To_Calendar(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
-            this.ToDo = new CalendarManager(this);
+            this.ToDo = new EntryManager();
             this.ToDo.DebugMode = this.DebugMode;
             this.ToDo.Beep_On_New_Move = this.Beep_On_New_Move;
 
@@ -245,7 +245,7 @@ namespace ChessCalendar
 
             if (this.GetPGNs)
             {
-                FeedProcessor.Download_PGN(gameToLog);
+                Processor.Download_PGN(gameToLog);
             }
 
             GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
@@ -281,7 +281,7 @@ namespace ChessCalendar
             }
         }
 
-        private void AddOrUpdate_Games(CalendarManager toDo, ICollection<ChessRSSItem> gamelist)
+        private void AddOrUpdate_Games(EntryManager toDo, ICollection<ChessRSSItem> gamelist)
         {
             if (gamelist != null)
             {
