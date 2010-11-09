@@ -16,13 +16,13 @@ namespace ChessCalendar.Forms
 
         #region Properties
 
-            public Processor Processor { get; set; }
+            public ProcessorManager Processor { get; set; }
             private MessageList MessageList { get; set; }
             public bool DebugMode { get; set; }
             
         #endregion
 
-        public ShowLog(Processor feedProcessor)
+        public ShowLog(ProcessorManager feedProcessor)
         {
             InitializeComponent();
 
