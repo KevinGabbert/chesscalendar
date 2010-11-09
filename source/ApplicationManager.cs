@@ -9,7 +9,7 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"Chess Calendar v11.8.10a ";
+        public const string VERSION = @"Chess Calendar v11.8.10b *Prototype* ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public Thread Thread { get; set; }
@@ -17,7 +17,7 @@ namespace ChessCalendar
         public Login_Form Login { get; set; }
 
         //TODO: make these into props
-        public FeedProcessor FeedProcessor { get; set; }
+        public Processor FeedProcessor { get; set; }
         public NotifyIcon TrayIcon { get; set; }
         public ContextMenu Menu { get; set; }
 
@@ -66,7 +66,7 @@ namespace ChessCalendar
         {
             var loginInfo = GetLoginInfo();
 
-            this.FeedProcessor = new FeedProcessor();
+            this.FeedProcessor = new Processor();
             this.FeedProcessor.LogVersion = VERSION;
             this.FeedProcessor.DebugMode = loginInfo.DebugMode;
             this.FeedProcessor.UserLogged = loginInfo.ChessDotComName;

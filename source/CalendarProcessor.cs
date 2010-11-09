@@ -5,10 +5,10 @@ using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    public class ChessCalendarFeed: Feed
+    public class CalendarProcessor: Feed
     {
         public OutputClass Output { get; set; }
-        public CalendarManager CalendarManager { get; set; }
+        public EntryManager CalendarManager { get; set; }
 
         public Uri Uri { get; set; }
         public Uri Calendar { get; set; }
@@ -18,6 +18,14 @@ namespace ChessCalendar
         public bool Post { get; set; }
         public bool Save { get; set; }
 
+        public bool NewMessage { get; set; }
+        public bool DebugMode { get; set; }
+        public bool Beep_On_New_Move { get; set; }
+        public bool GetPGNs { get; set; }
+        public bool LogGames { get; set; }
+        public bool ResetWait { get; set; }
+        public string UserLogged { get; set; }
+
         /// <summary>
         /// Creates a new instance of login and Calendar information for the inherited feed.
         /// </summary>
@@ -25,7 +33,7 @@ namespace ChessCalendar
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="logToCalendar"></param>
-        public ChessCalendarFeed(Uri uriToWatch, string userName, string password, Uri logToCalendar)
+        public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             this.Uri = uriToWatch;
             this.UserName = userName;
@@ -53,7 +61,7 @@ namespace ChessCalendar
         /// <summary>
         /// Saves new items to the Calendar
         /// </summary>
-        internal void Save_To_Calendar( )
+        internal void Save_To_Calendar(EntryManager calendarManager )
         {
 
             foreach (ChessRSSItem chessRssItem in this)
@@ -67,15 +75,15 @@ namespace ChessCalendar
         /// <summary>
         /// Posts moves in feed to this.Output
         /// </summary>
-        internal List<bool> Post_NewMoves()
+        internal EntryManager Post_NewMoves()
         {
             foreach (ChessRSSItem chessRssItem in this)
             {
                 //post
 
-                //this.ToDo = new CalendarManager(this);
-                //this.ToDo.DebugMode = this.DebugMode;
-                //this.ToDo.Beep_On_New_Move = this.Beep_On_New_Move;
+                var toDo = new EntryManager();
+                //toDo.DebugMode = this.DebugMode;
+                //toDo.Beep_On_New_Move = this.Beep_On_New_Move;
 
                 //_calendarToPost = logToCalendar;
 
@@ -84,18 +92,18 @@ namespace ChessCalendar
                 ////get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
                 ////TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
 
-                //this.ToDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(userName, password, _calendarToPost, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+                toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
                 //    feedToSave.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
 
-                //    this.AddOrUpdate_Games(this.ToDo, feedToSave);
+                //this.AddOrUpdate_Games(toDo, feedToSave);
 
                 //    //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                 //    //On remove, delete the all day reminder.
 
                 //    this.ClearList = false;
 
-                //    this.ProcessNewRSSItems(feedToSave); //If there are *new* entries, then the gridview will clear and refresh
+                //this.ProcessNewRSSItems(feedToSave); //If there are *new* entries, then the gridview will clear and refresh
 
                 //    //TODO: if NO new entries, it won't clear & refresh, meaning cruft won't 
 
@@ -110,7 +118,41 @@ namespace ChessCalendar
             throw new System.NotImplementedException();
         }
 
-        private void Save_To_Calendar(List<bool> x, Feed feedToSave, string userName, string password, Uri uriToWatch)
+        private void AddOrUpdate_Games(EntryManager toDo, ICollection<ChessRSSItem> gamelist)
+        {
+            if (gamelist != null)
+            {
+                this.NewMessage = true;
+
+                if (gamelist.Count > 0)
+                {
+                    this.LogGames = true;
+
+                    //TODO: this needs to be in a field in the log form
+                    //this.Output(string.Empty, Environment.NewLine + "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
+
+                    //this.Output(string.Empty, Environment.NewLine, OutputMode.Form);
+                    foreach (ChessRSSItem game in gamelist)
+                    {
+                        toDo.ProcessRSSItem(game);
+                    }
+                }
+                else
+                {
+                    //this.Output(string.Empty, "No new or updated games found: " + DateTime.Now.ToLongTimeString());
+                    this.LogGames = false;
+                }
+            }
+        }
+
+        private void ProcessNewRSSItems(IEnumerable<ChessRSSItem> newRssItems)
+        {
+            foreach (var item in newRssItems)
+            {
+                //this.Output(item);
+            }
+        }
+        private void Save_To_Calendar(EntryManager x, Feed feedToSave, string userName, string password, Uri uriToWatch)
         {
             //try
             //{

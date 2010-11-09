@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 using Google.GData.Client;
 
@@ -10,7 +9,6 @@ namespace ChessCalendar
     {
         #region Properties
 
-            public FeedProcessor Log { get; set; }
             public bool DebugMode { get; set; }
 
         #endregion
@@ -20,16 +18,10 @@ namespace ChessCalendar
 
         }
 
-        public GameList(FeedProcessor logToManage)
-        {
-            this.Log = logToManage;
-        }
-
         public void Remove_Item_With_Guid(string link)
         {
             this.Remove_Item_With_Guid(this, link);
         }
-
         private void Remove_Item_With_Guid(IList<IChessItem> listToRemoveFrom, string link)
         {
             for (int i = listToRemoveFrom.Count() - 1; i > -1; i--)
@@ -40,7 +32,7 @@ namespace ChessCalendar
                 {
                     if(this.DebugMode)
                     {
-                        this.Log.Output(string.Empty, "Removing Game: " + currentGame.Title, OutputMode.Form);
+                        //this.Processor.Output(string.Empty, "Removing Game: " + currentGame.Title, OutputMode.Form);
                     }
 
                     listToRemoveFrom.Remove(currentGame);
@@ -53,7 +45,6 @@ namespace ChessCalendar
         {
             base.Add(game);
         }
-
         private void AddGame(AtomEntry atomEntry)
         {
             foreach (AtomEntry entry in atomEntry.Feed.Entries)
@@ -78,7 +69,6 @@ namespace ChessCalendar
                 }
             }
         }
-
         public void AddRange(IEnumerable<AtomEntry> atomEntries)
         {
             foreach (var atomEntry in atomEntries)
