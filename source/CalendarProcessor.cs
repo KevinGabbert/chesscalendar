@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using ChessCalendar.Interfaces;
-using RssToolkit.Rss;
+using System.Linq;
 
 namespace ChessCalendar
 {
+    /// <summary>
+    /// Gets 
+    /// </summary>
     public class CalendarProcessor: Feed
     {
         public OutputClass Output { get; set; }
-        public EntryManager CalendarManager { get; set; }
+        public EntryList ToDo { get; set; }
 
-        public Uri Uri { get; set; }
+        
         public Uri Calendar { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
 
-        public string WatchUser { get; set; }
+        public List<string> UsersToProcess { get; set; } //TODO: should this be an EntryList?
 
         public bool Post { get; set; }
         public bool Save { get; set; }
@@ -43,13 +45,20 @@ namespace ChessCalendar
             this.Calendar = logToCalendar;
         }
 
-        public CalendarProcessor(Uri uriToWatch, string userToWatch, string userName, string password, Uri logToCalendar)
+        public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool load)
         {
             this.Uri = uriToWatch;
             this.UserName = userName;
             this.Password = password;
             this.Calendar = logToCalendar;
-            this.WatchUser = userToWatch;
+
+            if (load){this.Load();}
+        }
+
+        public void Refresh()
+        {
+            this.Load();
+            this.AddOrUpdate_Games(this.ToDo, this);
         }
 
         public void Pull_Feed_Info()
@@ -57,22 +66,28 @@ namespace ChessCalendar
             //feedToSave.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
         }
 
-        public void Create_ToDo_List()
+        internal void Go(List<string> usersToWatch)
         {
+            var x = this.Post_NewMoves(usersToWatch); //Outputs to NewMove Queue, builds ToDo
             
+            this.Save_To_Calendar(x, new Feed(), "", "", new Uri("")); //denoted by URI   //Processes all items in ToDo
         }
 
         internal void Go()
         {
-            var postedMoves = this.Post_NewMoves(); //Outputs to NewMove Queue, builds ToDo
-            this.Save_To_Calendar(postedMoves, new Feed(), "", "", new Uri("") ); //denoted by URI   //Processes all items in ToDo
-        }
+            this.Refresh();
 
+            //get all the opponents in *this*, and save them all to the calendar
+            foreach (var x in this.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
+            {
+                this.Save_To_Calendar(x, new Feed(), "", "", new Uri("")); //denoted by URI   //Processes all items in ToDo
+            }
+        }
         
         /// <summary>
         /// Saves new items to the Calendar
         /// </summary>
-        internal void Save_To_Calendar(EntryManager calendarManager )
+        internal void Save_To_Calendar(EntryList calendarManager )
         {
 
             foreach (ChessRSSItem chessRssItem in this)
@@ -84,15 +99,36 @@ namespace ChessCalendar
         }
 
         /// <summary>
+        /// Filters the RSS given to the users wanted
+        /// </summary>
+        /// <param name="usersToWatch"></param>
+        /// <returns></returns>
+        internal EntryList Post_NewMoves(List<string> usersToWatch)
+        {
+
+
+            //returns a list of Entries specific to that user.
+            throw new System.NotImplementedException();
+        }
+
+        internal EntryList Post_NewMoves(string userToWatch, bool output)
+        {
+
+
+            //returns a list of Entries specific to that user.
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
         /// Posts moves in feed to this.Output
         /// </summary>
-        internal EntryManager Post_NewMoves()
+        internal EntryList Post_NewMoves()
         {
             foreach (ChessRSSItem chessRssItem in this)
             {
                 //post
 
-                var toDo = new EntryManager();
+                var toDo = new EntryList();
                 //toDo.DebugMode = this.DebugMode;
                 //toDo.Beep_On_New_Move = this.Beep_On_New_Move;
 
@@ -129,13 +165,7 @@ namespace ChessCalendar
             throw new System.NotImplementedException();
         }
 
-        internal EntryManager Post_NewMoves(string userToWatch)
-        {
-            //returns a list of Entries specific to that user.
-            throw new System.NotImplementedException();
-        }
-
-        private void AddOrUpdate_Games(EntryManager toDo, ICollection<ChessRSSItem> gamelist)
+        private void AddOrUpdate_Games(EntryList toDo, ICollection<ChessRSSItem> gamelist)
         {
             if (gamelist != null)
             {
@@ -169,7 +199,7 @@ namespace ChessCalendar
                 this.Output.NewMoves.Enqueue(item); //?
             }
         }
-        private void Save_To_Calendar(EntryManager x, Feed feedToSave, string userName, string password, Uri uriToWatch)
+        private void Save_To_Calendar(EntryList x, Feed feedToSave, string userName, string password, Uri uriToWatch)
         {
             //try
             //{

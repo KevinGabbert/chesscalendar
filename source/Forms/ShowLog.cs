@@ -40,7 +40,37 @@ namespace ChessCalendar.Forms
             this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
         }
 
+        public ShowLog(Feed feed)
+        {
+            InitializeComponent();
+
+            //this.Processors.Add((CalendarProcessor)feed);
+
+            //this.pbTimeTillNextUpdate.Maximum = 100;
+            //this.pbTimeTillNextUpdate.Minimum = 0;
+            //this.pbTimeTillNextUpdate.Increment(1);
+
+            //this.MessageList = new MessageList();
+
+            //FormatDataGrid(this.dgvAvailableMoves);
+
+            ////TODO:  make this into a popup.
+            //this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
+        }
+
         #region Events
+
+
+        private void btnAddFeed_Click(object sender, EventArgs e)
+        {
+            //opens Login form for the user to select a feed
+
+            //Adds a tab to the TabControl  
+
+            //this.Processors.Add((CalendarProcessor)feed);
+
+            //RunLoop() will update all the tabs.
+        }
 
         private void dgvAvailableMoves_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -73,7 +103,7 @@ namespace ChessCalendar.Forms
 
             //Grid
             this.dgvAvailableMoves.Width = this.Width - 20;
-            this.dgvAvailableMoves.Height = this.Height - 110;
+            this.dgvAvailableMoves.Height = this.Height - 130;
      
             //button
             this.btnPause.Top = this.Height - 95;
