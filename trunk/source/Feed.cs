@@ -1,10 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
     public class Feed : List<ChessRSSItem>
     {
+        public Uri Uri { get; set; }
+
+        public Feed()
+        {
+
+        }
+
+        public Feed(Uri uriToLoad)
+        {
+            this.Load(uriToLoad);
+        }
+
         public void Add(RssItem rssItem)
         {
             var newItem = new ChessRSSItem();
@@ -23,6 +37,31 @@ namespace ChessCalendar
             {
                 this.Add(rssItem);
             }
+        }
+
+        public void Load()
+        {
+            this.AddRange(RssDocument.Load(this.Uri).Channel.Items);
+        }
+
+        public void Load(Uri uriToLoad)
+        {
+            this.AddRange(RssDocument.Load(uriToLoad).Channel.Items);
+        }
+
+        public List<string> GetOpponents()
+        {
+            return this.Select(chessRssItem => ParseUtility.GetOpponent(chessRssItem.Title)).ToList();
+        }
+
+        public List<string> GetGames()
+        {
+            return this.Select(chessRssItem => ParseUtility.GetGameTitle(chessRssItem.Title)).ToList();
+        }
+
+        public List<string> GetGamesAndTitle()
+        {
+            return this.Select(chessRssItem => ParseUtility.GetGameTitle(chessRssItem.Title) + "  ~  " + ParseUtility.GetOpponent(chessRssItem.Title)).ToList();
         }
     }
 }

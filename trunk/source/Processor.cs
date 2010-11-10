@@ -25,7 +25,7 @@ namespace ChessCalendar
             //TODO: Deprecate this
             public List<Feed> Feeds { get; set; }
 
-            public EntryManager ToDo { get; set; }
+            public EntryList ToDo { get; set; }
 
             public string LogVersion { get; set; }
             public int WaitSeconds { get; set; }
@@ -107,7 +107,15 @@ namespace ChessCalendar
             {
                 feed.Post = postAll;
                 feed.Save = saveAll;
-                feed.Go();
+                //feed.Go();
+            }
+        }
+
+        public void Process_Feed(string userName)
+        {
+            foreach (CalendarProcessor feed in this.Feeds)
+            {
+                 feed.Go(feed.GetOpponents());
             }
         }
 
@@ -122,7 +130,7 @@ namespace ChessCalendar
         /// <param name="logToCalendar"></param>
         public void Save_Single_Feed_To_Calendar(Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
-            this.ToDo = new EntryManager();
+            this.ToDo = new EntryList();
             this.ToDo.DebugMode = this.DebugMode;
             this.ToDo.Beep_On_New_Move = this.Beep_On_New_Move;
 
@@ -281,7 +289,7 @@ namespace ChessCalendar
             }
         }
 
-        private void AddOrUpdate_Games(EntryManager toDo, ICollection<ChessRSSItem> gamelist)
+        private void AddOrUpdate_Games(EntryList toDo, ICollection<ChessRSSItem> gamelist)
         {
             if (gamelist != null)
             {

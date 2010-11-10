@@ -99,7 +99,7 @@
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="CalendarProcessor.cs" />
-    <Compile Include="EntryManager.cs" />
+    <Compile Include="EntryList.cs" />
     <Compile Include="ChessRSSItem.cs" />
     <Compile Include="Feed.cs" />
     <Compile Include="Forms\ShowLog.cs">

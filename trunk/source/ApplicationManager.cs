@@ -9,7 +9,7 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"Chess Calendar v11.8.10b *Prototype* ";
+        public const string VERSION = @"Chess Calendar v11.9.10 *Prototype* ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public Thread Thread { get; set; }

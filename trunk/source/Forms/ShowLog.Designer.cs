@@ -38,6 +38,8 @@
             this.txtNextCheck = new System.Windows.Forms.TextBox();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnAddFeed = new System.Windows.Forms.Button();
+            this.chkRecordGame = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAvailableMoves)).BeginInit();
@@ -54,6 +56,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.chkRecordGame);
             this.tabPage1.Controls.Add(this.lnkNoMovesFound);
             this.tabPage1.Controls.Add(this.txtLog);
             this.tabPage1.Controls.Add(this.dgvAvailableMoves);
@@ -90,7 +93,7 @@
             this.dgvAvailableMoves.Location = new System.Drawing.Point(3, 29);
             this.dgvAvailableMoves.Name = "dgvAvailableMoves";
             this.dgvAvailableMoves.RowHeadersVisible = false;
-            this.dgvAvailableMoves.Size = new System.Drawing.Size(783, 390);
+            this.dgvAvailableMoves.Size = new System.Drawing.Size(783, 369);
             this.dgvAvailableMoves.TabIndex = 0;
             this.dgvAvailableMoves.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAvailableMoves_CellClick);
             this.dgvAvailableMoves.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvAvailableMoves_CellFormatting);
@@ -113,7 +116,7 @@
             // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(165, 458);
+            this.btnPause.Location = new System.Drawing.Point(334, 458);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(121, 23);
             this.btnPause.TabIndex = 4;
@@ -123,7 +126,7 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(498, 455);
+            this.btnRefresh.Location = new System.Drawing.Point(670, 458);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(121, 23);
             this.btnRefresh.TabIndex = 5;
@@ -131,11 +134,32 @@
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // btnAddFeed
+            // 
+            this.btnAddFeed.Location = new System.Drawing.Point(2, 458);
+            this.btnAddFeed.Name = "btnAddFeed";
+            this.btnAddFeed.Size = new System.Drawing.Size(121, 23);
+            this.btnAddFeed.TabIndex = 6;
+            this.btnAddFeed.Text = "Add Feed";
+            this.btnAddFeed.UseVisualStyleBackColor = true;
+            this.btnAddFeed.Click += new System.EventHandler(this.btnAddFeed_Click);
+            // 
+            // chkRecordGame
+            // 
+            this.chkRecordGame.AutoSize = true;
+            this.chkRecordGame.Location = new System.Drawing.Point(3, 402);
+            this.chkRecordGame.Name = "chkRecordGame";
+            this.chkRecordGame.Size = new System.Drawing.Size(202, 17);
+            this.chkRecordGame.TabIndex = 22;
+            this.chkRecordGame.Text = "Record this game in Google Calendar";
+            this.chkRecordGame.UseVisualStyleBackColor = true;
+            // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(795, 527);
+            this.Controls.Add(this.btnAddFeed);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnPause);
             this.Controls.Add(this.pbTimeTillNextUpdate);
@@ -170,5 +194,7 @@
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.LinkLabel lnkNoMovesFound;
+        private System.Windows.Forms.Button btnAddFeed;
+        private System.Windows.Forms.CheckBox chkRecordGame;
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Google.GData.Calendar;
 
@@ -32,6 +34,8 @@ namespace ChessCalendar.Forms
 
             this.btnStart.Enabled = false;
             this.btnOK.Enabled = false;
+
+            this.cmbOpponents.Visible = this.rdoFollowGames.Checked;
         }
 
         #region TextBoxes
@@ -50,6 +54,8 @@ namespace ChessCalendar.Forms
 
         private void txtChessDotComName_TextChanged(object sender, EventArgs e)
         {
+            this.txtChessDotComName.ForeColor = Color.Black;
+
             this.btnStart.Enabled = this.ValidateForm();
             if (Login_Form.UserHitReturn(sender))
             {
@@ -61,13 +67,43 @@ namespace ChessCalendar.Forms
                 {
                     //((TextBox)sender).
                 }
-
-                //else
-                //{
-                //    ((CancelEventArgs)e).Cancel = true;
-                //}
             }
         }
+
+        private void txtChessDotComName_Leave(object sender, EventArgs e)
+        {
+            this.Conditionally_Load_Opponents();
+        }
+
+        private void rdoFollowGames_CheckedChanged(object sender, EventArgs e)
+        {
+            this.cmbOpponents.Visible = this.rdoFollowGames.Checked;
+
+            this.Conditionally_Load_Opponents();
+        }
+
+        private void Conditionally_Load_Opponents()
+        {
+            if(this.rdoFollowGames.Checked)
+            {
+                this.Load_Opponents();
+            }
+        }
+
+        private void Load_Opponents()
+        {
+            try
+            {
+                Feed chessDotComFeed = new Feed(new Uri("http://www.chess.com/rss/echess/" + this.txtChessDotComName.Text));
+                this.cmbOpponents.DataSource = chessDotComFeed.GetOpponents().Distinct().ToList();
+            }
+            catch (Exception ex)
+            {
+                this.txtChessDotComName.ForeColor = Color.Red;
+                throw;
+            }
+        }
+
         #endregion
         #region Buttons
 
@@ -109,7 +145,7 @@ namespace ChessCalendar.Forms
 
         public bool ValidateForm()
         {
-            bool haveChessDotComName = (this.ChessDotComName != string.Empty);
+            bool haveChessDotComName = (this.txtChessDotComName.Text != string.Empty);
             bool haveGoogleLogin = (this.txtLogin.TextLength > 0);
             bool haveGooglePassword = (this.txtPassword.TextLength > 0);
 
@@ -122,6 +158,8 @@ namespace ChessCalendar.Forms
 
         private void cmbGoogleCalendar_Leave(object sender, EventArgs e)
         {
+            this.btnStart.Enabled = this.ValidateForm();
+
             this.SetPostURI();
         }
 
@@ -136,6 +174,5 @@ namespace ChessCalendar.Forms
         {
             return ((TextBoxBase)sender).Text.Contains(Environment.NewLine);
         }
-
     }
 }
