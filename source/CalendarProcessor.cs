@@ -12,7 +12,6 @@ namespace ChessCalendar
         public OutputClass Output { get; set; }
         public EntryList ToDo { get; set; }
 
-        
         public Uri Calendar { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
