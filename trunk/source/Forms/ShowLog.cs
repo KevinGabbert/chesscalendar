@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using ChessCalendar.Controls;
 using ChessCalendar.Interfaces;
 using System.Threading;
 
@@ -16,13 +17,13 @@ namespace ChessCalendar.Forms
 
         #region Properties
 
-            public ProcessorManager Processor { get; set; }
+            public ProcessorManager_Deprecated Processor { get; set; }
             private MessageList MessageList { get; set; }
             public bool DebugMode { get; set; }
             
         #endregion
 
-        public ShowLog(ProcessorManager feedProcessor)
+        public ShowLog(ProcessorManager_Deprecated feedProcessor)
         {
             InitializeComponent();
 
@@ -65,30 +66,12 @@ namespace ChessCalendar.Forms
         {
             //opens Login form for the user to select a feed
 
-            //Adds a tab to the TabControl 
-            //   **control ?**
-            //   Adds a txtLog to the new Tab
-            //   Adds a GridView to the new Tab
-            //   Adds a checkbox to the new Tab
-            //   **control? **
+            //if loginform.blah
 
-            TabPage newPage = new TabPage("UserName");
+            FeedTab newPage = new FeedTab();
             this.tabs.TabPages.Add(newPage);  //.Remove(newPage) to remove
 
-            var messages = new TextBox();
-            messages.Name = "TabPage_txtMessages";
-
-            var grid = new DataGridView();
-            grid.Name = "TabPage_Grid";
-
-            var logToCalendar = new CheckBox();
-            logToCalendar.Name = "TabPageName_chkLogToCalendar";
-
-            newPage.Controls.Add(logToCalendar);
-            newPage.Controls.Add(grid);
-            newPage.Controls.Add(messages);
-
-            //this.Processors.Add((CalendarProcessor)feed);
+            
 
             //RunLoop() will update all the tabs.
 

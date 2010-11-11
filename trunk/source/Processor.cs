@@ -9,7 +9,7 @@ using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
-    public class ProcessorManager: OutputClass
+    public class ProcessorManager_Deprecated: OutputClass
     {
         public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
 
@@ -59,7 +59,7 @@ namespace ChessCalendar
         /// <summary>
         /// This object is intended to be consumed by one subscriber per instantiation.
         /// </summary>
-        public ProcessorManager()
+        public ProcessorManager_Deprecated()
         {
             this.Feeds = new List<Feed>();
             this.Messages = new Queue<string>();
@@ -253,7 +253,7 @@ namespace ChessCalendar
 
             if (this.GetPGNs)
             {
-                ProcessorManager.Download_PGN(gameToLog);
+                ProcessorManager_Deprecated.Download_PGN(gameToLog);
             }
 
             GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
