@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
 using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
@@ -13,6 +15,8 @@ namespace ChessCalendar
     /// </summary>
     public class CalendarProcessor: ChessFeed
     {
+        public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
+
         #region Properties
 
             public OutputClass Output { get; set; }
@@ -95,43 +99,53 @@ namespace ChessCalendar
             //feedToSave.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
         }
 
-        internal void Go(List<string> usersToWatch)
+        internal void Go(IEnumerable<string> usersToWatch)
         {
-            //var x = this.Post_NewMoves(usersToWatch, true); //Outputs to NewMove Queue, builds ToDo
-            
-           // this.Store(x, new ChessFeed(), "", "", new Uri("")); //denoted by URI   //Processes all items in ToDo
+            while (true)
+            {
+                this.RefreshRSS();
+
+                foreach (string user in usersToWatch)
+                {
+                    this.ToDo = this.Post_NewMoves(user, true); //Outputs to NewMove Queue, builds ToDo
+                    this.Store(this.ToDo); //Stores all items in ToDo
+                }
+
+                //this.Wait(this.WaitSeconds);
+            }
         }
 
         internal void Go()
         {
-            this.RefreshRSS();
-
-            //get all the opponents in *this*, and save them all to the calendar
-            foreach (var x in this.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
+            while (true)
             {
-                this.Store(x, new ChessFeed(), "", "", new Uri("")); //denoted by URI   //Processes all items in ToDo
+                this.RefreshRSS();
+
+                //Get all the opponents in *this*, post them, and save all their moves to the calendar
+                foreach (var x in this.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
+                {
+                    this.Store(x);
+                }
             }
         }
-        
+
         /// <summary>
-        /// Saves new items to the Calendar
+        /// Filters by Opponent name
         /// </summary>
-        internal void Save_To_Calendar(EntryList calendarManager )
-        {
-
-            foreach (ChessRSSItem chessRssItem in this)
-            {
-                //save
-            }
-
-            throw new System.NotImplementedException();
-        }
-
+        /// <param name="chessUserToWatch"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
         internal EntryList Post_NewMoves(string chessUserToWatch, bool output)
         {
+            //all POST functions will use this one as a base
+
+            //1. build an EntryList that only has entries from chessUserToWatch
+
+            //2. call PostGamesWithOpponent(chessUserToWatch);
+            
             foreach (ChessRSSItem chessRssItem in this)
             {
-                
+                //Call PostGamesWith Opponent
             }
 
             //returns a list of Entries specific to that user.
@@ -140,48 +154,44 @@ namespace ChessCalendar
 
         /// <summary>
         /// Posts moves in feed to this.Output
-        /// returns a list of Entries specific to that user.
+        /// 
+        /// returns a list of Entries specific to information stored in *this*.
         /// </summary>
-        internal EntryList Post_NewMoves()
+        internal EntryList Post_NewMoves(EntryList toDo)
         {
+            MessageBox.Show("Rewrite Post_NewMoves(string chessUserToWatch, bool output) then DELETE this function");
+
             try
             {
-                foreach (ChessRSSItem chessRssItem in this)
+                foreach (var item in toDo)
                 {
-                    this.ToDo = new EntryList();
-                    this.ToDo.DebugMode = this.DebugMode;
-                    this.ToDo.Beep_On_New_Move = this.Beep_On_New_Move;
+                    toDo.DebugMode = this.DebugMode;
+                    toDo.Beep_On_New_Move = this.Beep_On_New_Move;
 
                     //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
                     //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
-                    this.ToDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+                    toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
-                    this.RefreshRSS(); 
-
-                    this.AddOrUpdate_Games(this.ToDo, this);
+                    //this.RefreshRSS();
 
                     //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                     //On remove, delete the all day reminder.
 
-                    //    this.ClearList = false;
-
+                    this.ClearList = false;
                     this.PostAllNewRSSItems(this); //If there are *new* entries, then the gridview will clear and refresh
-
-                    //    //TODO: if NO new entries, it won't clear & refresh, meaning cruft won't 
 
                     if (this.LogGames)
                     {
                         //TODO: this needs to be an asterisk or something on the log form.
-                        foreach (IChessItem current in this.ToDo)
+                        foreach (IChessItem current in toDo)
                         {
                             this.Output.Post(current); //TODO this causes gridview to clear and refresh
-                            //Not needed here this.Store(this.ToDo, this, this.UserName, this.Password, this.FeedUri);
                         }
                     }
 
                     this.ClearList = true;
 
-                    this.ToDo.Clear();
+                    toDo.Clear();
                 }
             }
             catch (Exception ex)
@@ -197,9 +207,7 @@ namespace ChessCalendar
                                            ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar);
             }
 
-            this.Wait(this.WaitSeconds);
-
-            return new EntryList();
+            return toDo;
         }
 
         private void Wait(int waitSeconds)
@@ -286,33 +294,56 @@ namespace ChessCalendar
                 this.Output.NewMoves.Enqueue(item); //?
             }
         }
-        private void Store(EntryList x, ChessFeed feedToSave, string userName, string password, Uri uriToWatch)
+
+        /// <summary>
+        /// Saves new items to the Calendar
+        /// </summary>
+        internal void Store(EntryList toDo)
         {
-            //try
-            //{
-            //    if (this.LogGames)
-            //    {
-            //        //TODO: this needs to be an asterisk or something on the log form.
-            //        foreach (IChessItem current in this.ToDo)
-            //        {
-            //            this.Save_Game_Info(current, userName, password);
-            //        }
-            //    }
+            //TODO: this needs to be an asterisk or something on the log form.
+            foreach (IChessItem current in toDo)
+            {
+                this.Save_Game_Info(current, this.UserName, this.Password);
+                toDo.Ignore(current); //we won't need to log this one again, 
+            }
+        }
 
-            //    this.ClearList = true;
+        private void Save_Game_Info(IChessItem gameToLog, string userName, string password)
+        {
+            if (this.GetPGNs)
+            {
+                CalendarProcessor.Download_PGN(gameToLog);
+            }
 
-            //    this.ToDo.Clear();
-            //}
-            //catch (Exception ex)
-            //{
-            //    //if 504 Invalid gateway error. Chess.com is down
-            //    this.Output(string.Empty, "error. " + ex.Message);
+            GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
+                                                            gameToLog.Link,
+                                                            gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(),
+                                                            "|" + gameToLog.Link +
+                                                            Environment.NewLine +
+                                                            "|" + gameToLog.PubDate +
+                                                            Environment.NewLine +
+                                                            "|" + gameToLog.Description +
+                                                            Environment.NewLine +
+                                                            "|" + gameToLog.PGN +
+                                                            Environment.NewLine +
+                                                            "|" + "this.LogVersion", DateTime.Now, DateTime.Now, this.Calendar);
+            if (this.DebugMode)
+            {
+                this.Output.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+            }
+        }
 
-            //    GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
-            //                                                                                        this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
-            //}
-
-            //this.Wait(this.WaitSeconds);
+        private static void Download_PGN(IChessItem gameToLog) //TODO: GameType.ChessDotComGame
+        {
+            //this.Output(string.Empty, "Getting PGN for game: " + gameToLog.Title + " (" + gameToLog.GameID + ")");
+            WebClient client = new WebClient();
+            Stream strm = client.OpenRead(CHESS_DOT_COM_PGN_PATH + gameToLog.GameID);
+            if (strm != null)
+            {
+                var sr = new StreamReader(strm);
+                gameToLog.PGN = sr.ReadToEnd();
+                strm.Close();
+            }
         }
 
         internal void Stop()
