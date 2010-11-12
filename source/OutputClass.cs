@@ -21,7 +21,7 @@ namespace ChessCalendar
             this.Messages = new Queue<string>();
         }
 
-        protected void Output(string title, string outputMessage)
+        protected void Post(string title, string outputMessage)
         {
             switch (this.OutputMode)
             {
@@ -41,7 +41,11 @@ namespace ChessCalendar
             }
         }
 
-        protected void Output(IChessItem game)
+        /// <summary>
+        /// To 'Post' is to put an IChessItem into the Queue.
+        /// </summary>
+        /// <param name="game"></param>
+        public void Post(IChessItem game)
         {
             switch (this.OutputMode)
             {
@@ -54,10 +58,10 @@ namespace ChessCalendar
                     break;
             }
         }
-        public void Output(string title, string outputMessage, OutputMode outputMode)
+        public void Post(string title, string outputMessage, OutputMode outputMode)
         {
             this.OutputMode = outputMode;
-            this.Output(title, outputMessage);
+            this.Post(title, outputMessage);
         }
     }
 }

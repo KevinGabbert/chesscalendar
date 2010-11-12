@@ -1,14 +1,15 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace ChessCalendar.Controls
 {
-    public class FeedTab: TabPage
+    public class ProcessorTab: TabPage
     {
-        public CalendarProcessor Feed { get; set; }
+        public CalendarProcessor Calendar { get; set; }
 
-        public FeedTab()
+        public ProcessorTab(string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
-            //this.Feed = feed;
+            this.Calendar = new CalendarProcessor(uriToWatch, userName, password, logToCalendar, true);
 
             var messages = new TextBox();
             messages.Name = "TabPage_txtMessages";
@@ -16,10 +17,10 @@ namespace ChessCalendar.Controls
             var grid = new DataGridView();
             grid.Name = "TabPage_Grid";
 
-            var logToCalendar = new CheckBox();
-            logToCalendar.Name = "TabPageName_chkLogToCalendar";
+            var chkLogToCalendar = new CheckBox();
+            chkLogToCalendar.Name = "TabPageName_chkLogToCalendar";
 
-            this.Controls.Add(logToCalendar);
+            this.Controls.Add(chkLogToCalendar);
             this.Controls.Add(grid);
             this.Controls.Add(messages);
         }
