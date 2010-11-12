@@ -75,7 +75,7 @@ namespace ChessCalendar
             this.FeedProcessor.NotifyIcon = TrayIcon;
             this.FeedProcessor.ContextMenu = Menu;
             this.FeedProcessor.OutputMode = OutputMode.Form;
-            this.FeedProcessor.Output(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+            this.FeedProcessor.Post(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
 
             if (loginInfo.AutoOpenLog)
             {

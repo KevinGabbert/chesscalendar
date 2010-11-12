@@ -23,7 +23,7 @@ namespace ChessCalendar
             public List<CalendarProcessor> CCFeeds { get; set; }
 
             //TODO: Deprecate this
-            public List<Feed> Feeds { get; set; }
+            public List<ChessFeed> Feeds { get; set; }
 
             public EntryList ToDo { get; set; }
 
@@ -61,65 +61,11 @@ namespace ChessCalendar
         /// </summary>
         public ProcessorManager_Deprecated()
         {
-            this.Feeds = new List<Feed>();
+            this.Feeds = new List<ChessFeed>();
             this.Messages = new Queue<string>();
 
             this.WaitSeconds = 1000;
         }
-
-        #region Under Construction
-
-        /// <summary>
-        /// //user needs to call Process_All_Feeds() to start
-        /// </summary>
-        /// <param name="uriToWatch"></param>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
-        /// <param name="logToCalendar"></param>
-        /// <param name="post"></param>
-        /// <param name="save"></param>
-        public void Add_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool post, bool save)
-        {
-            var newFeed = new CalendarProcessor(uriToWatch, userName, password, logToCalendar);
-            newFeed.Post = post;
-            newFeed.Save = save;
-
-            this.CCFeeds.Add(newFeed);
-        }
-
-        public void Process_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool post, bool save)
-        {
-            var newFeed = new CalendarProcessor(uriToWatch, userName, password, logToCalendar);
-            newFeed.Post = post;
-            newFeed.Save = save;
-
-            newFeed.Go();
-        }
-  
-        /// <summary>
-        /// Intended to take the place of Save_Single_Feed_To_Calendar
-        /// The purpose here is to parse all the feeds into this object structure, outputting to base.NewMoves so that the Subscriber can Dequeue them,
-        /// then saving to Calendar
-        /// </summary>
-        public void Process_ALL_Feeds(bool postAll, bool saveAll)
-        {
-            foreach (CalendarProcessor feed in this.Feeds)
-            {
-                feed.Post = postAll;
-                feed.Save = saveAll;
-                //feed.Go();
-            }
-        }
-
-        public void Process_Feed(string userName)
-        {
-            foreach (CalendarProcessor feed in this.Feeds)
-            {
-                 feed.Go(feed.GetOpponents());
-            }
-        }
-
-        #endregion
 
         /// <summary>
         /// This function will eventually be made irrelevant, and may be deleted.
@@ -147,7 +93,7 @@ namespace ChessCalendar
             {
                 if (!this._stop)
                 {
-                    var newFeed = new Feed();
+                    var newFeed = new ChessFeed();
                     this.Feeds.Add(newFeed);
 
                     this.Save_To_Calendar(newFeed, userName, password, uriToWatch);
@@ -159,7 +105,7 @@ namespace ChessCalendar
             }
         }
 
-        private void Save_To_Calendar(Feed feedToSave, string userName, string password, Uri uriToWatch)
+        private void Save_To_Calendar(ChessFeed feedToSave, string userName, string password, Uri uriToWatch)
         {
             try
             {
@@ -181,7 +127,7 @@ namespace ChessCalendar
                     //TODO: this needs to be an asterisk or something on the log form.
                     foreach (IChessItem current in this.ToDo)
                     {
-                        this.Output(current); //TODO this causes gridview to clear and refresh
+                        this.Post(current); //TODO this causes gridview to clear and refresh
                         this.Save_Game_Info(current, userName, password);
                     }
                 }
@@ -193,7 +139,7 @@ namespace ChessCalendar
             catch (Exception ex)
             {
                 //if 504 Invalid gateway error. Chess.com is down
-                this.Output(string.Empty, "error. " + ex.Message);
+                this.Post(string.Empty, "error. " + ex.Message);
 
                 GoogleCalendar.CreateEntry(userName, password, "Error", "Error", "Chess.com error", ex.Message +
                                                                                                     this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
@@ -206,7 +152,7 @@ namespace ChessCalendar
         {
             foreach (var item in newRssItems)
             {
-                this.Output(item);
+                this.Post(item);
             }
         }
 
@@ -248,7 +194,7 @@ namespace ChessCalendar
         {
             if (this.DebugMode)
             {
-                this.Output(string.Empty, "Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
+                this.Post(string.Empty, "Logging " + gameToLog.Title + " to Calendar: " + _calendarToPost.OriginalString);
             }
 
             if (this.GetPGNs)
@@ -270,7 +216,7 @@ namespace ChessCalendar
                                                             "|" + this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
             if (this.DebugMode)
             {
-                this.Output(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+                this.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
             }
 
             this.ToDo.Ignore(gameToLog); //we won't need to log this one again, 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using ChessCalendar.Controls;
+using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 using System.Threading;
 
@@ -41,7 +42,7 @@ namespace ChessCalendar.Forms
             this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
         }
 
-        public ShowLog(Feed feed)
+        public ShowLog(ChessFeed feed)
         {
             InitializeComponent();
 
@@ -66,12 +67,37 @@ namespace ChessCalendar.Forms
         {
             //opens Login form for the user to select a feed
 
-            //if loginform.blah
+            var login = new Login_Form("**");
+            login.ShowDialog();
 
-            FeedTab newPage = new FeedTab();
-            this.tabs.TabPages.Add(newPage);  //.Remove(newPage) to remove
+            //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
 
-            
+            if (login.ValidatedForm)
+            {
+                ProcessorTab newPage = new ProcessorTab("n",
+                                                         new Uri("http://www.chess.com/rss/echess/" + login.ChessDotComName),
+                                                         login.User,
+                                                         login.Password,
+                                                         login.PostURI);
+
+                newPage.Calendar.DebugMode = login.DebugMode;
+                newPage.Calendar.UserLogged = login.ChessDotComName;
+                newPage.Calendar.GetPGNs = login.DownloadPGNs;
+                newPage.Calendar.Beep_On_New_Move = login.Beep_On_New_Move;
+
+               
+
+                this.tabs.TabPages.Add(newPage); 
+            }
+            else
+            {
+                MessageBox.Show("Some of the Login information wasn't right, try again.", "ummmmmmm...");
+            }
+
+
+
+            //newPage.Start();
+
 
             //RunLoop() will update all the tabs.
 

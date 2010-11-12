@@ -1,33 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
+using ChessCalendar.Enums;
+using ChessCalendar.Interfaces;
+using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
     /// <summary>
     /// Gets 
     /// </summary>
-    public class CalendarProcessor: Feed
+    public class CalendarProcessor: ChessFeed
     {
-        public OutputClass Output { get; set; }
-        public EntryList ToDo { get; set; }
+        #region Properties
 
-        public Uri Calendar { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
+            public OutputClass Output { get; set; }
+            public EntryList ToDo { get; set; }
 
-        public List<string> UsersToProcess { get; set; } //TODO: should this be an EntryList?
+            public Uri Calendar { get; set; }
+            public string UserName { get; set; }
+            public string Password { get; set; }
 
-        public bool Post { get; set; }
-        public bool Save { get; set; }
+            public List<string> UsersToProcess { get; set; } //TODO: should this be an EntryList?
 
-        public bool NewMessage { get; set; }
-        public bool DebugMode { get; set; }
-        public bool Beep_On_New_Move { get; set; }
-        public bool GetPGNs { get; set; }
-        public bool LogGames { get; set; }
-        public bool ResetWait { get; set; }
-        public string UserLogged { get; set; }
+            public bool Post { get; set; }
+            public bool Save { get; set; }
+
+            public bool NewMessage { get; set; }
+            public bool DebugMode { get; set; }
+            public bool Beep_On_New_Move { get; set; }
+            public bool GetPGNs { get; set; }
+            public bool LogGames { get; set; }
+            public bool ResetWait { get; set; }
+            public bool ClearList { get; set; } //needs a better name.
+            public string UserLogged { get; set; }
+
+
+            public int WaitSeconds { get; set; }
+
+            private int _waitProgress;
+            public int WaitProgress
+            {
+                get
+                {
+                    return _waitProgress < 0 ? 0 : _waitProgress;
+                }
+                set
+                {
+                    _waitProgress = value;
+                }
+            }
+            public DateTime NextCheck { get; set; }
+
+        #endregion
+
+        private bool _stop = false;
 
         /// <summary>
         /// Creates a new instance of login and Calendar information for the inherited feed.
@@ -36,25 +64,27 @@ namespace ChessCalendar
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="logToCalendar"></param>
-        public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar)
+        public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool refresh)
         {
-            this.Uri = uriToWatch;
-            this.UserName = userName;
-            this.Password = password;
-            this.Calendar = logToCalendar;
-        }
-
-        public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool load)
-        {
-            this.Uri = uriToWatch;
+            this.FeedUri = uriToWatch;
             this.UserName = userName;
             this.Password = password;
             this.Calendar = logToCalendar;
 
-            if (load){this.Load();}
+            this.RefreshRSS();
         }
 
-        public void Refresh()
+        //public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool load)
+        //{
+        //    this.Uri = uriToWatch;
+        //    this.UserName = userName;
+        //    this.Password = password;
+        //    this.Calendar = logToCalendar;
+
+        //    if (load){this.Load();}
+        //}
+
+        public void RefreshRSS()
         {
             this.Load();
             this.AddOrUpdate_Games(this.ToDo, this);
@@ -67,19 +97,19 @@ namespace ChessCalendar
 
         internal void Go(List<string> usersToWatch)
         {
-            var x = this.Post_NewMoves(usersToWatch); //Outputs to NewMove Queue, builds ToDo
+            //var x = this.Post_NewMoves(usersToWatch, true); //Outputs to NewMove Queue, builds ToDo
             
-            this.Save_To_Calendar(x, new Feed(), "", "", new Uri("")); //denoted by URI   //Processes all items in ToDo
+           // this.Store(x, new ChessFeed(), "", "", new Uri("")); //denoted by URI   //Processes all items in ToDo
         }
 
         internal void Go()
         {
-            this.Refresh();
+            this.RefreshRSS();
 
             //get all the opponents in *this*, and save them all to the calendar
             foreach (var x in this.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
             {
-                this.Save_To_Calendar(x, new Feed(), "", "", new Uri("")); //denoted by URI   //Processes all items in ToDo
+                this.Store(x, new ChessFeed(), "", "", new Uri("")); //denoted by URI   //Processes all items in ToDo
             }
         }
         
@@ -97,22 +127,12 @@ namespace ChessCalendar
             throw new System.NotImplementedException();
         }
 
-        /// <summary>
-        /// Filters the RSS given to the users wanted
-        /// </summary>
-        /// <param name="usersToWatch"></param>
-        /// <returns></returns>
-        internal EntryList Post_NewMoves(List<string> usersToWatch)
+        internal EntryList Post_NewMoves(string chessUserToWatch, bool output)
         {
-
-
-            //returns a list of Entries specific to that user.
-            throw new System.NotImplementedException();
-        }
-
-        internal EntryList Post_NewMoves(string userToWatch, bool output)
-        {
-
+            foreach (ChessRSSItem chessRssItem in this)
+            {
+                
+            }
 
             //returns a list of Entries specific to that user.
             throw new System.NotImplementedException();
@@ -120,48 +140,116 @@ namespace ChessCalendar
 
         /// <summary>
         /// Posts moves in feed to this.Output
+        /// returns a list of Entries specific to that user.
         /// </summary>
         internal EntryList Post_NewMoves()
         {
-            foreach (ChessRSSItem chessRssItem in this)
+            try
             {
-                //post
+                foreach (ChessRSSItem chessRssItem in this)
+                {
+                    this.ToDo = new EntryList();
+                    this.ToDo.DebugMode = this.DebugMode;
+                    this.ToDo.Beep_On_New_Move = this.Beep_On_New_Move;
 
-                var toDo = new EntryList();
-                //toDo.DebugMode = this.DebugMode;
-                //toDo.Beep_On_New_Move = this.Beep_On_New_Move;
+                    //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
+                    //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
+                    this.ToDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
-                //_calendarToPost = logToCalendar;
+                    this.RefreshRSS(); 
 
-                ////load up Ignore list with items already in calendar
+                    this.AddOrUpdate_Games(this.ToDo, this);
 
-                ////get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
-                ////TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
+                    //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                    //On remove, delete the all day reminder.
 
-                toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+                    //    this.ClearList = false;
 
-                //    feedToSave.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+                    this.PostAllNewRSSItems(this); //If there are *new* entries, then the gridview will clear and refresh
 
-                //this.AddOrUpdate_Games(toDo, feedToSave);
+                    //    //TODO: if NO new entries, it won't clear & refresh, meaning cruft won't 
 
-                //    //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
-                //    //On remove, delete the all day reminder.
+                    if (this.LogGames)
+                    {
+                        //TODO: this needs to be an asterisk or something on the log form.
+                        foreach (IChessItem current in this.ToDo)
+                        {
+                            this.Output.Post(current); //TODO this causes gridview to clear and refresh
+                            //Not needed here this.Store(this.ToDo, this, this.UserName, this.Password, this.FeedUri);
+                        }
+                    }
 
-                //    this.ClearList = false;
+                    this.ClearList = true;
 
-                //this.ProcessNewRSSItems(feedToSave); //If there are *new* entries, then the gridview will clear and refresh
+                    this.ToDo.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                //if 504 Invalid gateway error. Chess.com is down
+                this.Output.Post(string.Empty, "error. " + ex.Message, OutputMode.Form);
 
-                //    //TODO: if NO new entries, it won't clear & refresh, meaning cruft won't 
-
-                //    if (this.LogGames)
-                //    {
-                //        //TODO: this needs to be an asterisk or something on the log form.
-                //        foreach (IChessItem current in this.ToDo)
-                //        {
-                //            this.Output(current); //TODO this causes gridview to clear and refresh
+                GoogleCalendar.CreateEntry(this.UserName, 
+                                           this.Password, 
+                                           "Error", 
+                                           "Error", 
+                                           "Chess.com error", 
+                                           ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar);
             }
 
-            throw new System.NotImplementedException();
+            this.Wait(this.WaitSeconds);
+
+            return new EntryList();
+        }
+
+        private void Wait(int waitSeconds)
+        {
+            DateTime start = DateTime.Now;
+            TimeSpan waitTime = new TimeSpan(0, 0, 0, waitSeconds);
+
+            DateTime finish = start + waitTime;
+            this.NextCheck = finish;
+
+            DateTime current = DateTime.Now;
+            while (current < finish)
+            {
+                Application.DoEvents();
+
+                var difference = (finish.Subtract(DateTime.Now));
+                this.WaitProgress = Convert.ToInt32(100 - ((difference.TotalSeconds / waitTime.TotalSeconds) * 100));
+                current = DateTime.Now;
+
+                if (this.ResetWait)
+                {
+                    this.ResetWait = false;
+                    break;
+                }
+
+                if (this._stop)
+                {
+                    this.WaitProgress = 0;
+                    this.NextCheck = new DateTime();
+                    break;
+                }
+            }
+
+            this.NewMessage = false;
+        }
+
+        private void PostAllNewRSSItems(IEnumerable<ChessRSSItem> newRssItems)
+        {
+            foreach (var item in newRssItems)
+            {
+                this.Output.Post(item);
+            }
+        }
+
+        private void PostGamesWithOpponent(IEnumerable<ChessRSSItem> newRssItems, string opponent)
+        {
+            foreach (var item in newRssItems.Where(item => item.Opponent == opponent))
+            {
+                this.Output.Post(item);
+            }
         }
 
         private void AddOrUpdate_Games(EntryList toDo, ICollection<ChessRSSItem> gamelist)
@@ -198,7 +286,7 @@ namespace ChessCalendar
                 this.Output.NewMoves.Enqueue(item); //?
             }
         }
-        private void Save_To_Calendar(EntryList x, Feed feedToSave, string userName, string password, Uri uriToWatch)
+        private void Store(EntryList x, ChessFeed feedToSave, string userName, string password, Uri uriToWatch)
         {
             //try
             //{
@@ -226,5 +314,67 @@ namespace ChessCalendar
 
             //this.Wait(this.WaitSeconds);
         }
+
+        internal void Stop()
+        {
+            this._stop = true;
+        }
+        internal void Start()
+        {
+            this._stop = false;
+        }
     }
 }
+
+
+        ///// <summary>
+        ///// //user needs to call Process_All_Feeds() to start
+        ///// </summary>
+        ///// <param name="uriToWatch"></param>
+        ///// <param name="userName"></param>
+        ///// <param name="password"></param>
+        ///// <param name="logToCalendar"></param>
+        ///// <param name="post"></param>
+        ///// <param name="save"></param>
+        //public void Add_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool post, bool save)
+        //{
+        //    var newFeed = new CalendarProcessor(uriToWatch, userName, password, logToCalendar);
+        //    newFeed.Post = post;
+        //    newFeed.Save = save;
+
+        //    this.CCFeeds.Add(newFeed);
+        //}
+
+        //public void Process_Feed(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool post, bool save)
+        //{
+        //    var newFeed = new CalendarProcessor(uriToWatch, userName, password, logToCalendar);
+        //    newFeed.Post = post;
+        //    newFeed.Save = save;
+
+        //    newFeed.Go();
+        //}
+  
+        ///// <summary>
+        ///// Intended to take the place of Save_Single_Feed_To_Calendar
+        ///// The purpose here is to parse all the feeds into this object structure, outputting to base.NewMoves so that the Subscriber can Dequeue them,
+        ///// then saving to Calendar
+        ///// </summary>
+        //public void Process_ALL_Feeds(bool postAll, bool saveAll)
+        //{
+        //    foreach (CalendarProcessor feed in this.Feeds)
+        //    {
+        //        feed.Post = postAll;
+        //        feed.Save = saveAll;
+        //        //feed.Go();
+        //    }
+        //}
+
+        //public void Process_Feed(string userName)
+        //{
+        //    foreach (CalendarProcessor feed in this.Feeds)
+        //    {
+        //         feed.Go(feed.GetOpponents());
+        //    }
+        //}
+
+        //#endregion

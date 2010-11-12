@@ -94,7 +94,7 @@ namespace ChessCalendar.Forms
         {
             try
             {
-                Feed chessDotComFeed = new Feed(new Uri("http://www.chess.com/rss/echess/" + this.txtChessDotComName.Text));
+                ChessFeed chessDotComFeed = new ChessFeed(new Uri("http://www.chess.com/rss/echess/" + this.txtChessDotComName.Text));
                 this.cmbOpponents.DataSource = chessDotComFeed.GetOpponents().Distinct().ToList();
             }
             catch (Exception ex)
