@@ -25,9 +25,8 @@ namespace ChessCalendar.Controls
 
         public ProcessorTab(string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
+            this.Name = tabName;
             this.Processor = new CalendarProcessor(uriToWatch, userName, password, logToCalendar, true);
-
-
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
             //_progressBar = (ProgressBar)this.Controls[this.Name + "_pbTimeTillNextUpdate"];
@@ -48,11 +47,11 @@ namespace ChessCalendar.Controls
             this.Controls.Add(messages);
         }
 
-        public void RefreshRSS()
+        public void RefreshTab()
         {
             //this.Update_NextCheck();
             //this.Update_ProgressBar();
-
+            this.Processor.RefreshRSS();
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
 
             Application.DoEvents();
@@ -123,49 +122,50 @@ namespace ChessCalendar.Controls
         {
             if (this.Processor != null)
             {
-                this.Processor.RefreshRSS();
-
-                if (this.Processor.Output.NewMoves != null)
+                if (this.Processor.Output != null)
                 {
-                    if (this.Processor.Output.NewMoves.Updated)
+                    if (this.Processor.Output.NewMoves != null)
                     {
-                        if (this.Processor.ClearList)
+                        if (this.Processor.Output.NewMoves.Updated)
                         {
-                            this.MessageList.Clear();
-                        }
-
-                        for (int i = this.Processor.Output.NewMoves.Count; i > 0; i--)
-                        {
-                            this.MessageList.Add(this.Processor.Output.NewMoves.Dequeue());
-                        }
-
-                        GC.Collect();
-                        this.SetMovesDataSource(this.MessageList);
-                        GC.Collect();
-
-                        this.Processor.NewMessage = true;
-                    }
-                    else
-                    {
-                        if (this.Processor.Count > 0)
-                        {
-                            if (this.Processor.Count < 1)
+                            if (this.Processor.ClearList)
                             {
                                 this.MessageList.Clear();
-                                this.SetMovesDataSource(this.MessageList);
+                            }
+
+                            for (int i = this.Processor.Output.NewMoves.Count; i > 0; i--)
+                            {
+                                this.MessageList.Add(this.Processor.Output.NewMoves.Dequeue());
+                            }
+
+                            GC.Collect();
+                            this.SetMovesDataSource(this.MessageList);
+                            GC.Collect();
+
+                            this.Processor.NewMessage = true;
+                        }
+                        else
+                        {
+                            if (this.Processor.ChessFeed.Count > 0)
+                            {
+                                if (this.Processor.ChessFeed.Count < 1)
+                                {
+                                    this.MessageList.Clear();
+                                    this.SetMovesDataSource(this.MessageList);
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    _fail += 1;
-                    //this.txtLog.Text = "Log is Null: " + _fail + Environment.NewLine + this.txtLog.Text;
+                    else
+                    {
+                        _fail += 1;
+                        //this.txtLog.Text = "Log is Null: " + _fail + Environment.NewLine + this.txtLog.Text;
 
-                    //if (this.txtLog.Text.Length > 5001)
-                    //{
-                    //    this.txtLog.Text.Remove(5000);
-                    //}
+                        //if (this.txtLog.Text.Length > 5001)
+                        //{
+                        //    this.txtLog.Text.Remove(5000);
+                        //}
+                    }
                 }
             }
         }

@@ -15,7 +15,7 @@ namespace ChessCalendar
 
         #endregion
 
-        protected OutputClass()
+        public OutputClass()
         {
             this.NewMoves = new MessageQueue();
             this.Messages = new Queue<string>();

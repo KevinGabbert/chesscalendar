@@ -13,7 +13,7 @@ namespace ChessCalendar
     /// <summary>
     /// Gets 
     /// </summary>
-    public class CalendarProcessor: ChessFeed
+    public class CalendarProcessor
     {
         public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
 
@@ -21,6 +21,7 @@ namespace ChessCalendar
 
             public OutputClass Output { get; set; }
             public EntryList ToDo { get; set; }
+            public ChessFeed ChessFeed { get; set;}
 
             public Uri Calendar { get; set; }
             public string UserName { get; set; }
@@ -35,7 +36,7 @@ namespace ChessCalendar
             public bool DebugMode { get; set; }
             public bool Beep_On_New_Move { get; set; }
             public bool GetPGNs { get; set; }
-            public bool LogGames { get; set; }
+            //public bool LogGames { get; set; }
             public bool ResetWait { get; set; }
             public bool ClearList { get; set; } //needs a better name.
             public string UserLogged { get; set; }
@@ -70,12 +71,14 @@ namespace ChessCalendar
         /// <param name="logToCalendar"></param>
         public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool refresh)
         {
-            this.FeedUri = uriToWatch;
+            this.ToDo = new EntryList();
+            this.Output = new OutputClass();
+            this.ChessFeed = new ChessFeed();
+
+            this.ChessFeed.FeedUri = uriToWatch;
             this.UserName = userName;
             this.Password = password;
             this.Calendar = logToCalendar;
-
-            this.RefreshRSS();
         }
 
         //public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool load)
@@ -90,8 +93,11 @@ namespace ChessCalendar
 
         public void RefreshRSS()
         {
-            this.Load();
-            this.AddOrUpdate_Games(this.ToDo, this);
+            this.ChessFeed.Load();
+            this.AddOrUpdate_Games(this.ToDo, this.ChessFeed);
+            this.Post_NewMoves(this.ToDo);
+
+            //this.dgvAvailableMoves.Parent.Text = Processor.UserLogged;
         }
 
         public void Pull_Feed_Info()
@@ -122,7 +128,7 @@ namespace ChessCalendar
                 this.RefreshRSS();
 
                 //Get all the opponents in *this*, post them, and save all their moves to the calendar
-                foreach (var x in this.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
+                foreach (var x in this.ChessFeed.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
                 {
                     this.Store(x);
                 }
@@ -143,7 +149,7 @@ namespace ChessCalendar
 
             //2. call PostGamesWithOpponent(chessUserToWatch);
             
-            foreach (ChessRSSItem chessRssItem in this)
+            foreach (ChessRSSItem chessRssItem in this.ChessFeed)
             {
                 //Call PostGamesWith Opponent
             }
@@ -172,21 +178,23 @@ namespace ChessCalendar
                     //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
                     toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
 
-                    //this.RefreshRSS();
-
                     //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
                     //On remove, delete the all day reminder.
 
                     this.ClearList = false;
-                    this.PostAllNewRSSItems(this); //If there are *new* entries, then the gridview will clear and refresh
+                    this.PostAllNewRSSItems(this.ChessFeed); //If there are *new* entries, then the gridview will clear and refresh
 
-                    if (this.LogGames)
+                    if (ToDo.Count > 0)
                     {
                         //TODO: this needs to be an asterisk or something on the log form.
                         foreach (IChessItem current in toDo)
                         {
                             this.Output.Post(current); //TODO this causes gridview to clear and refresh
                         }
+                    }
+                    else
+                    {
+                        this.Output.NewMoves.Updated = true;
                     }
 
                     this.ClearList = true;
@@ -268,21 +276,27 @@ namespace ChessCalendar
 
                 if (gamelist.Count > 0)
                 {
-                    this.LogGames = true;
+                    //this.LogGames = true;
 
                     //TODO: this needs to be in a field in the log form
                     //this.Output(string.Empty, Environment.NewLine + "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
 
-                    //this.Output(string.Empty, Environment.NewLine, OutputMode.Form);
-                    foreach (ChessRSSItem game in gamelist)
+                    if (toDo != null)
                     {
-                        toDo.ProcessRSSItem(game);
+                        foreach (ChessRSSItem game in gamelist)
+                        {
+                            toDo.ProcessRSSItem(game);
+                        }
+                    }
+                    else
+                    {
+                        //error?
                     }
                 }
                 else
                 {
                     //this.Output(string.Empty, "No new or updated games found: " + DateTime.Now.ToLongTimeString());
-                    this.LogGames = false;
+                    //this.LogGames = false;
                 }
             }
         }
@@ -308,7 +322,7 @@ namespace ChessCalendar
             }
         }
 
-        private void Save_Game_Info(IChessItem gameToLog, string userName, string password)
+        private void Save_Game_Info(IRSS_Item gameToLog, string userName, string password)
         {
             if (this.GetPGNs)
             {
@@ -333,7 +347,7 @@ namespace ChessCalendar
             }
         }
 
-        private static void Download_PGN(IChessItem gameToLog) //TODO: GameType.ChessDotComGame
+        private static void Download_PGN(IRSS_Item gameToLog) //TODO: GameType.ChessDotComGame
         {
             //this.Output(string.Empty, "Getting PGN for game: " + gameToLog.Title + " (" + gameToLog.GameID + ")");
             WebClient client = new WebClient();

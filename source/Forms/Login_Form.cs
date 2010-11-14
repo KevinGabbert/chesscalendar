@@ -136,7 +136,11 @@ namespace ChessCalendar.Forms
             this.Beep_On_New_Move = chkBeep.Checked;
             this.AutoOpenLog = this.chkLogFormOpen.Checked;
             this.DownloadPGNs = this.chkDownloadPGNs.Checked;
-            this.SetPostURI();
+
+            if (this.chkLogToCalendar.Checked)
+            {
+                this.SetPostURI();
+            }
 
             this.Hide();
         }
@@ -146,10 +150,10 @@ namespace ChessCalendar.Forms
         public bool ValidateForm()
         {
             bool haveChessDotComName = (this.txtChessDotComName.Text != string.Empty);
-            bool haveGoogleLogin = (this.txtLogin.TextLength > 0);
-            bool haveGooglePassword = (this.txtPassword.TextLength > 0);
+            //bool haveGoogleLogin = (this.txtLogin.TextLength > 0);
+            //bool haveGooglePassword = (this.txtPassword.TextLength > 0);
 
-            bool validated = haveGoogleLogin && haveGooglePassword && haveChessDotComName;
+            bool validated =  haveChessDotComName;
 
             this.ValidatedForm = validated;
 

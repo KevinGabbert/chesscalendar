@@ -73,7 +73,7 @@ namespace ChessCalendar.Forms
 
             if (login.ValidatedForm)
             {
-                ProcessorTab newPage = new ProcessorTab(login.ChessDotComName,
+                ProcessorTab newPage = new ProcessorTab("PTab_" + login.ChessDotComName,
                                                          new Uri("http://www.chess.com/rss/echess/" + login.ChessDotComName),
                                                          login.User,
                                                          login.Password,
@@ -176,30 +176,41 @@ namespace ChessCalendar.Forms
 
             while (true)
             {
-
-                //Tell tab to run its Refresh()
-                foreach (var tab in tabs.TabPages)
-                {
-                    if (tab.GetType().ToString() == "ProcessorTab")
-                    {
-                        ((ProcessorTab)tab).RefreshRSS();
-                    }
-                }
-
+                //Original Code:
                 this.Update_NextCheck();
                 this.Update_ProgressBar();
                 this.Update_GridView();
+                //Original Code:
 
+                if (this.Processor != null)
+                {
+                    if ((DateTime.Now > this.Processor.NextCheck)) // || this.Processor.NewMessage
+                    {
+                        foreach (var tab in tabs.TabPages)
+                        {
+                            if (((TabPage) tab).Name.StartsWith("PTab_"))
+                            {
+                                ((ProcessorTab) tab).RefreshTab();
+                            }
+                        }
+
+                        this.Update_GridView();
+                    }
+                    else
+                    {
+                        this.MessageList = new MessageList();
+                    }
+                }
                 Application.DoEvents();
             }
         }
 
         private void Update_GridView()
         {
-            if((DateTime.Now > this.Processor.NextCheck) || this.Processor.NewMessage)
+            if ((DateTime.Now > this.Processor.NextCheck) || this.Processor.NewMessage)
             {
                 this.UpdateText();
-                this.UpdateDataGridView();    
+                this.UpdateDataGridView();
             }
             else
             {

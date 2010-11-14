@@ -7,7 +7,7 @@ namespace ChessCalendar
 {
     public class ChessFeed : List<ChessRSSItem>
     {
-        protected Uri FeedUri { get; set; }
+        public Uri FeedUri { get; set; }
 
         public ChessFeed()
         {
@@ -39,7 +39,7 @@ namespace ChessCalendar
             }
         }
 
-        protected void Load()
+        public void Load()
         {
             this.AddRange(RssDocument.Load(this.FeedUri).Channel.Items);
         }
