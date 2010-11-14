@@ -14,12 +14,29 @@ namespace ChessCalendar.Forms
         private int _fail = 0;
         private bool _pause = false;
         private bool _progressBarFlash;
+        private bool _stop = false;
 
         #region Properties
 
             public ProcessorManager_Deprecated Processor { get; set; }
             private MessageList MessageList { get; set; }
             public bool DebugMode { get; set; }
+            public DateTime NextCheck { get; set; }
+            private int _waitProgress;
+            public int WaitProgress
+            {
+                get
+                {
+                    return _waitProgress < 0 ? 0 : _waitProgress;
+                }
+                set
+                {
+                    _waitProgress = value;
+                }
+            }
+            public int WaitSeconds { get; set; }
+            public bool ResetWait { get; set; }
+            public bool NewMessage { get; set; }
             
         #endregion
 
@@ -35,7 +52,9 @@ namespace ChessCalendar.Forms
 
             this.MessageList = new MessageList();
        
-            FormatDataGrid(this.dgvAvailableMoves);
+            ShowLog.FormatDataGrid(this.dgvAvailableMoves);
+
+            this.WaitSeconds = 1000;
 
             //TODO:  make this into a popup.
             this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
@@ -60,7 +79,6 @@ namespace ChessCalendar.Forms
         }
 
         #region Events
-
 
         private void btnAddFeed_Click(object sender, EventArgs e)
         {
@@ -161,8 +179,8 @@ namespace ChessCalendar.Forms
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            this.Processor.ResetWait = true;
-            //this.Processor.NewMoves.Updated = true;
+            this.Processor.ResetWait = true; //todo: deprecated.  Delete this.
+            this.ResetWait = true;
         }
 
         #endregion
@@ -176,32 +194,40 @@ namespace ChessCalendar.Forms
 
             while (true)
             {
-                //Original Code:
+                //Original Code. TODO DELETE ME when finished with PTab:
                 this.Update_NextCheck();
                 this.Update_ProgressBar();
                 this.Update_GridView();
-                //Original Code:
+                //Original Code TODO DELETE ME when finished with PTab:
 
-                if (this.Processor != null)
+                if (this.Processor != null) /// needed only to support original code:  todo: delete
                 {
-                    if ((DateTime.Now > this.Processor.NextCheck)) // || this.Processor.NewMessage
+                    if (this.Processor.NewMoves != null) /// needed only to support original code:  todo: delete
                     {
-                        foreach (var tab in tabs.TabPages)
+                        if (this.Processor.NewMoves.Updated) ///  todo: delete
                         {
-                            if (((TabPage) tab).Name.StartsWith("PTab_"))
+                            if ((DateTime.Now > this.Processor.NextCheck)) /////  todo: delete || this.Processor.NewMessage
                             {
-                                ((ProcessorTab) tab).RefreshTab();
+                                foreach (var tab in tabs.TabPages)
+                                {
+                                    if (((TabPage) tab).Name.StartsWith("PTab_"))
+                                    {
+                                        ((ProcessorTab) tab).RefreshTab();
+                                    }
+                                }
+
+                                this.Update_GridView();
+                            }
+                            else
+                            {
+                                this.MessageList = new MessageList();
                             }
                         }
-
-                        this.Update_GridView();
-                    }
-                    else
-                    {
-                        this.MessageList = new MessageList();
                     }
                 }
+
                 Application.DoEvents();
+                this.Wait(this.WaitSeconds);
             }
         }
 
@@ -219,7 +245,7 @@ namespace ChessCalendar.Forms
         }
         private void Update_ProgressBar()
         {
-            if (this.Processor.NextCheck == new DateTime())
+            if (this.NextCheck == new DateTime())
             {
                 this._progressBarFlash = !this._progressBarFlash;
 
@@ -241,7 +267,7 @@ namespace ChessCalendar.Forms
             }
             else
             {
-                if (this.Processor.WaitProgress > 100)
+                if (this.WaitProgress > 100)
                 {
                     this.pbTimeTillNextUpdate.ForeColor = Color.Red;
                     this.pbTimeTillNextUpdate.Value = 100;
@@ -425,6 +451,39 @@ namespace ChessCalendar.Forms
                     Process.Start(dgvAvailableMoves[7, e.RowIndex].Value.ToString());
                     break;
             }
+        }
+        private void Wait(int waitSeconds)
+        {
+            DateTime start = DateTime.Now;
+            TimeSpan waitTime = new TimeSpan(0, 0, 0, waitSeconds);
+
+            DateTime finish = start + waitTime;
+            this.NextCheck = finish;
+
+            DateTime current = DateTime.Now;
+            while (current < finish)
+            {
+                this.Update_ProgressBar();
+                Application.DoEvents();
+                var difference = (finish.Subtract(DateTime.Now));
+                this.WaitProgress = Convert.ToInt32(100 - ((difference.TotalSeconds / waitTime.TotalSeconds) * 100));
+                current = DateTime.Now;
+
+                if (this.ResetWait)
+                {
+                    this.ResetWait = false;
+                    break;
+                }
+
+                if (this._stop)
+                {
+                    this.WaitProgress = 0;
+                    this.NextCheck = new DateTime();
+                    break;
+                }
+            }
+
+            this.NewMessage = false;
         }
     }
 }

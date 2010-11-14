@@ -27,6 +27,7 @@ namespace ChessCalendar.Controls
         {
             this.Name = tabName;
             this.Processor = new GameProcessor(uriToWatch, userName, password, logToCalendar, true);
+            this.MessageList = new MessageList();
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
             //_progressBar = (ProgressBar)this.Controls[this.Name + "_pbTimeTillNextUpdate"];
@@ -35,15 +36,15 @@ namespace ChessCalendar.Controls
             var messages = new TextBox();
             messages.Name = "TabPage_txtMessages";
 
-            var grid = new DataGridView();
-            grid.Name = "TabPage_Grid";
-            grid.CellClick += this.grid_CellClick;
+            _grid = new DataGridView();
+            _grid.Name = "TabPage_Grid";
+            _grid.CellClick += this.grid_CellClick;
 
             var chkLogToCalendar = new CheckBox();
             chkLogToCalendar.Name = "TabPageName_chkLogToCalendar";
 
             this.Controls.Add(chkLogToCalendar);
-            this.Controls.Add(grid);
+            this.Controls.Add(_grid);
             this.Controls.Add(messages);
         }
 
@@ -126,8 +127,9 @@ namespace ChessCalendar.Controls
                 {
                     if (this.Processor.Output.NewMoves != null)
                     {
-                        if (this.Processor.Output.NewMoves.Updated)
-                        {
+                        //TODO Get this IF working
+                        //if (this.Processor.Output.NewMoves.Updated)
+                        //{
                             if (this.Processor.ClearList)
                             {
                                 this.MessageList.Clear();
@@ -143,18 +145,18 @@ namespace ChessCalendar.Controls
                             GC.Collect();
 
                             this.Processor.NewMessage = true;
-                        }
-                        else
-                        {
-                            if (this.Processor.ChessFeed.Count > 0)
-                            {
-                                if (this.Processor.ChessFeed.Count < 1)
-                                {
-                                    this.MessageList.Clear();
-                                    this.SetMovesDataSource(this.MessageList);
-                                }
-                            }
-                        }
+                        //}
+                        //else
+                        //{
+                        //    if (this.Processor.ChessFeed.Count > 0)
+                        //    {
+                        //        if (this.Processor.ChessFeed.Count < 1)
+                        //        {
+                        //            this.MessageList.Clear();
+                        //            this.SetMovesDataSource(this.MessageList);
+                        //        }
+                        //    }
+                        //}
                     }
                     else
                     {
