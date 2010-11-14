@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using ChessCalendar.Controls;
-using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 using System.Threading;
 
@@ -74,18 +73,16 @@ namespace ChessCalendar.Forms
 
             if (login.ValidatedForm)
             {
-                ProcessorTab newPage = new ProcessorTab("n",
+                ProcessorTab newPage = new ProcessorTab(login.ChessDotComName,
                                                          new Uri("http://www.chess.com/rss/echess/" + login.ChessDotComName),
                                                          login.User,
                                                          login.Password,
                                                          login.PostURI);
 
-                newPage.Calendar.DebugMode = login.DebugMode;
-                newPage.Calendar.UserLogged = login.ChessDotComName;
-                newPage.Calendar.GetPGNs = login.DownloadPGNs;
-                newPage.Calendar.Beep_On_New_Move = login.Beep_On_New_Move;
-
-               
+                newPage.Processor.DebugMode = login.DebugMode;
+                newPage.Processor.UserLogged = login.ChessDotComName;
+                newPage.Processor.GetPGNs = login.DownloadPGNs;
+                newPage.Processor.Beep_On_New_Move = login.Beep_On_New_Move;
 
                 this.tabs.TabPages.Add(newPage); 
             }
@@ -94,11 +91,7 @@ namespace ChessCalendar.Forms
                 MessageBox.Show("Some of the Login information wasn't right, try again.", "ummmmmmm...");
             }
 
-
-
             //newPage.Start();
-
-
             //RunLoop() will update all the tabs.
 
             //To ref the control again later..
@@ -169,6 +162,7 @@ namespace ChessCalendar.Forms
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             this.Processor.ResetWait = true;
+            //this.Processor.NewMoves.Updated = true;
         }
 
         #endregion
@@ -182,6 +176,16 @@ namespace ChessCalendar.Forms
 
             while (true)
             {
+
+                //Tell tab to run its Refresh()
+                foreach (var tab in tabs.TabPages)
+                {
+                    if (tab.GetType().ToString() == "ProcessorTab")
+                    {
+                        ((ProcessorTab)tab).RefreshRSS();
+                    }
+                }
+
                 this.Update_NextCheck();
                 this.Update_ProgressBar();
                 this.Update_GridView();

@@ -102,7 +102,7 @@
     <Compile Include="EntryList.cs" />
     <Compile Include="ChessRSSItem.cs" />
     <Compile Include="ChessFeed.cs" />
-    <Compile Include="Controls\FeedTab.cs">
+    <Compile Include="Controls\ProcessorTab.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\ShowLog.cs">
