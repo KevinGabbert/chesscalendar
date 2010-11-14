@@ -11,7 +11,7 @@ namespace ChessCalendar.Controls
 {
     public class ProcessorTab: TabPage
     {
-        public CalendarProcessor Processor { get; set; }
+        public GameProcessor Processor { get; set; }
         private MessageList MessageList { get; set; }
 
         private DataGridView _grid;
@@ -26,7 +26,7 @@ namespace ChessCalendar.Controls
         public ProcessorTab(string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             this.Name = tabName;
-            this.Processor = new CalendarProcessor(uriToWatch, userName, password, logToCalendar, true);
+            this.Processor = new GameProcessor(uriToWatch, userName, password, logToCalendar, true);
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
             //_progressBar = (ProgressBar)this.Controls[this.Name + "_pbTimeTillNextUpdate"];
