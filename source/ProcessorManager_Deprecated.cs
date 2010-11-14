@@ -48,7 +48,7 @@ namespace ChessCalendar
             public bool DebugMode { get; set; }
             public bool Beep_On_New_Move { get; set; }
             public bool GetPGNs { get; set; }
-            public bool LogGames { get; set; }
+            //public bool LogGames { get; set; }
             public bool ResetWait { get; set; }
             public string UserLogged { get; set; }
            
@@ -122,15 +122,22 @@ namespace ChessCalendar
 
                 //TODO: if NO new entries, it won't clear & refresh, meaning cruft won't 
 
-                if (this.LogGames)
-                {
-                    //TODO: this needs to be an asterisk or something on the log form.
-                    foreach (IChessItem current in this.ToDo)
+                //if (this.LogGames)
+                //{
+                    if (ToDo.Count > 0)
                     {
-                        this.Post(current); //TODO this causes gridview to clear and refresh
-                        this.Save_Game_Info(current, userName, password);
+                        //TODO: this needs to be an asterisk or something on the log form.
+                        foreach (IChessItem current in this.ToDo)
+                        {
+                            this.Post(current); //TODO this causes gridview to clear and refresh
+                            this.Save_Game_Info(current, userName, password);
+                        }
                     }
-                }
+                    else
+                    {
+                        this.NewMoves.Updated = true;
+                    }
+                //}
 
                 this.ClearList = true;
 
@@ -243,7 +250,7 @@ namespace ChessCalendar
 
                 if (gamelist.Count > 0)
                 {
-                    this.LogGames = true;
+                    //this.LogGames = true;
                     
                     //TODO: this needs to be in a field in the log form
                     //this.Output(string.Empty, Environment.NewLine + "Found " + gamelist.Count.ToString() + " Updated Games: " + DateTime.Now.ToLongTimeString());
@@ -257,7 +264,7 @@ namespace ChessCalendar
                 else
                 {
                     //this.Output(string.Empty, "No new or updated games found: " + DateTime.Now.ToLongTimeString());
-                    this.LogGames = false;
+                    //this.LogGames = false;
                 }
             }
         }
