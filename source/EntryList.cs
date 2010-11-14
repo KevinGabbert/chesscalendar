@@ -26,11 +26,13 @@ namespace ChessCalendar
                 //Lets see if we can find a match
                 if (list.Where(thisGame => thisGame.PubDate == game.PubDate).Any())
                 {
-                    list.AddGame(game);
+                    //list.AddGame(game);
+                    list.Remove_Item_With_Guid(game.Link);
                 }
                 else
                 {
-                    list.Remove_Item_With_Guid(game.Link);
+                    list.AddGame(game);
+                    //list.Remove_Item_With_Guid(game.Link);
                 }
             }
             catch (Exception ex)

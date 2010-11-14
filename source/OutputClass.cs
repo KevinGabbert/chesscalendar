@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
@@ -8,7 +7,6 @@ namespace ChessCalendar
     {
         #region Properties
 
-            public OutputMode OutputMode { get; set; }
             public Queue<string> Messages { get; set; }
             public MessageQueue NewMoves { get; set; }
             public System.Windows.Forms.NotifyIcon NotifyIcon { get; set; }
@@ -23,22 +21,14 @@ namespace ChessCalendar
 
         protected void Post(string title, string outputMessage)
         {
-            switch (this.OutputMode)
-            {
-                case OutputMode.Balloon:
-                    this.NotifyIcon.BalloonTipText = outputMessage;
-                    this.NotifyIcon.ShowBalloonTip(2000);
+            //case OutputMode.Balloon:
+            //    this.NotifyIcon.BalloonTipText = outputMessage;
+            //    this.NotifyIcon.ShowBalloonTip(2000);
 
-                    //Now Write message to form as well.
-                    break;
+            //    //Now Write message to form as well.
+            //    break;
 
-                case OutputMode.Form:
-                    this.Messages.Enqueue(outputMessage);
-                    break;
-
-                default:
-                    break;
-            }
+           this.Messages.Enqueue(outputMessage);
         }
 
         /// <summary>
@@ -47,21 +37,12 @@ namespace ChessCalendar
         /// <param name="game"></param>
         public void Post(IChessItem game)
         {
-            switch (this.OutputMode)
-            {
-                case OutputMode.Form:
-                    this.NewMoves.Updated = true;
-                    this.NewMoves.Enqueue(game);
-                    break;
-
-                default:
-                    break;
-            }
+            this.NewMoves.Updated = true;
+            this.NewMoves.Enqueue(game);
         }
-        public void Post(string title, string outputMessage, OutputMode outputMode)
-        {
-            this.OutputMode = outputMode;
-            this.Post(title, outputMessage);
-        }
+        //public void Post(string title, string outputMessage)
+        //{
+        //    this.Post(title, outputMessage);
+        //}
     }
 }

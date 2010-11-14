@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
 using RssToolkit.Rss;
 
@@ -223,7 +222,7 @@ namespace ChessCalendar
                                                             "|" + this.LogVersion, DateTime.Now, DateTime.Now, _calendarToPost);
             if (this.DebugMode)
             {
-                this.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+                this.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
             }
 
             this.ToDo.Ignore(gameToLog); //we won't need to log this one again, 

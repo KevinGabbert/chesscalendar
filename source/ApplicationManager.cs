@@ -2,14 +2,13 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using ChessCalendar.Enums;
 using ChessCalendar.Forms;
 
 namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"Chess Calendar v11.13.10 *Prototype* ";
+        public const string VERSION = @"Chess Calendar v11.14.10 *Broken* ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         public Thread Thread { get; set; }
@@ -74,8 +73,7 @@ namespace ChessCalendar
             this.FeedProcessor.Beep_On_New_Move = loginInfo.Beep_On_New_Move;
             this.FeedProcessor.NotifyIcon = TrayIcon;
             this.FeedProcessor.ContextMenu = Menu;
-            this.FeedProcessor.OutputMode = OutputMode.Form;
-            this.FeedProcessor.Post(string.Empty, VERSION + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+            //this.FeedProcessor.Post(string.Empty, VERSION + DateTime.Now.ToShortTimeString());
 
             if (loginInfo.AutoOpenLog)
             {

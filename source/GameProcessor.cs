@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
-using ChessCalendar.Enums;
 using ChessCalendar.Interfaces;
-using RssToolkit.Rss;
 
 namespace ChessCalendar
 {
@@ -186,11 +184,11 @@ namespace ChessCalendar
 
                     if (ToDo.Count > 0)
                     {
-                        //TODO: this needs to be an asterisk or something on the log form.
-                        foreach (IChessItem current in toDo)
-                        {
-                            this.Output.Post(current); //TODO this causes gridview to clear and refresh
-                        }
+                        ////TODO: this needs to be an asterisk or something on the log form.
+                        //foreach (IChessItem current in toDo)
+                        //{
+                        //    this.Output.Post(current); //TODO this causes gridview to clear and refresh
+                        //}
                     }
                     else
                     {
@@ -199,13 +197,13 @@ namespace ChessCalendar
 
                     this.ClearList = true;
 
-                    toDo.Clear();
+                    //toDo.Clear();
                 }
             }
             catch (Exception ex)
             {
                 //if 504 Invalid gateway error. Chess.com is down
-                this.Output.Post(string.Empty, "error. " + ex.Message, OutputMode.Form);
+                //this.Output.Post(string.Empty, "error. " + ex.Message);
 
                 GoogleCalendar.CreateEntry(this.UserName, 
                                            this.Password, 
@@ -343,7 +341,7 @@ namespace ChessCalendar
                                                             "|" + "this.LogVersion", DateTime.Now, DateTime.Now, this.Calendar);
             if (this.DebugMode)
             {
-                this.Output.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString(), OutputMode.Form);
+                //this.Output.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
             }
         }
 
