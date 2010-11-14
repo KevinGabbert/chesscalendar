@@ -20,7 +20,7 @@ namespace ChessCalendar
             public Uri _calendarToPost;
             public System.Windows.Forms.ContextMenu ContextMenu { get; set; }
 
-            public List<CalendarProcessor> CCFeeds { get; set; }
+            public List<GameProcessor> CCFeeds { get; set; }
 
             //TODO: Deprecate this
             public List<ChessFeed> Feeds { get; set; }

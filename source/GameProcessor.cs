@@ -13,7 +13,7 @@ namespace ChessCalendar
     /// <summary>
     /// Gets 
     /// </summary>
-    public class CalendarProcessor
+    public class GameProcessor
     {
         public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
 
@@ -69,7 +69,7 @@ namespace ChessCalendar
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="logToCalendar"></param>
-        public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool refresh)
+        public GameProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool refresh)
         {
             this.ToDo = new EntryList();
             this.Output = new OutputClass();
@@ -326,7 +326,7 @@ namespace ChessCalendar
         {
             if (this.GetPGNs)
             {
-                CalendarProcessor.Download_PGN(gameToLog);
+                GameProcessor.Download_PGN(gameToLog);
             }
 
             GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
