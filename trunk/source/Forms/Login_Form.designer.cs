@@ -51,6 +51,7 @@
             this.grpChess = new System.Windows.Forms.GroupBox();
             this.rdoFollowAll = new System.Windows.Forms.RadioButton();
             this.rdoFollowGames = new System.Windows.Forms.RadioButton();
+            this.chkLogToCalendar = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbTitle)).BeginInit();
             this.grpCalendar.SuspendLayout();
             this.grpChess.SuspendLayout();
@@ -70,7 +71,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(5, 108);
+            this.checkBox1.Location = new System.Drawing.Point(6, 97);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(150, 17);
             this.checkBox1.TabIndex = 2;
@@ -79,7 +80,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(87, 204);
+            this.btnOK.Location = new System.Drawing.Point(88, 183);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 3;
@@ -89,7 +90,7 @@
             // 
             // txtLogin
             // 
-            this.txtLogin.Location = new System.Drawing.Point(6, 34);
+            this.txtLogin.Location = new System.Drawing.Point(6, 32);
             this.txtLogin.Name = "txtLogin";
             this.txtLogin.Size = new System.Drawing.Size(250, 20);
             this.txtLogin.TabIndex = 0;
@@ -98,7 +99,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 18);
+            this.label1.Location = new System.Drawing.Point(3, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 6;
@@ -107,7 +108,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(2, 66);
+            this.label2.Location = new System.Drawing.Point(3, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 7;
@@ -116,7 +117,7 @@
             // txtPassword
             // 
             this.txtPassword.AcceptsReturn = true;
-            this.txtPassword.Location = new System.Drawing.Point(6, 82);
+            this.txtPassword.Location = new System.Drawing.Point(6, 71);
             this.txtPassword.MaxLength = 50;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
@@ -128,7 +129,7 @@
             // cmbGoogleCalendar
             // 
             this.cmbGoogleCalendar.FormattingEnabled = true;
-            this.cmbGoogleCalendar.Location = new System.Drawing.Point(5, 154);
+            this.cmbGoogleCalendar.Location = new System.Drawing.Point(6, 133);
             this.cmbGoogleCalendar.Name = "cmbGoogleCalendar";
             this.cmbGoogleCalendar.Size = new System.Drawing.Size(249, 21);
             this.cmbGoogleCalendar.TabIndex = 4;
@@ -137,7 +138,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 138);
+            this.label3.Location = new System.Drawing.Point(5, 117);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(141, 13);
             this.label3.TabIndex = 9;
@@ -220,7 +221,7 @@
             // chkDownloadPGNs
             // 
             this.chkDownloadPGNs.AutoSize = true;
-            this.chkDownloadPGNs.Location = new System.Drawing.Point(6, 181);
+            this.chkDownloadPGNs.Location = new System.Drawing.Point(7, 160);
             this.chkDownloadPGNs.Name = "chkDownloadPGNs";
             this.chkDownloadPGNs.Size = new System.Drawing.Size(166, 17);
             this.chkDownloadPGNs.TabIndex = 17;
@@ -246,9 +247,9 @@
             this.grpCalendar.Controls.Add(this.label1);
             this.grpCalendar.Controls.Add(this.label2);
             this.grpCalendar.Controls.Add(this.txtPassword);
-            this.grpCalendar.Location = new System.Drawing.Point(5, 247);
+            this.grpCalendar.Location = new System.Drawing.Point(5, 283);
             this.grpCalendar.Name = "grpCalendar";
-            this.grpCalendar.Size = new System.Drawing.Size(265, 248);
+            this.grpCalendar.Size = new System.Drawing.Size(265, 212);
             this.grpCalendar.TabIndex = 22;
             this.grpCalendar.TabStop = false;
             this.grpCalendar.Text = "Google Calendar";
@@ -292,6 +293,19 @@
             this.rdoFollowGames.UseVisualStyleBackColor = true;
             this.rdoFollowGames.CheckedChanged += new System.EventHandler(this.rdoFollowGames_CheckedChanged);
             // 
+            // chkLogToCalendar
+            // 
+            this.chkLogToCalendar.AutoSize = true;
+            this.chkLogToCalendar.Checked = true;
+            this.chkLogToCalendar.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkLogToCalendar.Enabled = false;
+            this.chkLogToCalendar.Location = new System.Drawing.Point(5, 260);
+            this.chkLogToCalendar.Name = "chkLogToCalendar";
+            this.chkLogToCalendar.Size = new System.Drawing.Size(101, 17);
+            this.chkLogToCalendar.TabIndex = 23;
+            this.chkLogToCalendar.Text = "Log to Calendar";
+            this.chkLogToCalendar.UseVisualStyleBackColor = true;
+            // 
             // Login_Form
             // 
             this.AcceptButton = this.btnOK;
@@ -299,6 +313,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(274, 559);
+            this.Controls.Add(this.chkLogToCalendar);
             this.Controls.Add(this.grpChess);
             this.Controls.Add(this.grpCalendar);
             this.Controls.Add(this.lblVersion);
@@ -343,5 +358,6 @@
         private System.Windows.Forms.GroupBox grpChess;
         private System.Windows.Forms.RadioButton rdoFollowAll;
         private System.Windows.Forms.RadioButton rdoFollowGames;
+        private System.Windows.Forms.CheckBox chkLogToCalendar;
     }
 }

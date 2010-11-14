@@ -31,17 +31,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowLog));
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.chkRecordGame = new System.Windows.Forms.CheckBox();
             this.lnkNoMovesFound = new System.Windows.Forms.LinkLabel();
+            this.btnPause = new System.Windows.Forms.Button();
             this.txtLog = new System.Windows.Forms.TextBox();
+            this.txtNextCheck = new System.Windows.Forms.TextBox();
             this.dgvAvailableMoves = new System.Windows.Forms.DataGridView();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
-            this.txtNextCheck = new System.Windows.Forms.TextBox();
-            this.btnPause = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnAddFeed = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAvailableMoves)).BeginInit();
@@ -50,7 +49,6 @@
             // tabs
             // 
             this.tabs.Controls.Add(this.tabPage1);
-            this.tabs.Controls.Add(this.tabPage2);
             this.tabs.Location = new System.Drawing.Point(-2, 1);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
@@ -74,6 +72,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(660, 398);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(121, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Refresh";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // chkRecordGame
             // 
             this.chkRecordGame.AutoSize = true;
@@ -95,6 +102,16 @@
             this.lnkNoMovesFound.Text = "No Moves Found";
             this.lnkNoMovesFound.Visible = false;
             // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(321, 402);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(121, 23);
+            this.btnPause.TabIndex = 4;
+            this.btnPause.Text = "Pause reading RSS";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
             // txtLog
             // 
             this.txtLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -103,6 +120,15 @@
             this.txtLog.Size = new System.Drawing.Size(783, 20);
             this.txtLog.TabIndex = 4;
             this.txtLog.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtNextCheck
+            // 
+            this.txtNextCheck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtNextCheck.Location = new System.Drawing.Point(3, 425);
+            this.txtNextCheck.Name = "txtNextCheck";
+            this.txtNextCheck.Size = new System.Drawing.Size(778, 20);
+            this.txtNextCheck.TabIndex = 3;
+            this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // dgvAvailableMoves
             // 
@@ -121,25 +147,6 @@
             this.pbTimeTillNextUpdate.Name = "pbTimeTillNextUpdate";
             this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(780, 15);
             this.pbTimeTillNextUpdate.TabIndex = 1;
-            // 
-            // txtNextCheck
-            // 
-            this.txtNextCheck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtNextCheck.Location = new System.Drawing.Point(3, 425);
-            this.txtNextCheck.Name = "txtNextCheck";
-            this.txtNextCheck.Size = new System.Drawing.Size(778, 20);
-            this.txtNextCheck.TabIndex = 3;
-            this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // btnPause
-            // 
-            this.btnPause.Location = new System.Drawing.Point(321, 402);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(121, 23);
-            this.btnPause.TabIndex = 4;
-            this.btnPause.Text = "Pause reading RSS";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // btnRefresh
             // 
@@ -160,24 +167,6 @@
             this.btnAddFeed.Text = "Add Feed";
             this.btnAddFeed.UseVisualStyleBackColor = true;
             this.btnAddFeed.Click += new System.EventHandler(this.btnAddFeed_Click);
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(789, 473);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(660, 398);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Refresh";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // ShowLog
             // 
@@ -218,6 +207,5 @@
         private System.Windows.Forms.Button btnAddFeed;
         private System.Windows.Forms.CheckBox chkRecordGame;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TabPage tabPage2;
     }
 }
