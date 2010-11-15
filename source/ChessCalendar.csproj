@@ -122,7 +122,6 @@
     <Compile Include="GoogleCalendar.cs" />
     <Compile Include="Interfaces\IChessItem.cs" />
     <Compile Include="Interfaces\IRSSItem.cs" />
-    <Compile Include="ProcessorManager_Deprecated.cs" />
     <Compile Include="Forms\Login_Form.cs">
       <SubType>Form</SubType>
     </Compile>

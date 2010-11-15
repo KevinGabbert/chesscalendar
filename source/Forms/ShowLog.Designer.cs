@@ -47,6 +47,7 @@
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(797, 499);
             this.tabs.TabIndex = 0;
+            this.tabs.Resize += new System.EventHandler(this.tabs_Resize);
             // 
             // btnRefresh
             // 

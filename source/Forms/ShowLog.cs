@@ -146,6 +146,8 @@ namespace ChessCalendar.Forms
             //ProgressBar
             this.pbTimeTillNextUpdate.Top = this.Height - 45;
             this.pbTimeTillNextUpdate.Width = this.Width - 8;
+
+            //each of the controls on each tab should be resized on thab's resize event..
         }
 
         private void btnPause_Click(object sender, EventArgs e)
@@ -203,13 +205,13 @@ namespace ChessCalendar.Forms
                 {
                     this.pbTimeTillNextUpdate.Show();
                     Application.DoEvents();
-                    Thread.Sleep(100);
+                    //Thread.Sleep(100);
                 }
                 else
                 {
                     this.pbTimeTillNextUpdate.Hide();
                     Application.DoEvents();
-                    Thread.Sleep(100);
+                    //Thread.Sleep(100);
                 }
             }
             else
@@ -239,58 +241,6 @@ namespace ChessCalendar.Forms
                 this.txtNextCheck.Text = "Next check will be at: " + this.NextCheck.ToShortTimeString();
             }
         }
-        //private void UpdateDataGridView()
-        //{
-        //    if (this.Processor != null)
-        //    {
-        //        if (this.Processor.NewMoves != null)
-        //        {
-        //            if (this.Processor.NewMoves.Updated)
-        //            {
-        //                if (this.Processor.ClearList)
-        //                {
-        //                    this.MessageList.Clear();
-        //                }
-
-        //                for (int i = this.Processor.NewMoves.Count; i > 0; i--)
-        //                {
-        //                    this.MessageList.Add(this.Processor.NewMoves.Dequeue()); 
-        //                }
-
-        //                GC.Collect();
-        //                this.SetMovesDataSource(this.MessageList);
-        //                GC.Collect();
-
-        //                this.Processor.NewMessage = true;
-        //            }
-        //            else
-        //            {
-        //                //TODO: this needs to support multiple feeds
-        //                if (this.Processor.Feeds != null)
-        //                {
-        //                    if (this.Processor.Feeds.Count > 0)
-        //                    {
-        //                        if (this.Processor.Feeds[0].Count < 1)
-        //                        {
-        //                            this.MessageList.Clear();
-        //                            this.SetMovesDataSource(this.MessageList);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            _fail += 1;
-        //            this.txtLog.Text = "Log is Null: " + _fail + Environment.NewLine + this.txtLog.Text;
-
-        //            if (this.txtLog.Text.Length > 5001)
-        //            {
-        //                this.txtLog.Text.Remove(5000);
-        //            }
-        //        }
-        //    }
-        //}
         //private void UpdateText()
         //{
         //    if (this.Processor != null)
@@ -349,6 +299,11 @@ namespace ChessCalendar.Forms
             }
 
             this.NewMessage = false;
+        }
+
+        private void tabs_Resize(object sender, EventArgs e)
+        {
+            //TODO is this wehere the tabpages get resized?
         }
     }
 }
