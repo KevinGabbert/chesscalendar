@@ -30,8 +30,6 @@ namespace ChessCalendar.Controls
             this.MessageList = new MessageList();
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
-            //_progressBar = (ProgressBar)this.Controls[this.Name + "_pbTimeTillNextUpdate"];
-            //_nextCheck = (TextBox)this.Controls[this.Name + "_nextCheck"];
 
             var messages = new TextBox();
             messages.Name = "TabPage_txtMessages";
@@ -46,6 +44,70 @@ namespace ChessCalendar.Controls
             this.Controls.Add(chkLogToCalendar);
             this.Controls.Add(_grid);
             this.Controls.Add(messages);
+
+            _grid.Parent.Text = Processor.UserLogged;
+
+            ProcessorTab.FormatDataGrid(this._grid);
+        }
+
+        public static void FormatDataGrid(DataGridView dataGrid)
+        {
+            dataGrid.Columns.Clear();
+            dataGrid.AutoGenerateColumns = false;
+
+            DataGridViewLinkColumn newMoveColumn = new DataGridViewLinkColumn();
+            newMoveColumn.DataPropertyName = "NewMove";
+            newMoveColumn.HeaderText = "X";
+            newMoveColumn.Width = 20;
+            newMoveColumn.Visible = false;
+
+            DataGridViewTextBoxColumn pubDateColumn = new DataGridViewTextBoxColumn();
+            pubDateColumn.DataPropertyName = "GetPubDate";
+            pubDateColumn.HeaderText = "Pub Date";
+            pubDateColumn.Width = 125;
+
+            DataGridViewLinkColumn titleColumn = new DataGridViewLinkColumn();
+            titleColumn.DataPropertyName = "GameTitle"; //GameTitle
+            titleColumn.HeaderText = "Title";
+            titleColumn.Width = 220;
+            titleColumn.LinkBehavior = LinkBehavior.SystemDefault;
+
+            DataGridViewTextBoxColumn opponentColumn = new DataGridViewTextBoxColumn();
+            opponentColumn.DataPropertyName = "Opponent";
+            opponentColumn.HeaderText = "Opponent";
+            opponentColumn.Width = 100;
+
+            DataGridViewTextBoxColumn ratingColumn = new DataGridViewTextBoxColumn();
+            ratingColumn.DataPropertyName = "RatingRaw";
+            ratingColumn.HeaderText = "Rating";
+            ratingColumn.Width = 80;
+
+            DataGridViewTextBoxColumn timeLeftColumn = new DataGridViewTextBoxColumn();
+            timeLeftColumn.DataPropertyName = "TimeLeftRaw";
+            timeLeftColumn.HeaderText = "Time Left";
+            timeLeftColumn.Width = 150;
+
+            DataGridViewTextBoxColumn moveColumn = new DataGridViewTextBoxColumn();
+            moveColumn.DataPropertyName = "MoveRaw";
+            moveColumn.HeaderText = "Move #";
+            moveColumn.Width = 80;
+
+            //Do I *really* have to make a hidden column?
+            DataGridViewLinkColumn gameIDColumn = new DataGridViewLinkColumn();
+            gameIDColumn.DataPropertyName = "GameLink"; //GameID
+            gameIDColumn.HeaderText = "Game";
+            gameIDColumn.Width = 350;
+            gameIDColumn.Visible = false;
+
+            dataGrid.Columns.Add(newMoveColumn);
+            dataGrid.Columns.Add(pubDateColumn);
+            dataGrid.Columns.Add(titleColumn);
+            dataGrid.Columns.Add(opponentColumn);
+            dataGrid.Columns.Add(ratingColumn);
+            dataGrid.Columns.Add(timeLeftColumn);
+            dataGrid.Columns.Add(moveColumn);
+
+            dataGrid.Columns.Add(gameIDColumn);
         }
 
         public void RefreshTab()
@@ -70,55 +132,6 @@ namespace ChessCalendar.Controls
                 this.MessageList = new MessageList();
             }
         }
-        //private void Update_ProgressBar()
-        //{
-        //    if (this.Processor.NextCheck == new DateTime())
-        //    {
-        //        this._progressBarFlash = !this._progressBarFlash;
-
-        //        this._progressBar.Value = 100;
-        //        this._progressBar.ForeColor = Color.Green;
-
-        //        if (this._progressBarFlash)
-        //        {
-        //            this._progressBar.Show();
-        //            Application.DoEvents();
-        //            Thread.Sleep(100);
-        //        }
-        //        else
-        //        {
-        //            this._progressBar.Hide();
-        //            Application.DoEvents();
-        //            Thread.Sleep(100);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (this.Processor.WaitProgress > 100)
-        //        {
-        //            this._progressBar.ForeColor = Color.Red;
-        //            this._progressBar.Value = 100;
-        //        }
-        //        else
-        //        {
-        //            this._progressBar.ForeColor = Color.Blue;
-        //            this._progressBar.Value = this.Processor.WaitProgress;
-        //        }
-
-        //        this._progressBar.Show();
-        //    }
-        //}
-        //private void Update_NextCheck()
-        //{
-        //    //if (this.Processor.NextCheck == new DateTime())
-        //    //{
-        //    //    this._nextCheck.Text = "Unknown";
-        //    //}
-        //    //else
-        //    //{
-        //    //    this._nextCheck.Text = "Next check will be at: " + this.Processor.NextCheck.ToShortTimeString();
-        //    //}
-        //}
         private void UpdateDataGridView()
         {
             if (this.Processor != null)
@@ -196,68 +209,8 @@ namespace ChessCalendar.Controls
         //    }
         //}
 
-        private static void FormatDataGrid(DataGridView dataGrid)
-        {
-            dataGrid.Columns.Clear();
-            dataGrid.AutoGenerateColumns = false;
-
-            DataGridViewLinkColumn newMoveColumn = new DataGridViewLinkColumn();
-            newMoveColumn.DataPropertyName = "NewMove";
-            newMoveColumn.HeaderText = "X";
-            newMoveColumn.Width = 20;
-            newMoveColumn.Visible = false;
-
-            DataGridViewTextBoxColumn pubDateColumn = new DataGridViewTextBoxColumn();
-            pubDateColumn.DataPropertyName = "GetPubDate";
-            pubDateColumn.HeaderText = "Pub Date";
-            pubDateColumn.Width = 125;
-
-            DataGridViewLinkColumn titleColumn = new DataGridViewLinkColumn();
-            titleColumn.DataPropertyName = "GameTitle"; //GameTitle
-            titleColumn.HeaderText = "Title";
-            titleColumn.Width = 220;
-            titleColumn.LinkBehavior = LinkBehavior.SystemDefault;
-
-            DataGridViewTextBoxColumn opponentColumn = new DataGridViewTextBoxColumn();
-            opponentColumn.DataPropertyName = "Opponent";
-            opponentColumn.HeaderText = "Opponent";
-            opponentColumn.Width = 100;
-
-            DataGridViewTextBoxColumn ratingColumn = new DataGridViewTextBoxColumn();
-            ratingColumn.DataPropertyName = "RatingRaw";
-            ratingColumn.HeaderText = "Rating";
-            ratingColumn.Width = 80;
-
-            DataGridViewTextBoxColumn timeLeftColumn = new DataGridViewTextBoxColumn();
-            timeLeftColumn.DataPropertyName = "TimeLeftRaw";
-            timeLeftColumn.HeaderText = "Time Left";
-            timeLeftColumn.Width = 150;
-
-            DataGridViewTextBoxColumn moveColumn = new DataGridViewTextBoxColumn();
-            moveColumn.DataPropertyName = "MoveRaw";
-            moveColumn.HeaderText = "Move #";
-            moveColumn.Width = 80;
-
-            //Do I *really* have to make a hidden column?
-            DataGridViewLinkColumn gameIDColumn = new DataGridViewLinkColumn();
-            gameIDColumn.DataPropertyName = "GameLink"; //GameID
-            gameIDColumn.HeaderText = "Game";
-            gameIDColumn.Width = 350;
-            gameIDColumn.Visible = false;
-
-            dataGrid.Columns.Add(newMoveColumn);
-            dataGrid.Columns.Add(pubDateColumn);
-            dataGrid.Columns.Add(titleColumn);
-            dataGrid.Columns.Add(opponentColumn);
-            dataGrid.Columns.Add(ratingColumn);
-            dataGrid.Columns.Add(timeLeftColumn);
-            dataGrid.Columns.Add(moveColumn);
-
-            dataGrid.Columns.Add(gameIDColumn);
-        }
-
         private delegate void MovesDelegate(BindingList<IChessItem> dataSource);
-        private void SetMovesDataSource(BindingList<IChessItem> dataSource)
+        public void SetMovesDataSource(BindingList<IChessItem> dataSource)
         {
             if (_grid.InvokeRequired)
             {
@@ -283,6 +236,19 @@ namespace ChessCalendar.Controls
         //private Control FindControlByName(string name)
         //{
         //    return this.Controls.Cast<Control>().FirstOrDefault(c => c.Name == name);
+        //}
+
+        //private void dgvAvailableMoves_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        //{
+        //    if (this.dgvAvailableMoves.Columns[e.ColumnIndex].DataPropertyName == "NewMove")
+        //    {
+        //        if (this.dgvAvailableMoves.DataSource != null)
+        //        {
+        //            IChessItem item = ((BindingList<IChessItem>)this.dgvAvailableMoves.DataSource)[e.RowIndex];
+
+        //            e.CellStyle.BackColor = item.NewMove == true ? Color.Green : Color.DimGray;
+        //        }
+        //    }
         //}
     }
 }

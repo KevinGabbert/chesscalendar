@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using ChessCalendar.Controls;
 using ChessCalendar.Forms;
 
 namespace ChessCalendar
@@ -21,6 +22,7 @@ namespace ChessCalendar
         public ContextMenu Menu { get; set; }
 
         private bool _loggedIn = false;
+        private ProcessorTab _startTab;
 
         public ApplicationManager()
         {
@@ -75,24 +77,28 @@ namespace ChessCalendar
             this.FeedProcessor.ContextMenu = Menu;
             //this.FeedProcessor.Post(string.Empty, VERSION + DateTime.Now.ToShortTimeString());
 
+            this.SetNewLogForm(loginInfo);
+
             if (loginInfo.AutoOpenLog)
             {
                 this.ShowLog(sender, e);
             }
-
-            this.ValidateAndStart(loginInfo);
         }
 
-        private void ValidateAndStart(Login_Form userInfoForm)
+        private void SetNewLogForm(Login_Form userInfoForm)
         {
             if (userInfoForm.ValidatedForm)
             {
-                this._loggedIn = true;
+                _startTab = new ProcessorTab("PTab_" + userInfoForm.ChessDotComName,
+                                                         new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
+                                                         userInfoForm.User,
+                                                         userInfoForm.Password,
+                                                         userInfoForm.PostURI);
 
-                FeedProcessor.Save_Single_Feed_To_Calendar(new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
-                                          userInfoForm.User,
-                                          userInfoForm.Password,
-                                          userInfoForm.PostURI);
+                _startTab.Processor.DebugMode = userInfoForm.DebugMode;
+                _startTab.Processor.UserLogged = userInfoForm.ChessDotComName;
+                _startTab.Processor.GetPGNs = userInfoForm.DownloadPGNs;
+                _startTab.Processor.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
             }
             else
             {
@@ -115,7 +121,7 @@ namespace ChessCalendar
         }
         private void newShowLogThread(object arg)
         {
-            this.LogViewer = new ShowLog(this.FeedProcessor);
+            this.LogViewer = new ShowLog(_startTab);
             this.LogViewer.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
