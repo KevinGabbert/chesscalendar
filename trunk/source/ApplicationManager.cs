@@ -17,7 +17,6 @@ namespace ChessCalendar
         public Login_Form Login { get; set; }
 
         //TODO: make these into props
-        public ProcessorManager_Deprecated FeedProcessor { get; set; }
         public NotifyIcon TrayIcon { get; set; }
         public ContextMenu Menu { get; set; }
 
@@ -66,16 +65,6 @@ namespace ChessCalendar
         private void GetLogin(object sender, EventArgs e)
         {
             var loginInfo = GetLoginInfo();
-
-            this.FeedProcessor = new ProcessorManager_Deprecated();
-            this.FeedProcessor.LogVersion = VERSION;
-            this.FeedProcessor.DebugMode = loginInfo.DebugMode;
-            this.FeedProcessor.UserLogged = loginInfo.ChessDotComName;
-            this.FeedProcessor.GetPGNs = loginInfo.DownloadPGNs;
-            this.FeedProcessor.Beep_On_New_Move = loginInfo.Beep_On_New_Move;
-            this.FeedProcessor.NotifyIcon = TrayIcon;
-            this.FeedProcessor.ContextMenu = Menu;
-            //this.FeedProcessor.Post(string.Empty, VERSION + DateTime.Now.ToShortTimeString());
 
             this.SetNewLogForm(loginInfo);
 
