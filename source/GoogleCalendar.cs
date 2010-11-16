@@ -33,9 +33,11 @@ namespace ChessCalendar
 
             return _service.Query(query);
         }
-        public static void CreateEntry(string userName, string password, string link, string pubDate, string title, string description, DateTime start, DateTime end, Uri calendar)
+        public static void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar)
         {
             _calendarToPost = calendar;
+
+            //TODO: If username is null then report an error another way.  EventLog?
 
             try
             {

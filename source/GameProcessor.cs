@@ -196,8 +196,6 @@ namespace ChessCalendar
 
                 GoogleCalendar.CreateEntry(this.UserName, 
                                            this.Password, 
-                                           "Error", 
-                                           "Error", 
                                            "Chess.com error", 
                                            ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar);
             }
@@ -316,18 +314,20 @@ namespace ChessCalendar
                 GameProcessor.Download_PGN(gameToLog);
             }
 
-            GoogleCalendar.CreateEntry(userName, password, DateTime.Parse(gameToLog.PubDate).ToLongDateString(),
-                                                            gameToLog.Link,
-                                                            gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(),
-                                                            "|" + gameToLog.Link +
-                                                            Environment.NewLine +
-                                                            "|" + gameToLog.PubDate +
-                                                            Environment.NewLine +
-                                                            "|" + gameToLog.Description +
-                                                            Environment.NewLine +
-                                                            "|" + gameToLog.PGN +
-                                                            Environment.NewLine +
-                                                            "|" + "this.LogVersion", DateTime.Now, DateTime.Now, this.Calendar);
+            GoogleCalendar.CreateEntry(userName, 
+                                       password, 
+                                       gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(),
+                                            "|" + gameToLog.Link +
+                                            Environment.NewLine +
+                                            "|" + gameToLog.PubDate +
+                                            Environment.NewLine +
+                                            "|" + gameToLog.Description +
+                                            Environment.NewLine +
+                                            "|" + gameToLog.PGN +
+                                            Environment.NewLine +
+                                        "|" + "this.LogVersion", 
+                                        DateTime.Now, 
+                                        DateTime.Now, this.Calendar);
             if (this.DebugMode)
             {
                 //this.Output.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
