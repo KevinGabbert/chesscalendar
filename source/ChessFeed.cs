@@ -41,6 +41,7 @@ namespace ChessCalendar
 
         public void Load()
         {
+            this.Clear();
             this.AddRange(RssDocument.Load(this.FeedUri).Channel.Items);
         }
 

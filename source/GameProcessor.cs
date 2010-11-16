@@ -38,7 +38,7 @@ namespace ChessCalendar
             public bool ResetWait { get; set; }
             public bool ClearList { get; set; } //needs a better name.
             public string UserLogged { get; set; }
-
+            public string Name { get; set; }
 
             public int WaitSeconds { get; set; }
 
@@ -63,16 +63,18 @@ namespace ChessCalendar
         /// <summary>
         /// Creates a new instance of login and Calendar information for the inherited feed.
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="uriToWatch"></param>
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="logToCalendar"></param>
-        public GameProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool refresh)
+        public GameProcessor(string name, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool refresh)
         {
             this.ToDo = new EntryList();
             this.Output = new OutputClass();
             this.ChessFeed = new ChessFeed();
 
+            this.Name = name;
             this.ChessFeed.FeedUri = uriToWatch;
             this.UserName = userName;
             this.Password = password;
@@ -91,11 +93,11 @@ namespace ChessCalendar
 
         public void RefreshRSS()
         {
+            this.Output.NewMoves.Updated = false;
+
             this.ChessFeed.Load();
             this.AddOrUpdate_Games(this.ToDo, this.ChessFeed);
             this.Post_NewMoves(this.ToDo);
-
-            //this.dgvAvailableMoves.Parent.Text = Processor.UserLogged;
         }
 
         public void Pull_Feed_Info()
@@ -167,38 +169,25 @@ namespace ChessCalendar
 
             try
             {
+                //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
+                //On remove, delete the all day reminder.
+
+                //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
+                //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
+                toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+
+                toDo.DebugMode = this.DebugMode;
+                toDo.Beep_On_New_Move = this.Beep_On_New_Move;
+
+                this.ClearList = (toDo.Count > 0);
+
                 foreach (var item in toDo)
                 {
-                    toDo.DebugMode = this.DebugMode;
-                    toDo.Beep_On_New_Move = this.Beep_On_New_Move;
-
-                    //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
-                    //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
-                    toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
-
-                    //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
-                    //On remove, delete the all day reminder.
-
-                    this.ClearList = false;
-                    this.PostAllNewRSSItems(this.ChessFeed); //If there are *new* entries, then the gridview will clear and refresh
-
-                    if (ToDo.Count > 0)
-                    {
-                        ////TODO: this needs to be an asterisk or something on the log form.
-                        //foreach (IChessItem current in toDo)
-                        //{
-                        //    this.Output.Post(current); //TODO this causes gridview to clear and refresh
-                        //}
-                    }
-                    else
-                    {
-                        this.Output.NewMoves.Updated = true;
-                    }
-
-                    this.ClearList = true;
-
-                    //toDo.Clear();
+                    this.Output.Post(item); //TODO this causes gridview to clear and refresh   
                 }
+
+                //this.Output.NewMoves.Updated = true;
+                toDo.Clear();
             }
             catch (Exception ex)
             {
