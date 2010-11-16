@@ -9,8 +9,10 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"Chess Calendar v11.14.10 *Broken* ";
+        public const string VERSION = @"Chess Calendar v11.15.10 ";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
+
+        #region Properties
 
         public Thread Thread { get; set; }
         public ShowLog LogViewer { get; set; }
@@ -22,6 +24,10 @@ namespace ChessCalendar
 
         private bool _loggedIn = false;
         private ProcessorTab _startTab;
+
+        #endregion
+
+        private Login_Form _loginInfo;
 
         public ApplicationManager()
         {
@@ -64,34 +70,14 @@ namespace ChessCalendar
 
         private void GetLogin(object sender, EventArgs e)
         {
-            var loginInfo = GetLoginInfo();
+            _loginInfo = GetLoginInfo();
 
-            this.SetNewLogForm(loginInfo);
-
-            if (loginInfo.AutoOpenLog)
+            if (_loginInfo.ValidatedForm)
             {
-                this.ShowLog(sender, e);
-            }
-        }
-
-        private void SetNewLogForm(Login_Form userInfoForm)
-        {
-            if (userInfoForm.ValidatedForm)
-            {
-                _startTab = new ProcessorTab("PTab_" + userInfoForm.ChessDotComName,
-                                                         new Uri("http://www.chess.com/rss/echess/" + userInfoForm.ChessDotComName),
-                                                         userInfoForm.User,
-                                                         userInfoForm.Password,
-                                                         userInfoForm.PostURI);
-
-                _startTab.Processor.DebugMode = userInfoForm.DebugMode;
-                _startTab.Processor.UserLogged = userInfoForm.ChessDotComName;
-                _startTab.Processor.GetPGNs = userInfoForm.DownloadPGNs;
-                _startTab.Processor.Beep_On_New_Move = userInfoForm.Beep_On_New_Move;
-            }
-            else
-            {
-                MessageBox.Show("Some of the Login information wasn't right, try again.", "ummmmmmm...");
+                if (_loginInfo.AutoOpenLog)
+                {
+                    this.ShowLog(sender, e);
+                }
             }
         }
 
@@ -110,10 +96,9 @@ namespace ChessCalendar
         }
         private void newShowLogThread(object arg)
         {
-            this.LogViewer = new ShowLog(_startTab);
+            this.LogViewer = new ShowLog();
+            this.LogViewer.Add_Feed_Tab(_loginInfo);
             this.LogViewer.ShowDialog();
-
-            //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
         }
 
         private static void Options(object sender, EventArgs e)

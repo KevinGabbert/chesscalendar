@@ -1,9 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using ChessCalendar.Interfaces;
 
@@ -14,6 +11,12 @@ namespace ChessCalendar.Controls
         public GameProcessor Processor { get; set; }
         private MessageList MessageList { get; set; }
 
+        public override sealed string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
         private DataGridView _grid;
         //private ProgressBar _progressBar;
         //private TextBox _nextCheck;
@@ -23,10 +26,11 @@ namespace ChessCalendar.Controls
 
         private bool _progressBarFlash;
 
-        public ProcessorTab(string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar)
+        public ProcessorTab(string chessDotComName, string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             this.Name = tabName;
-            this.Processor = new GameProcessor(uriToWatch, userName, password, logToCalendar, true);
+            this.Text = chessDotComName;
+            this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar, true);
             this.MessageList = new MessageList();
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
@@ -47,11 +51,14 @@ namespace ChessCalendar.Controls
 
             _grid.Parent.Text = Processor.UserLogged;
 
+            this.ResetControls();
             ProcessorTab.FormatDataGrid(this._grid);
         }
 
         public static void FormatDataGrid(DataGridView dataGrid)
         {
+            dataGrid.RowHeadersVisible = false;
+
             dataGrid.Columns.Clear();
             dataGrid.AutoGenerateColumns = false;
 
@@ -119,6 +126,12 @@ namespace ChessCalendar.Controls
 
             Application.DoEvents();
         }
+        public void ResetControls()
+        {
+            //Grid
+
+           
+        }
 
         private void Update_GridView()
         {
@@ -141,11 +154,12 @@ namespace ChessCalendar.Controls
                     if (this.Processor.Output.NewMoves != null)
                     {
                         //TODO Get this IF working
-                        //if (this.Processor.Output.NewMoves.Updated)
-                        //{
+                        if (this.Processor.Output.NewMoves.Updated)
+                        {
                             if (this.Processor.ClearList)
                             {
                                 this.MessageList.Clear();
+                                this.Processor.ClearList = false;
                             }
 
                             for (int i = this.Processor.Output.NewMoves.Count; i > 0; i--)
@@ -153,23 +167,18 @@ namespace ChessCalendar.Controls
                                 this.MessageList.Add(this.Processor.Output.NewMoves.Dequeue());
                             }
 
-                            GC.Collect();
                             this.SetMovesDataSource(this.MessageList);
-                            GC.Collect();
 
                             this.Processor.NewMessage = true;
-                        //}
-                        //else
-                        //{
-                        //    if (this.Processor.ChessFeed.Count > 0)
-                        //    {
-                        //        if (this.Processor.ChessFeed.Count < 1)
-                        //        {
-                        //            this.MessageList.Clear();
-                        //            this.SetMovesDataSource(this.MessageList);
-                        //        }
-                        //    }
-                        //}
+                        }
+                        else
+                        {
+                            if (this.Processor.ChessFeed.Count > 0)
+                            {
+                                this.MessageList.Clear();
+                                this.SetMovesDataSource(this.MessageList);
+                            }
+                        }
                     }
                     else
                     {
@@ -183,6 +192,7 @@ namespace ChessCalendar.Controls
                     }
                 }
             }
+            GC.Collect();
         }
         //private void UpdateText()
         //{

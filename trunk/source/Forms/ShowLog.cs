@@ -1,11 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using ChessCalendar.Controls;
-using ChessCalendar.Interfaces;
-using System.Threading;
 
 namespace ChessCalendar.Forms
 {
@@ -39,7 +35,7 @@ namespace ChessCalendar.Forms
             
         #endregion
 
-        public ShowLog(ProcessorTab startTab)
+        public ShowLog()
         {
             InitializeComponent();
 
@@ -53,8 +49,6 @@ namespace ChessCalendar.Forms
 
             //TODO:  make this into a popup.
             this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
-
-            this.tabs.TabPages.Add(startTab);
         }
 
         public ShowLog(ChessFeed feed)
@@ -88,18 +82,7 @@ namespace ChessCalendar.Forms
 
             if (login.ValidatedForm)
             {
-                ProcessorTab newPage = new ProcessorTab("PTab_" + login.ChessDotComName,
-                                                         new Uri("http://www.chess.com/rss/echess/" + login.ChessDotComName),
-                                                         login.User,
-                                                         login.Password,
-                                                         login.PostURI);
-
-                newPage.Processor.DebugMode = login.DebugMode;
-                newPage.Processor.UserLogged = login.ChessDotComName;
-                newPage.Processor.GetPGNs = login.DownloadPGNs;
-                newPage.Processor.Beep_On_New_Move = login.Beep_On_New_Move;
-
-                this.tabs.TabPages.Add(newPage); 
+                this.Add_Feed_Tab(login);
             }
             else
             {
@@ -113,6 +96,26 @@ namespace ChessCalendar.Forms
             //this.Controls.Find("TabPageName_chkLogToCalendar", true);
         }
 
+        public void Add_Feed_Tab(Login_Form login)
+        {
+            ProcessorTab newPage = new ProcessorTab(login.ChessDotComName, 
+                                                    "PTab_" + login.ChessDotComName,
+                                                    new Uri("http://www.chess.com/rss/echess/" + login.ChessDotComName),
+                                                    login.User,
+                                                    login.Password,
+                                                    login.PostURI);
+
+            newPage.Processor.DebugMode = login.DebugMode;
+            newPage.Processor.UserLogged = login.ChessDotComName;
+            newPage.Processor.GetPGNs = login.DownloadPGNs;
+            newPage.Processor.Beep_On_New_Move = login.Beep_On_New_Move;
+            newPage.Text = login.ChessDotComName;
+            newPage.RefreshTab();
+
+            this.tabs.TabPages.Add(newPage);
+
+            this.ResetControls();
+        }
 
 
         private void ShowLog_Shown(object sender, System.EventArgs e)
@@ -128,12 +131,15 @@ namespace ChessCalendar.Forms
             this.txtLog.Width = this.Width - 8;
 
             //TabControl
+            this.ResetControls();
+
+            //each of the controls on each tab should be resized on thab's resize event..
+        }
+
+        private void ResetControls()
+        {
             this.tabs.Width = this.Width - 10;
             this.tabs.Height = this.Height - 105;
-
-            //Grid
-            //this.dgvAvailableMoves.Width = this.Width - 20;
-            //this.dgvAvailableMoves.Height = this.Height - 130;
      
             //button
             this.btnPause.Top = this.Height - 95;
@@ -147,7 +153,11 @@ namespace ChessCalendar.Forms
             this.pbTimeTillNextUpdate.Top = this.Height - 45;
             this.pbTimeTillNextUpdate.Width = this.Width - 8;
 
-            //each of the controls on each tab should be resized on thab's resize event..
+            foreach (var tab in tabs.TabPages)
+            {
+                ((ProcessorTab)tab).Controls["TabPage_Grid"].Width = this.Width - 20;
+                ((ProcessorTab)tab).Controls["TabPage_Grid"].Height = this.Height - 130;
+            }
         }
 
         private void btnPause_Click(object sender, EventArgs e)
