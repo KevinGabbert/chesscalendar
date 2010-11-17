@@ -38,10 +38,13 @@
             this.btnPause = new System.Windows.Forms.Button();
             this.chkRecordGame = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.addNewTab = new System.Windows.Forms.TabPage();
+            this.tabs.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabs
             // 
+            this.tabs.Controls.Add(this.addNewTab);
             this.tabs.Location = new System.Drawing.Point(-2, 1);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
@@ -123,6 +126,17 @@
             this.button1.Text = "Refresh";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // addNewTab
+            // 
+            this.addNewTab.AutoScroll = true;
+            this.addNewTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addNewTab.Location = new System.Drawing.Point(4, 22);
+            this.addNewTab.Margin = new System.Windows.Forms.Padding(0);
+            this.addNewTab.Name = "addNewTab";
+            this.addNewTab.Size = new System.Drawing.Size(789, 473);
+            this.addNewTab.TabIndex = 0;
+            this.addNewTab.Text = "ADD +";
+            // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -146,6 +160,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShowLog_FormClosing);
             this.Shown += new System.EventHandler(this.ShowLog_Shown);
             this.Resize += new System.EventHandler(this.ShowLog_Resize);
+            this.tabs.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,5 +177,6 @@
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.CheckBox chkRecordGame;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TabPage addNewTab;
     }
 }

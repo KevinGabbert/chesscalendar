@@ -14,5 +14,7 @@
 
         public const string GRID = "TabPage_Grid";
         public const string PTAB = "PTab_";
+
+        public const string NEW = "ADD +";
     }
 }
