@@ -71,7 +71,7 @@ namespace ChessCalendar
         }
         public string GameLink
         {
-            get { return "http://www.chess.com/echess/game.html?id=" + this.GameID; } //TODO: will need to move elsewhere when we refactor
+            get { return Constants.CHESS_DOT_COM_GAME_LINK + this.GameID; } //TODO: will need to move elsewhere when we refactor
         }
 
         public string GetPubDate

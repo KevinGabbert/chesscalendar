@@ -15,7 +15,7 @@ namespace ChessCalendar
         //#endregion
 
 
-        public static Uri _calendarToPost = new Uri("http://www.google.com/calendar/feeds/default/private/full");
+        public static Uri _calendarToPost = new Uri(Constants.DEFAULT_FEED);
         private static readonly Google.GData.Calendar.CalendarService _service = new CalendarService("ChessMoveLogService");
 
         //public GoogleCalendar(OutputClass output)
@@ -29,7 +29,7 @@ namespace ChessCalendar
             _service.setUserCredentials(userName, password);
 
             var query = new CalendarQuery();
-            query.Uri = new Uri("http://www.google.com/calendar/feeds/default/owncalendars/full");
+            query.Uri = new Uri(Constants.OWN_CALENDARS);
 
             return _service.Query(query);
         }

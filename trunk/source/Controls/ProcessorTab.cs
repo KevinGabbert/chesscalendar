@@ -30,7 +30,7 @@ namespace ChessCalendar.Controls
         {
             this.Name = tabName;
             this.Text = chessDotComName;
-            this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar, true);
+            this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar);
             this.MessageList = new MessageList();
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
@@ -121,7 +121,7 @@ namespace ChessCalendar.Controls
         {
             //this.Update_NextCheck();
             //this.Update_ProgressBar();
-            this.Processor.RefreshRSS();
+            this.Processor.Refresh();
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
 
             Application.DoEvents();

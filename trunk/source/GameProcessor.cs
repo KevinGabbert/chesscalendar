@@ -13,8 +13,6 @@ namespace ChessCalendar
     /// </summary>
     public class GameProcessor
     {
-        public const string CHESS_DOT_COM_PGN_PATH = "http://www.chess.com/echess/download_pgn.html?id=";
-
         #region Properties
 
             public OutputClass Output { get; set; }
@@ -39,6 +37,7 @@ namespace ChessCalendar
             public bool ClearList { get; set; } //needs a better name.
             public string UserLogged { get; set; }
             public string Name { get; set; }
+            public bool UseCalendar { get; set; }
 
             public int WaitSeconds { get; set; }
 
@@ -68,7 +67,7 @@ namespace ChessCalendar
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="logToCalendar"></param>
-        public GameProcessor(string name, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool refresh)
+        public GameProcessor(string name, Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             this.ToDo = new EntryList();
             this.Output = new OutputClass();
@@ -78,26 +77,25 @@ namespace ChessCalendar
             this.ChessFeed.FeedUri = uriToWatch;
             this.UserName = userName;
             this.Password = password;
-            this.Calendar = logToCalendar;
+            this.Calendar = logToCalendar; 
         }
 
-        //public CalendarProcessor(Uri uriToWatch, string userName, string password, Uri logToCalendar, bool load)
-        //{
-        //    this.Uri = uriToWatch;
-        //    this.UserName = userName;
-        //    this.Password = password;
-        //    this.Calendar = logToCalendar;
-
-        //    if (load){this.Load();}
-        //}
-
-        public void RefreshRSS()
+        public void Refresh()
         {
             this.Output.NewMoves.Updated = false;
 
             this.ChessFeed.Load();
-            this.AddOrUpdate_Games(this.ToDo, this.ChessFeed);
-            this.Post_NewMoves(this.ToDo);
+
+            if (this.ChessFeed.Count > 0)
+            {
+                this.AddOrUpdate_Games(this.ToDo, this.ChessFeed);
+                this.Post_NewMoves(this.ToDo);
+            }
+            else
+            {
+                this.ClearList = true; //this is what grid keys on to erase.
+                this.Output.NewMoves.Updated = true;
+            }
         }
 
         public void Pull_Feed_Info()
@@ -109,7 +107,7 @@ namespace ChessCalendar
         {
             while (true)
             {
-                this.RefreshRSS();
+                this.Refresh();
 
                 foreach (string user in usersToWatch)
                 {
@@ -125,7 +123,7 @@ namespace ChessCalendar
         {
             while (true)
             {
-                this.RefreshRSS();
+                this.Refresh();
 
                 //Get all the opponents in *this*, post them, and save all their moves to the calendar
                 foreach (var x in this.ChessFeed.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
@@ -174,7 +172,14 @@ namespace ChessCalendar
 
                 //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
                 //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
-                toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password, this.Calendar, DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)), DateTime.Now, "auto-logger");
+                if (this.UseCalendar)
+                {
+                    toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password,
+                                                                                this.Calendar,
+                                                                                DateTime.Now.Subtract(new TimeSpan(15, 0,
+                                                                                                                   0, 0)),
+                                                                                DateTime.Now, "auto-logger");
+                }
 
                 toDo.DebugMode = this.DebugMode;
                 toDo.Beep_On_New_Move = this.Beep_On_New_Move;
@@ -338,7 +343,7 @@ namespace ChessCalendar
         {
             //this.Output(string.Empty, "Getting PGN for game: " + gameToLog.Title + " (" + gameToLog.GameID + ")");
             WebClient client = new WebClient();
-            Stream strm = client.OpenRead(CHESS_DOT_COM_PGN_PATH + gameToLog.GameID);
+            Stream strm = client.OpenRead(Constants.CHESS_DOT_COM_PGN_PATH + gameToLog.GameID);
             if (strm != null)
             {
                 var sr = new StreamReader(strm);
@@ -355,6 +360,8 @@ namespace ChessCalendar
         {
             this._stop = false;
         }
+
+        
     }
 }
 
