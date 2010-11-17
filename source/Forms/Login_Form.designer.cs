@@ -298,13 +298,13 @@
             this.chkLogToCalendar.AutoSize = true;
             this.chkLogToCalendar.Checked = true;
             this.chkLogToCalendar.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkLogToCalendar.Enabled = false;
             this.chkLogToCalendar.Location = new System.Drawing.Point(5, 260);
             this.chkLogToCalendar.Name = "chkLogToCalendar";
             this.chkLogToCalendar.Size = new System.Drawing.Size(101, 17);
             this.chkLogToCalendar.TabIndex = 23;
             this.chkLogToCalendar.Text = "Log to Calendar";
             this.chkLogToCalendar.UseVisualStyleBackColor = true;
+            this.chkLogToCalendar.CheckedChanged += new System.EventHandler(this.chkLogToCalendar_CheckedChanged);
             // 
             // Login_Form
             // 
@@ -312,7 +312,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(274, 559);
+            this.ClientSize = new System.Drawing.Size(274, 282);
             this.Controls.Add(this.chkLogToCalendar);
             this.Controls.Add(this.grpChess);
             this.Controls.Add(this.grpCalendar);
@@ -320,7 +320,9 @@
             this.Controls.Add(this.chkDebugMode);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.pbTitle);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Login_Form";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";

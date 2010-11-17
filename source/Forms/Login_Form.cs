@@ -24,6 +24,7 @@ namespace ChessCalendar.Forms
             public bool ValidatedForm { get; set; }
             public bool AutoOpenLog { get; set; }
             public bool DownloadPGNs { get; set; }
+            public bool LogToCalendar { get; set; }
 
         #endregion
 
@@ -36,9 +37,13 @@ namespace ChessCalendar.Forms
             this.btnOK.Enabled = false;
 
             this.cmbOpponents.Visible = this.rdoFollowGames.Checked;
+
+            this.LogToCalendar = true;
+            this.Show_Calendar_Controls();
         }
 
         #region TextBoxes
+
         private void LoginTextControls_TextChanged(object sender, EventArgs e)
         {
             this.btnOK.Enabled = this.ValidateForm();
@@ -51,7 +56,6 @@ namespace ChessCalendar.Forms
                 }
             }
         }
-
         private void txtChessDotComName_TextChanged(object sender, EventArgs e)
         {
             this.txtChessDotComName.ForeColor = Color.Black;
@@ -69,42 +73,35 @@ namespace ChessCalendar.Forms
                 }
             }
         }
-
         private void txtChessDotComName_Leave(object sender, EventArgs e)
         {
             this.Conditionally_Load_Opponents();
         }
-
         private void rdoFollowGames_CheckedChanged(object sender, EventArgs e)
         {
             this.cmbOpponents.Visible = this.rdoFollowGames.Checked;
 
             this.Conditionally_Load_Opponents();
         }
-
-        private void Conditionally_Load_Opponents()
+        private void chkLogToCalendar_CheckedChanged(object sender, EventArgs e)
         {
-            if(this.rdoFollowGames.Checked)
-            {
-                this.Load_Opponents();
-            }
+            this.LogToCalendar = this.chkLogToCalendar.Checked;
+
+            this.Show_Calendar_Controls();
         }
-
-        private void Load_Opponents()
+        private void cmbGoogleCalendar_Leave(object sender, EventArgs e)
         {
-            try
+            this.btnStart.Enabled = this.ValidateForm();
+
+            if (this.LogToCalendar)
             {
-                ChessFeed chessDotComFeed = new ChessFeed(new Uri("http://www.chess.com/rss/echess/" + this.txtChessDotComName.Text));
-                this.cmbOpponents.DataSource = chessDotComFeed.GetOpponents().Distinct().ToList();
-            }
-            catch (Exception ex)
-            {
-                this.txtChessDotComName.ForeColor = Color.Red;
-                throw;
+                this.SetPostURI();
             }
         }
 
         #endregion
+
+
         #region Buttons
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -159,24 +156,66 @@ namespace ChessCalendar.Forms
 
             return validated;
         }
-
-        private void cmbGoogleCalendar_Leave(object sender, EventArgs e)
+        private void Show_Calendar_Controls()
         {
-            this.btnStart.Enabled = this.ValidateForm();
-
-            this.SetPostURI();
+            if (this.LogToCalendar)
+            {
+                this.lblVersion.Location = new Point(9, 534);
+                this.btnStart.Location = new Point(182, 501);
+                this.Height = 586;
+            }
+            else
+            {
+                this.btnStart.Location = new Point(182, 257);
+                this.lblVersion.Location = new Point(9, 3);
+                this.Height = 310;
+            }
         }
 
         private void SetPostURI()
         {
-            this.PostURI = new Uri("http://www.google.com/calendar/feeds/" +
-                      ((CalendarEntry)(cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().Substring(((CalendarEntry)(cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().LastIndexOf("/") + 1) +
-                      "/private/full");
+            try
+            {
+                this.PostURI = new Uri(Constants.CALENDAR_FEEDS +
+                  ((CalendarEntry)(cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().Substring(((CalendarEntry)(cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().LastIndexOf("/") + 1) +
+                  Constants.PRIVATE_FULL);
+            }
+
+            catch(NullReferenceException nx)
+            {
+                this.txtLogin.BackColor = Color.Red;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
 
         private static bool UserHitReturn(object sender)
         {
             return ((TextBoxBase)sender).Text.Contains(Environment.NewLine);
         }
+
+        private void Conditionally_Load_Opponents()
+        {
+            if (this.rdoFollowGames.Checked)
+            {
+                this.Load_Opponents();
+            }
+        }
+        private void Load_Opponents()
+        {
+            try
+            {
+                ChessFeed chessDotComFeed = new ChessFeed(new Uri(Constants.CHESS_DOT_COM_RSS_ECHESS + this.txtChessDotComName.Text));
+                this.cmbOpponents.DataSource = chessDotComFeed.GetOpponents().Distinct().ToList();
+            }
+            catch (Exception ex)
+            {
+                this.txtChessDotComName.ForeColor = Color.Red;
+                throw;
+            }
+        } 
     }
 }

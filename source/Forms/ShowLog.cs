@@ -7,7 +7,6 @@ namespace ChessCalendar.Forms
 {
     public partial class ShowLog : Form
     {
-        private int _fail = 0;
         private bool _pause = false;
         private bool _progressBarFlash;
         private bool _stop = false;
@@ -100,7 +99,7 @@ namespace ChessCalendar.Forms
         {
             ProcessorTab newPage = new ProcessorTab(login.ChessDotComName, 
                                                     "PTab_" + login.ChessDotComName,
-                                                    new Uri("http://www.chess.com/rss/echess/" + login.ChessDotComName),
+                                                    new Uri(Constants.CHESS_DOT_COM_RSS_ECHESS + login.ChessDotComName),
                                                     login.User,
                                                     login.Password,
                                                     login.PostURI);
@@ -116,7 +115,6 @@ namespace ChessCalendar.Forms
 
             this.ResetControls();
         }
-
 
         private void ShowLog_Shown(object sender, System.EventArgs e)
         {
@@ -134,30 +132,6 @@ namespace ChessCalendar.Forms
             this.ResetControls();
 
             //each of the controls on each tab should be resized on thab's resize event..
-        }
-
-        private void ResetControls()
-        {
-            this.tabs.Width = this.Width - 10;
-            this.tabs.Height = this.Height - 105;
-     
-            //button
-            this.btnPause.Top = this.Height - 95;
-            this.btnRefresh.Top = this.Height - 95;
-
-            //TextBox
-            this.txtNextCheck.Top = this.Height - 67;
-            this.txtNextCheck.Width = this.Width - 8;
-
-            //ProgressBar
-            this.pbTimeTillNextUpdate.Top = this.Height - 45;
-            this.pbTimeTillNextUpdate.Width = this.Width - 8;
-
-            foreach (var tab in tabs.TabPages)
-            {
-                ((ProcessorTab)tab).Controls["TabPage_Grid"].Width = this.Width - 20;
-                ((ProcessorTab)tab).Controls["TabPage_Grid"].Height = this.Height - 130;
-            }
         }
 
         private void btnPause_Click(object sender, EventArgs e)
@@ -180,7 +154,35 @@ namespace ChessCalendar.Forms
             this.ResetWait = true;
         }
 
+        private void tabs_Resize(object sender, EventArgs e)
+        {
+            //TODO is this wehere the tabpages get resized?
+        }
+
         #endregion
+        private void ResetControls()
+        {
+            this.tabs.Width = this.Width - 10;
+            this.tabs.Height = this.Height - 105;
+
+            //button
+            this.btnPause.Top = this.Height - 95;
+            this.btnRefresh.Top = this.Height - 95;
+
+            //TextBox
+            this.txtNextCheck.Top = this.Height - 67;
+            this.txtNextCheck.Width = this.Width - 8;
+
+            //ProgressBar
+            this.pbTimeTillNextUpdate.Top = this.Height - 45;
+            this.pbTimeTillNextUpdate.Width = this.Width - 8;
+
+            foreach (var tab in tabs.TabPages)
+            {
+                ((ProcessorTab)tab).Controls[Constants.GRID].Width = this.Width - 20;
+                ((ProcessorTab)tab).Controls[Constants.GRID].Height = this.Height - 130;
+            }
+        }
 
         private void RunLoop()
         {
@@ -190,7 +192,7 @@ namespace ChessCalendar.Forms
 
                 foreach (var tab in tabs.TabPages)
                 {
-                    if (((TabPage) tab).Name.StartsWith("PTab_"))
+                    if (((TabPage)tab).Name.StartsWith(Constants.PTAB))
                     {
                         ((ProcessorTab) tab).RefreshTab();
                     }
@@ -200,7 +202,6 @@ namespace ChessCalendar.Forms
                 this.Wait(this.WaitSeconds);
             }
         }
-
 
         private void Update_ProgressBar()
         {
@@ -276,7 +277,6 @@ namespace ChessCalendar.Forms
         //    }
         //}
 
-
         private void Wait(int waitSeconds)
         {
             DateTime start = DateTime.Now;
@@ -309,11 +309,6 @@ namespace ChessCalendar.Forms
             }
 
             this.NewMessage = false;
-        }
-
-        private void tabs_Resize(object sender, EventArgs e)
-        {
-            //TODO is this wehere the tabpages get resized?
         }
     }
 }
