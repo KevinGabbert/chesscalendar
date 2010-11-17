@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using ChessCalendar.Controls;
 
@@ -110,6 +111,7 @@ namespace ChessCalendar.Forms
             newPage.Processor.Beep_On_New_Move = login.Beep_On_New_Move;
             newPage.Text = login.ChessDotComName;
             newPage.RefreshTab();
+            newPage.Focus();
 
             this.tabs.TabPages.Add(newPage);
 
@@ -177,11 +179,13 @@ namespace ChessCalendar.Forms
             this.pbTimeTillNextUpdate.Top = this.Height - 45;
             this.pbTimeTillNextUpdate.Width = this.Width - 8;
 
-            foreach (var tab in tabs.TabPages)
+            foreach (var tab in tabs.TabPages.Cast<object>().Where(tab => ((TabPage) tab).Text != Constants.NEW))
             {
-                ((ProcessorTab)tab).Controls[Constants.GRID].Width = this.Width - 20;
-                ((ProcessorTab)tab).Controls[Constants.GRID].Height = this.Height - 130;
+                ((ProcessorTab) tab).Controls[Constants.GRID].Width = this.Width - 20;
+                ((ProcessorTab) tab).Controls[Constants.GRID].Height = this.Height - 130;
             }
+
+            //this.tabs.TabPages["addNewTab"].SendToBack();
         }
 
         private void RunLoop()
