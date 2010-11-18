@@ -67,7 +67,7 @@ namespace ChessCalendar
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="logToCalendar"></param>
-        public GameProcessor(string name, Uri uriToWatch, string userName, string password, Uri logToCalendar)
+        public GameProcessor(string name, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool useCalendar)
         {
             this.ToDo = new EntryList();
             this.Output = new OutputClass();
@@ -77,7 +77,8 @@ namespace ChessCalendar
             this.ChessFeed.FeedUri = uriToWatch;
             this.UserName = userName;
             this.Password = password;
-            this.Calendar = logToCalendar; 
+            this.Calendar = logToCalendar;
+            this.UseCalendar = useCalendar;
         }
 
         public void Refresh()
@@ -90,12 +91,15 @@ namespace ChessCalendar
             {
                 this.AddOrUpdate_Games(this.ToDo, this.ChessFeed);
                 this.Post_NewMoves(this.ToDo);
+                this.Store(this.ToDo);
             }
             else
             {
                 this.ClearList = true; //this is what grid keys on to erase.
                 this.Output.NewMoves.Updated = true;
             }
+
+            this.ToDo.Clear();
         }
 
         public void Pull_Feed_Info()
@@ -192,7 +196,6 @@ namespace ChessCalendar
                 }
 
                 //this.Output.NewMoves.Updated = true;
-                toDo.Clear();
             }
             catch (Exception ex)
             {

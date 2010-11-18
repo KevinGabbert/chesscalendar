@@ -26,11 +26,11 @@ namespace ChessCalendar.Controls
 
         private bool _progressBarFlash;
 
-        public ProcessorTab(string chessDotComName, string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar)
+        public ProcessorTab(string chessDotComName, string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool useCalendar)
         {
             this.Name = tabName;
             this.Text = chessDotComName;
-            this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar);
+            this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar, useCalendar);
             this.MessageList = new MessageList();
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];

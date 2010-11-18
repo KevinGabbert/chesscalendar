@@ -103,7 +103,8 @@ namespace ChessCalendar.Forms
                                                     new Uri(Constants.CHESS_DOT_COM_RSS_ECHESS + login.ChessDotComName),
                                                     login.User,
                                                     login.Password,
-                                                    login.PostURI);
+                                                    login.PostURI,
+                                                    login.LogToCalendar);
 
             newPage.Processor.DebugMode = login.DebugMode;
             newPage.Processor.UserLogged = login.ChessDotComName;

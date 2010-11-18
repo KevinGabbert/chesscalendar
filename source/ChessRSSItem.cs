@@ -4,6 +4,7 @@ namespace ChessCalendar
 {
     public class ChessRSSItem: RssToolkit.Rss.RssItem, IChessItem
     {
+        public bool StoreToCalendar { get; set; }
         public bool NewMove { get; set; }
         public string Message { get; set; }
         public string PGN { get; set; }

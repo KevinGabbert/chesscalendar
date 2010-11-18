@@ -27,5 +27,7 @@ namespace ChessCalendar.Interfaces
 
         string MoveRaw {get; }
         int Move { get; }
+
+        bool StoreToCalendar { set;  get; }
     }
 }
