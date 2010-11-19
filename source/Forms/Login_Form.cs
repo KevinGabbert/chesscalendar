@@ -60,16 +60,16 @@ namespace ChessCalendar.Forms
         {
             this.txtChessDotComName.ForeColor = Color.Black;
 
-            this.btnStart.Enabled = this.ValidateForm();
+            if (!this.chkLogToCalendar.Checked)
+            {
+                this.btnStart.Enabled = this.ValidateForm();
+            }
+
             if (Login_Form.UserHitReturn(sender))
             {
-                if (this.btnStart.Enabled)
+                if (this.btnStart.Enabled || (!this.chkLogToCalendar.Checked))
                 {
                     this.btnStart_Click(sender, e);
-                }
-                else
-                {
-                    //((TextBox)sender).
                 }
             }
         }
@@ -174,22 +174,15 @@ namespace ChessCalendar.Forms
 
         private void SetPostURI()
         {
-            try
+            if (cmbGoogleCalendar.SelectedItem != null)
             {
                 this.PostURI = new Uri(Constants.CALENDAR_FEEDS +
-                  ((CalendarEntry)(cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().Substring(((CalendarEntry)(cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().LastIndexOf("/") + 1) +
-                  Constants.PRIVATE_FULL);
+                                        ((CalendarEntry) (cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().
+                                            Substring(
+                                                ((CalendarEntry) (cmbGoogleCalendar.SelectedItem)).SelfUri.ToString()
+                                                    .LastIndexOf("/") + 1) +
+                                        Constants.PRIVATE_FULL);
             }
-
-            catch(NullReferenceException nx)
-            {
-                this.txtLogin.BackColor = Color.Red;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
         }
 
         private static bool UserHitReturn(object sender)
@@ -213,7 +206,6 @@ namespace ChessCalendar.Forms
             }
             catch (Exception ex)
             {
-                this.txtChessDotComName.ForeColor = Color.Red;
                 throw;
             }
         } 
