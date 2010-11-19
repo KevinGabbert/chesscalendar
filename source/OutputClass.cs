@@ -19,17 +19,17 @@ namespace ChessCalendar
             this.Messages = new Queue<string>();
         }
 
-        protected void Post(string title, string outputMessage)
-        {
-            //case OutputMode.Balloon:
-            //    this.NotifyIcon.BalloonTipText = outputMessage;
-            //    this.NotifyIcon.ShowBalloonTip(2000);
+        //protected void Post(string title, string outputMessage)
+        //{
+        //    //case OutputMode.Balloon:
+        //    //    this.NotifyIcon.BalloonTipText = outputMessage;
+        //    //    this.NotifyIcon.ShowBalloonTip(2000);
 
-            //    //Now Write message to form as well.
-            //    break;
+        //    //    //Now Write message to form as well.
+        //    //    break;
 
-           this.Messages.Enqueue(outputMessage);
-        }
+        //   this.Messages.Enqueue(outputMessage);
+        //}
 
         /// <summary>
         /// To 'Post' is to put an IChessItem into the Queue.

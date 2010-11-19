@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms;
 using ChessCalendar.Interfaces;
 
 namespace ChessCalendar
@@ -57,8 +56,6 @@ namespace ChessCalendar
 
         #endregion
 
-        private bool _stop = false;
-
         /// <summary>
         /// Creates a new instance of login and Calendar information for the inherited feed.
         /// </summary>
@@ -81,6 +78,9 @@ namespace ChessCalendar
             this.UseCalendar = useCalendar;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Refresh()
         {
             this.Output.NewMoves.Updated = false;
@@ -102,64 +102,6 @@ namespace ChessCalendar
             this.ToDo.Clear();
         }
 
-        public void Pull_Feed_Info()
-        {
-            //feedToSave.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
-        }
-
-        internal void Go(IEnumerable<string> usersToWatch)
-        {
-            while (true)
-            {
-                this.Refresh();
-
-                foreach (string user in usersToWatch)
-                {
-                    this.ToDo = this.Post_NewMoves(user, true); //Outputs to NewMove Queue, builds ToDo
-                    this.Store(this.ToDo); //Stores all items in ToDo
-                }
-
-                //this.Wait(this.WaitSeconds);
-            }
-        }
-
-        internal void Go()
-        {
-            while (true)
-            {
-                this.Refresh();
-
-                //Get all the opponents in *this*, post them, and save all their moves to the calendar
-                foreach (var x in this.ChessFeed.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
-                {
-                    this.Store(x);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Filters by Opponent name
-        /// </summary>
-        /// <param name="chessUserToWatch"></param>
-        /// <param name="output"></param>
-        /// <returns></returns>
-        internal EntryList Post_NewMoves(string chessUserToWatch, bool output)
-        {
-            //all POST functions will use this one as a base
-
-            //1. build an EntryList that only has entries from chessUserToWatch
-
-            //2. call PostGamesWithOpponent(chessUserToWatch);
-            
-            foreach (ChessRSSItem chessRssItem in this.ChessFeed)
-            {
-                //Call PostGamesWith Opponent
-            }
-
-            //returns a list of Entries specific to that user.
-            throw new System.NotImplementedException();
-        }
-
         /// <summary>
         /// Posts moves in feed to this.Output
         /// 
@@ -167,8 +109,6 @@ namespace ChessCalendar
         /// </summary>
         internal EntryList Post_NewMoves(EntryList toDo)
         {
-            MessageBox.Show("Rewrite Post_NewMoves(string chessUserToWatch, bool output) then DELETE this function");
-
             try
             {
                 //TODO On add, and it doesn't already exist, create a reminder. (also create an all day reminder)
@@ -180,8 +120,7 @@ namespace ChessCalendar
                 {
                     toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password,
                                                                                 this.Calendar,
-                                                                                DateTime.Now.Subtract(new TimeSpan(15, 0,
-                                                                                                                   0, 0)),
+                                                                                DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)),
                                                                                 DateTime.Now, "auto-logger");
                 }
 
@@ -211,56 +150,11 @@ namespace ChessCalendar
             return toDo;
         }
 
-        private void Wait(int waitSeconds)
-        {
-            DateTime start = DateTime.Now;
-            TimeSpan waitTime = new TimeSpan(0, 0, 0, waitSeconds);
-
-            DateTime finish = start + waitTime;
-            this.NextCheck = finish;
-
-            DateTime current = DateTime.Now;
-            while (current < finish)
-            {
-                Application.DoEvents();
-
-                var difference = (finish.Subtract(DateTime.Now));
-                this.WaitProgress = Convert.ToInt32(100 - ((difference.TotalSeconds / waitTime.TotalSeconds) * 100));
-                current = DateTime.Now;
-
-                if (this.ResetWait)
-                {
-                    this.ResetWait = false;
-                    break;
-                }
-
-                if (this._stop)
-                {
-                    this.WaitProgress = 0;
-                    this.NextCheck = new DateTime();
-                    break;
-                }
-            }
-
-            this.NewMessage = false;
-        }
-
-        private void PostAllNewRSSItems(IEnumerable<ChessRSSItem> newRssItems)
-        {
-            foreach (var item in newRssItems)
-            {
-                this.Output.Post(item);
-            }
-        }
-
-        private void PostGamesWithOpponent(IEnumerable<ChessRSSItem> newRssItems, string opponent)
-        {
-            foreach (var item in newRssItems.Where(item => item.Opponent == opponent))
-            {
-                this.Output.Post(item);
-            }
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="toDo"></param>
+        /// <param name="gamelist"></param>
         private void AddOrUpdate_Games(EntryList toDo, ICollection<ChessRSSItem> gamelist)
         {
             if (gamelist != null)
@@ -291,14 +185,6 @@ namespace ChessCalendar
                     //this.Output(string.Empty, "No new or updated games found: " + DateTime.Now.ToLongTimeString());
                     //this.LogGames = false;
                 }
-            }
-        }
-
-        private void ProcessNewRSSItems(IEnumerable<ChessRSSItem> newRssItems)
-        {
-            foreach (var item in newRssItems)
-            {
-                this.Output.NewMoves.Enqueue(item); //?
             }
         }
 
@@ -341,7 +227,6 @@ namespace ChessCalendar
                 //this.Output.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
             }
         }
-
         private static void Download_PGN(IRSS_Item gameToLog) //TODO: GameType.ChessDotComGame
         {
             //this.Output(string.Empty, "Getting PGN for game: " + gameToLog.Title + " (" + gameToLog.GameID + ")");
@@ -355,19 +240,114 @@ namespace ChessCalendar
             }
         }
 
-        internal void Stop()
-        {
-            this._stop = true;
-        }
-        internal void Start()
-        {
-            this._stop = false;
-        }
+        ///// <summary>
+        ///// Filters by Opponent name
+        ///// </summary>
+        ///// <param name="chessUserToWatch"></param>
+        ///// <returns></returns>
+        //internal EntryList Post_NewMoves(string chessUserToWatch)
+        //{
+        //    //all POST functions will use this one as a base
 
-        
+        //    return this.Post_NewMoves(this.GetEntriesFor(chessUserToWatch));
+        //}
+        //public EntryList GetEntriesFor(string chessUserToWatch)
+        //{
+        //    //1. build an EntryList that only has entries from chessUserToWatch
+
+        //    //2. call PostGamesWithOpponent(chessUserToWatch);
+
+        //    foreach (ChessRSSItem chessRssItem in this.ChessFeed.Where(chessRssItem => chessRssItem.Opponent == chessUserToWatch))
+        //    {
+        //        //do stuff
+        //    }
+
+        //    //returns a list of Entries specific to that user.
+        //}
+        //public void Pull_Feed_Info()
+        //{
+        //    //feedToSave.AddRange(RssDocument.Load(uriToWatch).Channel.Items);
+        //}
+        //internal void Go(IEnumerable<string> usersToWatch)
+        //{
+        //    while (true)
+        //    {
+        //        this.Refresh();
+
+        //        foreach (string user in usersToWatch)
+        //        {
+        //            this.ToDo = this.Post_NewMoves(user, true); //Outputs to NewMove Queue, builds ToDo
+        //            this.Store(this.ToDo); //Stores all items in ToDo
+        //        }
+
+        //        //this.Wait(this.WaitSeconds);
+        //    }
+        //}
+        //internal void Go()
+        //{
+        //    while (true)
+        //    {
+        //        this.Refresh();
+
+        //        //Get all the opponents in *this*, post them, and save all their moves to the calendar
+        //        foreach (var x in this.ChessFeed.GetOpponents().Select(feedOpponent => this.Post_NewMoves(feedOpponent, true)))
+        //        {
+        //            this.Store(x);
+        //        }
+        //    }
+        //}
+        //public void RefreshForUser(string chessUser)
+        //{
+        //    this.Output.NewMoves.Updated = false;
+
+        //    this.ChessFeed.Load();
+
+        //    if (this.ChessFeed.Count > 0)
+        //    {
+        //        this.AddOrUpdate_Games(this.ToDo, this.ChessFeed, chessUser);
+        //        this.Post_NewMoves(this.ToDo);
+        //        this.Store(this.ToDo);
+        //    }
+        //    else
+        //    {
+        //        this.ClearList = true; //this is what grid keys on to erase.
+        //        this.Output.NewMoves.Updated = true;
+        //    }
+
+        //    this.ToDo.Clear();
+        //}
+        //private void ProcessNewRSSItems(IEnumerable<ChessRSSItem> newRssItems)
+        //{
+        //    foreach (var item in newRssItems)
+        //    {
+        //        this.Output.NewMoves.Enqueue(item); //?
+        //    }
+        //}
+        //private void PostAllNewRSSItems(IEnumerable<ChessRSSItem> newRssItems)
+        //{
+        //    foreach (var item in newRssItems)
+        //    {
+        //        this.Output.Post(item);
+        //    }
+        //}
+        //private void PostGamesWithOpponent(IEnumerable<ChessRSSItem> newRssItems, string opponent)
+        //{
+        //    foreach (var item in newRssItems.Where(item => item.Opponent == opponent))
+        //    {
+        //        this.Output.Post(item);
+        //    }
+        //}
+
+        //internal void Stop()
+        //{
+        //    this._stop = true;
+        //}
+        //internal void Start()
+        //{
+        //    this._stop = false;
+        //}  
     }
 }
-
 
         ///// <summary>
         ///// //user needs to call Process_All_Feeds() to start

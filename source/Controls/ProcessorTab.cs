@@ -51,7 +51,6 @@ namespace ChessCalendar.Controls
 
             _grid.Parent.Text = Processor.UserLogged;
 
-            this.ResetControls();
             ProcessorTab.FormatDataGrid(this._grid);
         }
 
@@ -125,12 +124,6 @@ namespace ChessCalendar.Controls
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
 
             Application.DoEvents();
-        }
-        public void ResetControls()
-        {
-            //Grid
-
-           
         }
 
         private void Update_GridView()
