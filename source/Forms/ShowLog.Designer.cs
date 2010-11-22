@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowLog));
             this.tabs = new System.Windows.Forms.TabControl();
+            this.addNewTab = new System.Windows.Forms.TabPage();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnAddFeed = new System.Windows.Forms.Button();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
@@ -38,7 +39,7 @@
             this.btnPause = new System.Windows.Forms.Button();
             this.chkRecordGame = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.addNewTab = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,6 +52,17 @@
             this.tabs.Size = new System.Drawing.Size(797, 499);
             this.tabs.TabIndex = 0;
             this.tabs.Resize += new System.EventHandler(this.tabs_Resize);
+            // 
+            // addNewTab
+            // 
+            this.addNewTab.AutoScroll = true;
+            this.addNewTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addNewTab.Location = new System.Drawing.Point(4, 22);
+            this.addNewTab.Margin = new System.Windows.Forms.Padding(0);
+            this.addNewTab.Name = "addNewTab";
+            this.addNewTab.Size = new System.Drawing.Size(789, 473);
+            this.addNewTab.TabIndex = 0;
+            this.addNewTab.Text = "ADD +";
             // 
             // btnRefresh
             // 
@@ -110,7 +122,7 @@
             // chkRecordGame
             // 
             this.chkRecordGame.AutoSize = true;
-            this.chkRecordGame.Location = new System.Drawing.Point(26, 586);
+            this.chkRecordGame.Location = new System.Drawing.Point(2, 582);
             this.chkRecordGame.Name = "chkRecordGame";
             this.chkRecordGame.Size = new System.Drawing.Size(202, 17);
             this.chkRecordGame.TabIndex = 22;
@@ -126,22 +138,21 @@
             this.button1.Text = "Refresh";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // addNewTab
+            // button2
             // 
-            this.addNewTab.AutoScroll = true;
-            this.addNewTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addNewTab.Location = new System.Drawing.Point(4, 22);
-            this.addNewTab.Margin = new System.Windows.Forms.Padding(0);
-            this.addNewTab.Name = "addNewTab";
-            this.addNewTab.Size = new System.Drawing.Size(789, 473);
-            this.addNewTab.TabIndex = 0;
-            this.addNewTab.Text = "ADD +";
+            this.button2.Location = new System.Drawing.Point(708, 580);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(87, 23);
+            this.button2.TabIndex = 23;
+            this.button2.Text = "Open Calendar";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(795, 620);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.chkRecordGame);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.button1);
@@ -178,5 +189,6 @@
         private System.Windows.Forms.CheckBox chkRecordGame;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TabPage addNewTab;
+        private System.Windows.Forms.Button button2;
     }
 }
