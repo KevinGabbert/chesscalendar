@@ -5,6 +5,10 @@ using System.Linq;
 using System.Net;
 using ChessCalendar.Interfaces;
 
+
+//plans:  Post moves only for user
+//        Post moves for all will just be a list of all users.
+
 namespace ChessCalendar
 {
     /// <summary>
@@ -89,8 +93,16 @@ namespace ChessCalendar
 
             if (this.ChessFeed.Count > 0)
             {
+                if (this.UseCalendar)
+                {
+                    this.ToDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password,
+                                                                                this.Calendar,
+                                                                                DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)),
+                                                                                DateTime.Now, "auto-logger");
+                }
+
                 this.AddOrUpdate_Games(this.ToDo, this.ChessFeed);
-                this.Post_NewMoves(this.ToDo);
+                this.Post_NewMoves(this.ChessFeed); //tab should clear its datagrid and post whats in the feed.
                 this.Store(this.ToDo);
             }
             else
@@ -99,7 +111,7 @@ namespace ChessCalendar
                 this.Output.NewMoves.Updated = true;
             }
 
-            this.ToDo.Clear();
+            //this.ToDo.Clear();
         }
 
         /// <summary>
@@ -107,7 +119,7 @@ namespace ChessCalendar
         /// 
         /// returns a list of Entries specific to information stored in *this*.
         /// </summary>
-        internal EntryList Post_NewMoves(EntryList toDo)
+        internal ChessFeed Post_NewMoves(ChessFeed toPost)
         {
             try
             {
@@ -116,20 +128,13 @@ namespace ChessCalendar
 
                 //get all "auto-logger" entries created in the last 15 days (the max time you can have a game)
                 //TODO: well, you can actually also go on vacation, which would make it longer but this first version doesn't accomodate for that..
-                if (this.UseCalendar)
-                {
-                    toDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password,
-                                                                                this.Calendar,
-                                                                                DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)),
-                                                                                DateTime.Now, "auto-logger");
-                }
 
-                toDo.DebugMode = this.DebugMode;
-                toDo.Beep_On_New_Move = this.Beep_On_New_Move;
+                //toPost.DebugMode = this.DebugMode;
+                //toPost.Beep_On_New_Move = this.Beep_On_New_Move;
 
-                this.ClearList = (toDo.Count > 0);
+                this.ClearList = (toPost.Count > 0);
 
-                foreach (var item in toDo)
+                foreach (var item in toPost)
                 {
                     this.Output.Post(item); //TODO this causes gridview to clear and refresh   
                 }
@@ -147,7 +152,7 @@ namespace ChessCalendar
                                            ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar);
             }
 
-            return toDo;
+            return toPost;
         }
 
         /// <summary>

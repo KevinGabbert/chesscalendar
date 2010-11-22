@@ -7,7 +7,7 @@ using Google.GData.Extensions;
 namespace ChessCalendar
 {
     //TODO: this class needs to be instantiated
-    public class GoogleCalendar
+    public static class GoogleCalendar
     {
         //#region Properties
 
