@@ -19,7 +19,7 @@ namespace ChessCalendar
         #region Properties
 
             public OutputClass Output { get; set; }
-            public EntryList ToDo { get; set; }
+            public EntryList ToStore { get; set; }
             public ChessFeed ChessFeed { get; set;}
 
             public Uri Calendar { get; set; }
@@ -70,7 +70,7 @@ namespace ChessCalendar
         /// <param name="logToCalendar"></param>
         public GameProcessor(string name, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool useCalendar)
         {
-            this.ToDo = new EntryList();
+            this.ToStore = new EntryList();
             this.Output = new OutputClass();
             this.ChessFeed = new ChessFeed();
 
@@ -95,15 +95,15 @@ namespace ChessCalendar
             {
                 if (this.UseCalendar)
                 {
-                    this.ToDo.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password,
+                    this.ToStore.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password,
                                                                                 this.Calendar,
                                                                                 DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)),
                                                                                 DateTime.Now, "auto-logger");
                 }
 
-                this.AddOrUpdate_Games(this.ToDo, this.ChessFeed);
+                this.Reconcile_Add_Or_Update(this.ToStore, this.ChessFeed);
                 this.Post_NewMoves(this.ChessFeed); //tab should clear its datagrid and post whats in the feed.
-                this.Store(this.ToDo);
+                this.Store(this.ToStore);
             }
             else
             {
@@ -160,7 +160,7 @@ namespace ChessCalendar
         /// </summary>
         /// <param name="toDo"></param>
         /// <param name="gamelist"></param>
-        private void AddOrUpdate_Games(EntryList toDo, ICollection<ChessRSSItem> gamelist)
+        private void Reconcile_Add_Or_Update(EntryList toDo, ICollection<ChessRSSItem> gamelist)
         {
             if (gamelist != null)
             {
