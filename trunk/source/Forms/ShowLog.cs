@@ -171,6 +171,7 @@ namespace ChessCalendar.Forms
             this.btnPause.Top = this.Height - 95;
             this.btnRefresh.Top = this.Height - 95;
             this.btnAddFeed.Top = this.Height - 95;
+            this.btnOpenChessDotCom.Top = this.Height - 95;
 
             //TextBox
             this.txtNextCheck.Top = this.Height - 67;
