@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login_Form));
             this.pbTitle = new System.Windows.Forms.PictureBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkSaveLogin = new System.Windows.Forms.CheckBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.txtLogin = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -67,23 +67,23 @@
             this.pbTitle.TabIndex = 1;
             this.pbTitle.TabStop = false;
             // 
-            // checkBox1
+            // chkSaveLogin
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(6, 97);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(150, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Save Login and Password";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkSaveLogin.AutoSize = true;
+            this.chkSaveLogin.Enabled = false;
+            this.chkSaveLogin.Location = new System.Drawing.Point(6, 97);
+            this.chkSaveLogin.Name = "chkSaveLogin";
+            this.chkSaveLogin.Size = new System.Drawing.Size(150, 17);
+            this.chkSaveLogin.TabIndex = 11;
+            this.chkSaveLogin.Text = "Save Login and Password";
+            this.chkSaveLogin.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
             this.btnOK.Location = new System.Drawing.Point(88, 183);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 5;
+            this.btnOK.TabIndex = 14;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -93,7 +93,7 @@
             this.txtLogin.Location = new System.Drawing.Point(6, 32);
             this.txtLogin.Name = "txtLogin";
             this.txtLogin.Size = new System.Drawing.Size(250, 20);
-            this.txtLogin.TabIndex = 0;
+            this.txtLogin.TabIndex = 9;
             this.txtLogin.TextChanged += new System.EventHandler(this.LoginTextControls_TextChanged);
             // 
             // label1
@@ -122,17 +122,18 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(249, 20);
-            this.txtPassword.TabIndex = 1;
+            this.txtPassword.TabIndex = 10;
             this.txtPassword.UseSystemPasswordChar = true;
             this.txtPassword.TextChanged += new System.EventHandler(this.LoginTextControls_TextChanged);
             // 
             // cmbGoogleCalendar
             // 
             this.cmbGoogleCalendar.FormattingEnabled = true;
+            this.cmbGoogleCalendar.ItemHeight = 13;
             this.cmbGoogleCalendar.Location = new System.Drawing.Point(6, 133);
             this.cmbGoogleCalendar.Name = "cmbGoogleCalendar";
             this.cmbGoogleCalendar.Size = new System.Drawing.Size(249, 21);
-            this.cmbGoogleCalendar.TabIndex = 3;
+            this.cmbGoogleCalendar.TabIndex = 13;
             this.cmbGoogleCalendar.Leave += new System.EventHandler(this.cmbGoogleCalendar_Leave);
             // 
             // label3
@@ -149,7 +150,7 @@
             this.btnStart.Location = new System.Drawing.Point(182, 501);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(88, 23);
-            this.btnStart.TabIndex = 2;
+            this.btnStart.TabIndex = 16;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -170,7 +171,7 @@
             this.txtChessDotComName.Multiline = true;
             this.txtChessDotComName.Name = "txtChessDotComName";
             this.txtChessDotComName.Size = new System.Drawing.Size(250, 20);
-            this.txtChessDotComName.TabIndex = 0;
+            this.txtChessDotComName.TabIndex = 1;
             this.txtChessDotComName.TextChanged += new System.EventHandler(this.txtChessDotComName_TextChanged);
             this.txtChessDotComName.Leave += new System.EventHandler(this.txtChessDotComName_Leave);
             // 
@@ -181,7 +182,7 @@
             this.chkDebugMode.Location = new System.Drawing.Point(12, 505);
             this.chkDebugMode.Name = "chkDebugMode";
             this.chkDebugMode.Size = new System.Drawing.Size(88, 17);
-            this.chkDebugMode.TabIndex = 1;
+            this.chkDebugMode.TabIndex = 15;
             this.chkDebugMode.Text = "Debug Mode";
             this.chkDebugMode.UseVisualStyleBackColor = true;
             this.chkDebugMode.Visible = false;
@@ -192,7 +193,7 @@
             this.chkBeep.Location = new System.Drawing.Point(7, 131);
             this.chkBeep.Name = "chkBeep";
             this.chkBeep.Size = new System.Drawing.Size(118, 17);
-            this.chkBeep.TabIndex = 4;
+            this.chkBeep.TabIndex = 5;
             this.chkBeep.Text = "Beep on new move";
             this.chkBeep.UseVisualStyleBackColor = true;
             // 
@@ -214,7 +215,7 @@
             this.chkLogFormOpen.Location = new System.Drawing.Point(7, 154);
             this.chkLogFormOpen.Name = "chkLogFormOpen";
             this.chkLogFormOpen.Size = new System.Drawing.Size(144, 17);
-            this.chkLogFormOpen.TabIndex = 5;
+            this.chkLogFormOpen.TabIndex = 6;
             this.chkLogFormOpen.Text = "Start with Log Form open";
             this.chkLogFormOpen.UseVisualStyleBackColor = true;
             // 
@@ -224,7 +225,7 @@
             this.chkDownloadPGNs.Location = new System.Drawing.Point(7, 160);
             this.chkDownloadPGNs.Name = "chkDownloadPGNs";
             this.chkDownloadPGNs.Size = new System.Drawing.Size(166, 17);
-            this.chkDownloadPGNs.TabIndex = 4;
+            this.chkDownloadPGNs.TabIndex = 13;
             this.chkDownloadPGNs.Text = "Put PGN\'s in Calendar Entries";
             this.chkDownloadPGNs.UseVisualStyleBackColor = true;
             // 
@@ -242,7 +243,7 @@
             this.grpCalendar.Controls.Add(this.label3);
             this.grpCalendar.Controls.Add(this.txtLogin);
             this.grpCalendar.Controls.Add(this.cmbGoogleCalendar);
-            this.grpCalendar.Controls.Add(this.checkBox1);
+            this.grpCalendar.Controls.Add(this.chkSaveLogin);
             this.grpCalendar.Controls.Add(this.btnOK);
             this.grpCalendar.Controls.Add(this.chkDownloadPGNs);
             this.grpCalendar.Controls.Add(this.label1);
@@ -251,7 +252,7 @@
             this.grpCalendar.Location = new System.Drawing.Point(5, 283);
             this.grpCalendar.Name = "grpCalendar";
             this.grpCalendar.Size = new System.Drawing.Size(265, 212);
-            this.grpCalendar.TabIndex = 22;
+            this.grpCalendar.TabIndex = 8;
             this.grpCalendar.TabStop = false;
             this.grpCalendar.Text = "Google Calendar";
             // 
@@ -267,7 +268,7 @@
             this.grpChess.Location = new System.Drawing.Point(5, 62);
             this.grpChess.Name = "grpChess";
             this.grpChess.Size = new System.Drawing.Size(265, 179);
-            this.grpChess.TabIndex = 23;
+            this.grpChess.TabIndex = 0;
             this.grpChess.TabStop = false;
             this.grpChess.Text = "Chess.com";
             // 
@@ -278,7 +279,7 @@
             this.rdoFollowAll.Location = new System.Drawing.Point(8, 59);
             this.rdoFollowAll.Name = "rdoFollowAll";
             this.rdoFollowAll.Size = new System.Drawing.Size(105, 17);
-            this.rdoFollowAll.TabIndex = 1;
+            this.rdoFollowAll.TabIndex = 2;
             this.rdoFollowAll.TabStop = true;
             this.rdoFollowAll.Text = "Follow All Games";
             this.rdoFollowAll.UseVisualStyleBackColor = true;
@@ -289,7 +290,7 @@
             this.rdoFollowGames.Location = new System.Drawing.Point(8, 75);
             this.rdoFollowGames.Name = "rdoFollowGames";
             this.rdoFollowGames.Size = new System.Drawing.Size(129, 17);
-            this.rdoFollowGames.TabIndex = 2;
+            this.rdoFollowGames.TabIndex = 3;
             this.rdoFollowGames.Text = "Follow Games Against";
             this.rdoFollowGames.UseVisualStyleBackColor = true;
             this.rdoFollowGames.CheckedChanged += new System.EventHandler(this.rdoFollowGames_CheckedChanged);
@@ -302,7 +303,7 @@
             this.chkLogToCalendar.Location = new System.Drawing.Point(5, 260);
             this.chkLogToCalendar.Name = "chkLogToCalendar";
             this.chkLogToCalendar.Size = new System.Drawing.Size(101, 17);
-            this.chkLogToCalendar.TabIndex = 0;
+            this.chkLogToCalendar.TabIndex = 7;
             this.chkLogToCalendar.Text = "Log to Calendar";
             this.chkLogToCalendar.UseVisualStyleBackColor = true;
             this.chkLogToCalendar.CheckedChanged += new System.EventHandler(this.chkLogToCalendar_CheckedChanged);
@@ -340,7 +341,7 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pbTitle;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkSaveLogin;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.TextBox txtLogin;
         private System.Windows.Forms.Label label1;

@@ -35,12 +35,9 @@
             this.btnAddFeed = new System.Windows.Forms.Button();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
             this.txtNextCheck = new System.Windows.Forms.TextBox();
-            this.txtLog = new System.Windows.Forms.TextBox();
             this.btnPause = new System.Windows.Forms.Button();
-            this.chkRecordGame = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnOpenCalendar = new System.Windows.Forms.Button();
+            this.btnOpenChessDotCom = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +64,7 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(662, 506);
+            this.btnRefresh.Location = new System.Drawing.Point(670, 506);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(121, 23);
             this.btnRefresh.TabIndex = 5;
@@ -87,32 +84,23 @@
             // 
             // pbTimeTillNextUpdate
             // 
-            this.pbTimeTillNextUpdate.Location = new System.Drawing.Point(5, 535);
+            this.pbTimeTillNextUpdate.Location = new System.Drawing.Point(2, 561);
             this.pbTimeTillNextUpdate.Name = "pbTimeTillNextUpdate";
-            this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(780, 15);
+            this.pbTimeTillNextUpdate.Size = new System.Drawing.Size(790, 15);
             this.pbTimeTillNextUpdate.TabIndex = 1;
             // 
             // txtNextCheck
             // 
             this.txtNextCheck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtNextCheck.Location = new System.Drawing.Point(-2, 556);
+            this.txtNextCheck.Location = new System.Drawing.Point(3, 535);
             this.txtNextCheck.Name = "txtNextCheck";
-            this.txtNextCheck.Size = new System.Drawing.Size(778, 20);
+            this.txtNextCheck.Size = new System.Drawing.Size(789, 20);
             this.txtNextCheck.TabIndex = 3;
             this.txtNextCheck.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // txtLog
-            // 
-            this.txtLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtLog.Location = new System.Drawing.Point(-2, 599);
-            this.txtLog.Name = "txtLog";
-            this.txtLog.Size = new System.Drawing.Size(783, 20);
-            this.txtLog.TabIndex = 4;
-            this.txtLog.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(318, 582);
+            this.btnPause.Location = new System.Drawing.Point(315, 506);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(121, 23);
             this.btnPause.TabIndex = 4;
@@ -120,53 +108,31 @@
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
-            // chkRecordGame
+            // btnOpenCalendar
             // 
-            this.chkRecordGame.AutoSize = true;
-            this.chkRecordGame.Location = new System.Drawing.Point(2, 582);
-            this.chkRecordGame.Name = "chkRecordGame";
-            this.chkRecordGame.Size = new System.Drawing.Size(202, 17);
-            this.chkRecordGame.TabIndex = 22;
-            this.chkRecordGame.Text = "Record this game in Google Calendar";
-            this.chkRecordGame.UseVisualStyleBackColor = true;
+            this.btnOpenCalendar.Location = new System.Drawing.Point(442, 506);
+            this.btnOpenCalendar.Name = "btnOpenCalendar";
+            this.btnOpenCalendar.Size = new System.Drawing.Size(103, 23);
+            this.btnOpenCalendar.TabIndex = 23;
+            this.btnOpenCalendar.Text = "Open Calendar";
+            this.btnOpenCalendar.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnOpenChessDotCom
             // 
-            this.button1.Location = new System.Drawing.Point(562, 582);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Refresh";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(696, 578);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(87, 23);
-            this.button2.TabIndex = 23;
-            this.button2.Text = "Open Calendar";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(451, 582);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(105, 23);
-            this.button3.TabIndex = 24;
-            this.button3.Text = "Open Chess.com";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnOpenChessDotCom.Location = new System.Drawing.Point(551, 506);
+            this.btnOpenChessDotCom.Name = "btnOpenChessDotCom";
+            this.btnOpenChessDotCom.Size = new System.Drawing.Size(105, 23);
+            this.btnOpenChessDotCom.TabIndex = 24;
+            this.btnOpenChessDotCom.Text = "Open Chess.com";
+            this.btnOpenChessDotCom.UseVisualStyleBackColor = true;
             // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(795, 620);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.chkRecordGame);
-            this.Controls.Add(this.txtLog);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(795, 582);
+            this.Controls.Add(this.btnOpenChessDotCom);
+            this.Controls.Add(this.btnOpenCalendar);
             this.Controls.Add(this.btnAddFeed);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.tabs);
@@ -193,14 +159,11 @@
         public System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnAddFeed;
-        private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.ProgressBar pbTimeTillNextUpdate;
         private System.Windows.Forms.TextBox txtNextCheck;
         private System.Windows.Forms.Button btnPause;
-        private System.Windows.Forms.CheckBox chkRecordGame;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TabPage addNewTab;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnOpenCalendar;
+        private System.Windows.Forms.Button btnOpenChessDotCom;
     }
 }

@@ -129,8 +129,6 @@ namespace ChessCalendar.Forms
         }
         private void ShowLog_Resize(object sender, EventArgs e)
         {
-            this.txtLog.Width = this.Width - 8;
-
             //TabControl
             this.ResetControls();
 
@@ -154,6 +152,7 @@ namespace ChessCalendar.Forms
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            this.txtNextCheck.Text = "Checking...";
             this.ResetWait = true;
         }
 
@@ -171,6 +170,7 @@ namespace ChessCalendar.Forms
             //button
             this.btnPause.Top = this.Height - 95;
             this.btnRefresh.Top = this.Height - 95;
+            this.btnAddFeed.Top = this.Height - 95;
 
             //TextBox
             this.txtNextCheck.Top = this.Height - 67;
@@ -180,13 +180,13 @@ namespace ChessCalendar.Forms
             this.pbTimeTillNextUpdate.Top = this.Height - 45;
             this.pbTimeTillNextUpdate.Width = this.Width - 8;
 
+            //update all the tabs (shouldn't each tab do it themselves?
             foreach (var tab in tabs.TabPages.Cast<object>().Where(tab => ((TabPage) tab).Text != Constants.NEW))
             {
-                ((ProcessorTab) tab).Controls[Constants.GRID].Width = this.Width - 20;
-                ((ProcessorTab) tab).Controls[Constants.GRID].Height = this.Height - 130;
+                ((ProcessorTab) tab).ResetControls();               
             }
 
-            //this.tabs.TabPages["addNewTab"].SendToBack();
+            this.tabs.TabPages["addNewTab"].SendToBack();
         }
 
         private void RunLoop()

@@ -95,10 +95,14 @@ namespace ChessCalendar
             {
                 if (this.UseCalendar)
                 {
-                    this.ToStore.IgnoreList = GoogleCalendar.GetAlreadyLoggedChessGames(this.UserName, this.Password,
+                    string error = "";
+
+                    this.ToStore.IgnoreList = (new GoogleCalendar()).GetAlreadyLoggedChessGames(this.UserName, this.Password,
                                                                                 this.Calendar,
                                                                                 DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)),
-                                                                                DateTime.Now, "auto-logger");
+                                                                                DateTime.Now, "auto-logger", out error);
+
+                    //TODO: if this.ToStore.IgnoreList == null, then set a prop in this object to error, so it can be displayed
                 }
 
                 this.Reconcile_Add_Or_Update(this.ToStore, this.ChessFeed);
@@ -146,7 +150,7 @@ namespace ChessCalendar
                 //if 504 Invalid gateway error. Chess.com is down
                 //this.Output.Post(string.Empty, "error. " + ex.Message);
 
-                GoogleCalendar.CreateEntry(this.UserName, 
+                (new GoogleCalendar()).CreateEntry(this.UserName, 
                                            this.Password, 
                                            "Chess.com error", 
                                            ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar);
@@ -213,7 +217,7 @@ namespace ChessCalendar
                 GameProcessor.Download_PGN(gameToLog);
             }
 
-            GoogleCalendar.CreateEntry(userName, 
+            (new GoogleCalendar()).CreateEntry(userName, 
                                        password, 
                                        gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(),
                                             "|" + gameToLog.Link +

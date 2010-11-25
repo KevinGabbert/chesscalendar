@@ -7,7 +7,7 @@ using Google.GData.Extensions;
 namespace ChessCalendar
 {
     //TODO: this class needs to be instantiated
-    public static class GoogleCalendar
+    public  class GoogleCalendar
     {
         //#region Properties
 
@@ -15,15 +15,15 @@ namespace ChessCalendar
         //#endregion
 
 
-        public static Uri _calendarToPost = new Uri(Constants.DEFAULT_FEED);
-        private static readonly Google.GData.Calendar.CalendarService _service = new CalendarService("ChessMoveLogService");
+        public  Uri _calendarToPost = new Uri(Constants.DEFAULT_FEED);
+        private  readonly Google.GData.Calendar.CalendarService _service = new CalendarService("ChessMoveLogService");
 
         //public GoogleCalendar(OutputClass output)
         //{
             
         //}
 
-        public static CalendarFeed RetrieveCalendars(string userName, string password)
+        public  CalendarFeed RetrieveCalendars(string userName, string password)
         {
             // Create a CalenderService and authenticate
             _service.setUserCredentials(userName, password);
@@ -33,7 +33,7 @@ namespace ChessCalendar
 
             return _service.Query(query);
         }
-        public static void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar)
+        public  void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar)
         {
             _calendarToPost = calendar;
 
@@ -63,7 +63,7 @@ namespace ChessCalendar
             }
         }
 
-        public static GameList GetAlreadyLoggedChessGames(string userName, string password, Uri calendar, DateTime startDate, DateTime endDate, string query)
+        public  GameList GetAlreadyLoggedChessGames(string userName, string password, Uri calendar, DateTime startDate, DateTime endDate, string query, out string error)
         {
             EventQuery myQuery = new EventQuery(calendar.ToString());
             myQuery.Query = query;
@@ -71,6 +71,7 @@ namespace ChessCalendar
             myQuery.EndDate = endDate;
 
             GameList queriedGames = new GameList();
+            error = "none";
 
             try
             {
@@ -81,7 +82,8 @@ namespace ChessCalendar
             }
             catch (Exception ex)
             {
-                throw;
+                queriedGames = null;
+                error = ex.Message;
             }
 
             return queriedGames;
