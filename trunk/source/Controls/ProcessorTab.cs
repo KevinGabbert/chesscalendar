@@ -8,23 +8,21 @@ namespace ChessCalendar.Controls
 {
     public class ProcessorTab: TabPage
     {
-        public GameProcessor Processor { get; set; }
-        private MessageList MessageList { get; set; }
+        #region Properties
+            public GameProcessor Processor { get; set; }
+            private MessageList MessageList { get; set; }
 
-        public override sealed string Text
-        {
-            get { return base.Text; }
-            set { base.Text = value; }
-        }
+            public override sealed string Text
+            {
+                get { return base.Text; }
+                set { base.Text = value; }
+            }
 
-        private DataGridView _grid;
-        //private ProgressBar _progressBar;
-        //private TextBox _nextCheck;
+        #endregion
+
+        private readonly DataGridView _grid;
 
         private int _fail = 0;
-        //private bool _pause = false;
-
-        private bool _progressBarFlash;
 
         public ProcessorTab(string chessDotComName, string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool useCalendar)
         {
@@ -52,6 +50,7 @@ namespace ChessCalendar.Controls
             _grid.Parent.Text = Processor.UserLogged;
 
             ProcessorTab.FormatDataGrid(this._grid);
+            this.ResetControls();
         }
 
         public static void FormatDataGrid(DataGridView dataGrid)
@@ -118,19 +117,32 @@ namespace ChessCalendar.Controls
 
         public void RefreshTab()
         {
-            //this.Update_NextCheck();
-            //this.Update_ProgressBar();
             this.Processor.Refresh();
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
 
             Application.DoEvents();
         }
 
+        public void ResetControls()
+        {
+            if (this.Parent != null)
+            {
+                if (this.Parent.Parent != null)
+                {
+                    this.Controls[Constants.GRID].Width = this.Parent.Parent.Width - 20;
+                    this.Controls[Constants.GRID].Height = this.Parent.Parent.Height - 130;
+
+                    this.Controls["TabPageName_chkLogToCalendar"].Height = this.Height - 85;
+
+                    Application.DoEvents();
+                }
+            }
+        }
+
         private void Update_GridView()
         {
             if ((DateTime.Now > this.Processor.NextCheck) || this.Processor.NewMessage)
             {
-                //this.UpdateText();
                 this.UpdateDataGridView();
             }
             else

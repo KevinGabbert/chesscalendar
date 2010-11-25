@@ -110,7 +110,7 @@ namespace ChessCalendar.Forms
             this.Password = this.txtPassword.Text;
 
             cmbGoogleCalendar.Items.Clear();
-            CalendarFeed calFeed = GoogleCalendar.RetrieveCalendars(this.User, this.Password);
+            CalendarFeed calFeed = (new GoogleCalendar()).RetrieveCalendars(this.User, this.Password);
             foreach (CalendarEntry centry in calFeed.Entries)
             {
                 cmbGoogleCalendar.Items.Add(centry);
