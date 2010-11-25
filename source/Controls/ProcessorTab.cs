@@ -133,10 +133,10 @@ namespace ChessCalendar.Controls
                     this.Controls[Constants.GRID].Height = this.Parent.Parent.Height - 130;
 
                     this.Controls["TabPageName_chkLogToCalendar"].Height = this.Height - 85;
-
-                    Application.DoEvents();
                 }
             }
+
+            Application.DoEvents();
         }
 
         private void Update_GridView()

@@ -36,7 +36,6 @@
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
             this.txtNextCheck = new System.Windows.Forms.TextBox();
             this.btnPause = new System.Windows.Forms.Button();
-            this.btnOpenCalendar = new System.Windows.Forms.Button();
             this.btnOpenChessDotCom = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.SuspendLayout();
@@ -108,15 +107,6 @@
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
-            // btnOpenCalendar
-            // 
-            this.btnOpenCalendar.Location = new System.Drawing.Point(442, 506);
-            this.btnOpenCalendar.Name = "btnOpenCalendar";
-            this.btnOpenCalendar.Size = new System.Drawing.Size(103, 23);
-            this.btnOpenCalendar.TabIndex = 23;
-            this.btnOpenCalendar.Text = "Open Calendar";
-            this.btnOpenCalendar.UseVisualStyleBackColor = true;
-            // 
             // btnOpenChessDotCom
             // 
             this.btnOpenChessDotCom.Location = new System.Drawing.Point(551, 506);
@@ -132,7 +122,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(795, 582);
             this.Controls.Add(this.btnOpenChessDotCom);
-            this.Controls.Add(this.btnOpenCalendar);
             this.Controls.Add(this.btnAddFeed);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.tabs);
@@ -163,7 +152,6 @@
         private System.Windows.Forms.TextBox txtNextCheck;
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.TabPage addNewTab;
-        private System.Windows.Forms.Button btnOpenCalendar;
         private System.Windows.Forms.Button btnOpenChessDotCom;
     }
 }
