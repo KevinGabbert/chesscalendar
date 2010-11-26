@@ -40,7 +40,7 @@ namespace ChessCalendar
 
             return _service.Query(query);
         }
-        public  void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar, out string error)
+        public void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar, out string error)
         {
             _calendarToPost = calendar;
             error = string.Empty;
@@ -102,14 +102,13 @@ namespace ChessCalendar
             }
             catch (Exception ex)
             {
-                queriedGames = null;
+                queriedGames = new GameList();
                 error = ex.Message;
             }
             finally
             {
                 this.Error = error;
             }
-
 
             return queriedGames;
         }
