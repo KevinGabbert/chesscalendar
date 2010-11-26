@@ -157,10 +157,14 @@ namespace ChessCalendar
                 //if 504 Invalid gateway error. Chess.com is down
                 //this.Output.Post(string.Empty, "error. " + ex.Message);
 
-                (new GoogleCalendar()).CreateEntry(this.UserName, 
-                                           this.Password, 
-                                           "Chess.com error",
-                                           ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar, out _error);
+                if (this.UseCalendar)
+                {
+                    (new GoogleCalendar()).CreateEntry(this.UserName,
+                                                       this.Password,
+                                                       "Chess.com error",
+                                                       ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar,
+                                                       out _error);
+                }
             }
 
             return toPost;
@@ -219,25 +223,31 @@ namespace ChessCalendar
 
         private void Save_Game_Info(IRSS_Item gameToLog, string userName, string password)
         {
-            if (this.GetPGNs)
+            if (this.UseCalendar)
             {
-                GameProcessor.Download_PGN(gameToLog);
+                if (this.GetPGNs)
+                {
+                    GameProcessor.Download_PGN(gameToLog);
+                }
+
+
+                (new GoogleCalendar()).CreateEntry(userName,
+                                                    password,
+                                                    gameToLog.Title + " " +
+                                                    DateTime.Parse(gameToLog.PubDate).ToShortTimeString(),
+                                                    "|" + gameToLog.Link +
+                                                    Environment.NewLine +
+                                                    "|" + gameToLog.PubDate +
+                                                    Environment.NewLine +
+                                                    "|" + gameToLog.Description +
+                                                    Environment.NewLine +
+                                                    "|" + gameToLog.PGN +
+                                                    Environment.NewLine +
+                                                    "|" + "this.LogVersion",
+                                                    DateTime.Now,
+                                                    DateTime.Now, this.Calendar, out _error);
             }
 
-            (new GoogleCalendar()).CreateEntry(userName, 
-                                       password, 
-                                       gameToLog.Title + " " + DateTime.Parse(gameToLog.PubDate).ToShortTimeString(),
-                                            "|" + gameToLog.Link +
-                                            Environment.NewLine +
-                                            "|" + gameToLog.PubDate +
-                                            Environment.NewLine +
-                                            "|" + gameToLog.Description +
-                                            Environment.NewLine +
-                                            "|" + gameToLog.PGN +
-                                            Environment.NewLine +
-                                        "|" + "this.LogVersion", 
-                                        DateTime.Now,
-                                        DateTime.Now, this.Calendar, out _error);
             if (this.DebugMode)
             {
                 //this.Output.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());
