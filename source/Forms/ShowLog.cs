@@ -300,7 +300,7 @@ namespace ChessCalendar.Forms
             {
                 this.Update_NextCheck();
                 this.Update_ProgressBar();
-                //Application.DoEvents();
+                Application.DoEvents();
                 var difference = (finish.Subtract(DateTime.Now));
                 this.WaitProgress = Convert.ToInt32(100 - ((difference.TotalSeconds / waitTime.TotalSeconds) * 100));
                 current = DateTime.Now;

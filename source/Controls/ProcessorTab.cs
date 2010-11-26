@@ -22,7 +22,7 @@ namespace ChessCalendar.Controls
                 get { return base.Text; }
                 set { base.Text = value; }
             }
-            
+            public bool UseCalendar { get; set; }
         #endregion
 
         private readonly DataGridView _grid;
@@ -36,6 +36,7 @@ namespace ChessCalendar.Controls
             this.Text = chessDotComName;
             this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar, useCalendar);
             this.MessageList = new MessageList();
+            this.UseCalendar = useCalendar;
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
 
@@ -48,6 +49,8 @@ namespace ChessCalendar.Controls
 
             _chkLogToCalendar = new CheckBox();
             _chkLogToCalendar.Name = Constants.RECORD_IN_CALENDAR;
+            _chkLogToCalendar.Checked = this.UseCalendar;
+            _chkLogToCalendar.CheckedChanged += this._chkLogToCalendar_CheckedChanged;
 
             this.Controls.Add(_chkLogToCalendar);
             this.Controls.Add(_grid);
@@ -58,6 +61,14 @@ namespace ChessCalendar.Controls
             ProcessorTab.FormatDataGrid(this._grid);
             this.ResetControls();
         }
+
+        #region Events
+        private void _chkLogToCalendar_CheckedChanged(object sender, EventArgs e)
+        {
+            this.UseCalendar = _chkLogToCalendar.Checked;
+        }
+
+        #endregion
 
         public static void FormatDataGrid(DataGridView dataGrid)
         {
@@ -138,7 +149,7 @@ namespace ChessCalendar.Controls
                     this.Controls[Constants.GRID].Width = this.Parent.Parent.Width - 20;
                     this.Controls[Constants.GRID].Height = this.Parent.Parent.Height - 130;
 
-                    this.Controls[Constants.RECORD_IN_CALENDAR].Height = this.Height - 85;
+                    this.Controls[Constants.RECORD_IN_CALENDAR].Top = this.Height - 85;
                 }
             }
 
