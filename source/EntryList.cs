@@ -7,8 +7,8 @@ namespace ChessCalendar
     public class EntryList : GameList
     {
         #region Properties
-            public GameList IgnoreList { private get; set; }
-            public bool Beep_On_New_Move { private get; set; }
+            public GameList IgnoreList {  get; set; }
+            public bool Beep_On_New_Move { get; set; }
         #endregion
 
         public EntryList()
