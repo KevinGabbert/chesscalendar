@@ -6,21 +6,27 @@ using ChessCalendar.Interfaces;
 
 namespace ChessCalendar.Controls
 {
-    public class ProcessorTab: TabPage
+    public class ProcessorTab: TabPage, IError
     {
         #region Properties
             public GameProcessor Processor { get; set; }
             private MessageList MessageList { get; set; }
 
+            private string _error;
+            public string Error 
+            {
+                get { return _error; }
+            }
             public override sealed string Text
             {
                 get { return base.Text; }
                 set { base.Text = value; }
             }
-
+            
         #endregion
 
         private readonly DataGridView _grid;
+        CheckBox _chkLogToCalendar;
 
         private int _fail = 0;
 
@@ -34,16 +40,16 @@ namespace ChessCalendar.Controls
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
 
             var messages = new TextBox();
-            messages.Name = "TabPage_txtMessages";
+            messages.Name = Constants.MESSAGES;
 
             _grid = new DataGridView();
-            _grid.Name = "TabPage_Grid";
+            _grid.Name = Constants.GRID;
             _grid.CellClick += this.grid_CellClick;
 
-            var chkLogToCalendar = new CheckBox();
-            chkLogToCalendar.Name = "TabPageName_chkLogToCalendar";
+            _chkLogToCalendar = new CheckBox();
+            _chkLogToCalendar.Name = Constants.RECORD_IN_CALENDAR;
 
-            this.Controls.Add(chkLogToCalendar);
+            this.Controls.Add(_chkLogToCalendar);
             this.Controls.Add(_grid);
             this.Controls.Add(messages);
 
@@ -117,7 +123,7 @@ namespace ChessCalendar.Controls
 
         public void RefreshTab()
         {
-            this.Processor.Refresh();
+            this.Processor.Refresh(out _error);
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
 
             Application.DoEvents();
@@ -132,7 +138,7 @@ namespace ChessCalendar.Controls
                     this.Controls[Constants.GRID].Width = this.Parent.Parent.Width - 20;
                     this.Controls[Constants.GRID].Height = this.Parent.Parent.Height - 130;
 
-                    this.Controls["TabPageName_chkLogToCalendar"].Height = this.Height - 85;
+                    this.Controls[Constants.RECORD_IN_CALENDAR].Height = this.Height - 85;
                 }
             }
 

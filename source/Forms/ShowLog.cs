@@ -194,18 +194,22 @@ namespace ChessCalendar.Forms
         {
             while (true)
             {
-                this.Update_NextCheck();
-
-                foreach (var tab in tabs.TabPages)
+                foreach (var currentTab in from object tab in tabs.TabPages select ((TabPage) tab))
                 {
-                    if (((TabPage)tab).Name.StartsWith(Constants.PTAB))
+                    if (currentTab.Name.StartsWith(Constants.PTAB))
                     {
-                        ((ProcessorTab) tab).RefreshTab();
-                    }
-                }
+                        var currentProcessorTab = ((ProcessorTab)currentTab);
+                        currentProcessorTab.RefreshTab();
 
-                Application.DoEvents();
-                this.Wait(this.WaitSeconds);
+                        if (!string.IsNullOrEmpty(currentProcessorTab.Error))
+                        {
+                            this.txtNextCheck.Text = this.txtNextCheck.Text + " ~ " + currentProcessorTab.Error;
+                        }
+                    }
+
+                    Application.DoEvents();
+                    this.Wait(this.WaitSeconds);
+                }
             }
         }
 
@@ -294,8 +298,9 @@ namespace ChessCalendar.Forms
             DateTime current = DateTime.Now;
             while (current < finish)
             {
+                this.Update_NextCheck();
                 this.Update_ProgressBar();
-                Application.DoEvents();
+                //Application.DoEvents();
                 var difference = (finish.Subtract(DateTime.Now));
                 this.WaitProgress = Convert.ToInt32(100 - ((difference.TotalSeconds / waitTime.TotalSeconds) * 100));
                 current = DateTime.Now;

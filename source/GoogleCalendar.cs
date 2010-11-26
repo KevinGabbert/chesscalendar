@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ChessCalendar.Interfaces;
 using Google.GData.Calendar;
 using Google.GData.Client;
 using Google.GData.Extensions;
@@ -7,13 +8,19 @@ using Google.GData.Extensions;
 namespace ChessCalendar
 {
     //TODO: this class needs to be instantiated
-    public  class GoogleCalendar
+    public class GoogleCalendar:IError
     {
         //#region Properties
 
         //public OutputClass Output { get; set; }
         //#endregion
 
+        private string _error;
+        public string Error
+        {
+            get { return _error; }
+            set { _error = value; }
+        }
 
         public  Uri _calendarToPost = new Uri(Constants.DEFAULT_FEED);
         private  readonly Google.GData.Calendar.CalendarService _service = new CalendarService("ChessMoveLogService");
@@ -33,9 +40,10 @@ namespace ChessCalendar
 
             return _service.Query(query);
         }
-        public  void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar)
+        public  void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar, out string error)
         {
             _calendarToPost = calendar;
+            error = string.Empty;
 
             //TODO: If username is null then report an error another way.  EventLog?
 
@@ -44,7 +52,7 @@ namespace ChessCalendar
                 var entry = new EventEntry();
                 entry.Title.Text = title;
                 entry.Content.Content = description;
-                entry.Locations.Add(new Where("","", "auto-logger"));
+                entry.Locations.Add(new Where(string.Empty,string.Empty, Constants.AUTO_LOGGER));
                 entry.Times.Add(new When(start, end)); //entry.Times.Add(new When()); //how to add an all day?
 
                 if (!string.IsNullOrEmpty(userName))
@@ -53,13 +61,25 @@ namespace ChessCalendar
                 }
 
                 (new GDataGAuthRequestFactory("", "")).CreateRequest(GDataRequestType.Insert, _calendarToPost);
-                _service.Insert(_calendarToPost, entry);
+
+                if (_calendarToPost != null)
+                {
+                    _service.Insert(_calendarToPost, entry);
+                }
+                else
+                {
+                    error = "No Calendar to Insert into (CreateEntry erroneously called";
+                }
 
                 //this.Log.Output(string.Empty, "Event Successfully Added", OutputMode.Form);
             }
             catch (Exception ex)
             {
-                throw;
+                error = ex.Message;
+            }
+            finally
+            {
+                this.Error = error;
             }
         }
 
@@ -71,7 +91,7 @@ namespace ChessCalendar
             myQuery.EndDate = endDate;
 
             GameList queriedGames = new GameList();
-            error = "none";
+            error = string.Empty;
 
             try
             {
@@ -85,6 +105,11 @@ namespace ChessCalendar
                 queriedGames = null;
                 error = ex.Message;
             }
+            finally
+            {
+                this.Error = error;
+            }
+
 
             return queriedGames;
         }

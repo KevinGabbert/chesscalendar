@@ -14,7 +14,7 @@ namespace ChessCalendar
     /// <summary>
     /// Gets 
     /// </summary>
-    public class GameProcessor
+    public class GameProcessor: IError
     {
         #region Properties
 
@@ -26,6 +26,12 @@ namespace ChessCalendar
             public string UserName { get; set; }
             public string Password { get; set; }
 
+            private string _error;
+            public string Error
+            {
+                get { return _error; } 
+                set { _error = value; } 
+            }
             public List<string> UsersToProcess { get; set; } //TODO: should this be an EntryList?
 
             public bool Post { get; set; }
@@ -35,7 +41,7 @@ namespace ChessCalendar
             public bool DebugMode { get; set; }
             public bool Beep_On_New_Move { get; set; }
             public bool GetPGNs { get; set; }
-            //public bool LogGames { get; set; }
+
             public bool ResetWait { get; set; }
             public bool ClearList { get; set; } //needs a better name.
             public string UserLogged { get; set; }
@@ -68,6 +74,7 @@ namespace ChessCalendar
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <param name="logToCalendar"></param>
+        /// <param name="useCalendar"></param>
         public GameProcessor(string name, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool useCalendar)
         {
             this.ToStore = new EntryList();
@@ -85,9 +92,10 @@ namespace ChessCalendar
         /// <summary>
         /// 
         /// </summary>
-        public void Refresh()
+        public void Refresh(out string error)
         {
             this.Output.NewMoves.Updated = false;
+            error = string.Empty;
 
             this.ChessFeed.Load();
 
@@ -95,13 +103,12 @@ namespace ChessCalendar
             {
                 if (this.UseCalendar)
                 {
-                    string error = "";
-
                     this.ToStore.IgnoreList = (new GoogleCalendar()).GetAlreadyLoggedChessGames(this.UserName, this.Password,
                                                                                 this.Calendar,
                                                                                 DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)),
-                                                                                DateTime.Now, "auto-logger", out error);
+                                                                                DateTime.Now, "auto-logger", out _error);
 
+                    error = this.Error;
                     //TODO: if this.ToStore.IgnoreList == null, then set a prop in this object to error, so it can be displayed
                 }
 
@@ -152,8 +159,8 @@ namespace ChessCalendar
 
                 (new GoogleCalendar()).CreateEntry(this.UserName, 
                                            this.Password, 
-                                           "Chess.com error", 
-                                           ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar);
+                                           "Chess.com error",
+                                           ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar, out _error);
             }
 
             return toPost;
@@ -229,8 +236,8 @@ namespace ChessCalendar
                                             "|" + gameToLog.PGN +
                                             Environment.NewLine +
                                         "|" + "this.LogVersion", 
-                                        DateTime.Now, 
-                                        DateTime.Now, this.Calendar);
+                                        DateTime.Now,
+                                        DateTime.Now, this.Calendar, out _error);
             if (this.DebugMode)
             {
                 //this.Output.Post(string.Empty, gameToLog.Title + " activity logged " + DateTime.Now.ToShortTimeString());

@@ -13,8 +13,11 @@
         public const string PRIVATE_FULL = "/private/full";
 
         public const string GRID = "TabPage_Grid";
+        public const string RECORD_IN_CALENDAR = "TabPageName_chkLogToCalendar";
+        public const string MESSAGES = "TabPage_txtMessages";
         public const string PTAB = "PTab_";
 
         public const string NEW = "ADD +";
+        public const string AUTO_LOGGER = "auto-logger";
     }
 }
