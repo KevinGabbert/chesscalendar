@@ -122,6 +122,7 @@
     <Compile Include="GameList.cs" />
     <Compile Include="GoogleCalendar.cs" />
     <Compile Include="Interfaces\IChessItem.cs" />
+    <Compile Include="Interfaces\IError.cs" />
     <Compile Include="Interfaces\IRSSItem.cs" />
     <Compile Include="Forms\Login_Form.cs">
       <SubType>Form</SubType>
