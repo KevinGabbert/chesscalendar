@@ -73,7 +73,16 @@ namespace ChessCalendar.Controls
         #region Events
         private void _chkLogToCalendar_CheckedChanged(object sender, EventArgs e)
         {
-            this.UseCalendar = _chkLogToCalendar.Checked;
+            //TODO:
+            //Create props for this.Username, password, calendar, uriToWatch
+
+            //TODO:
+            //if this.Username, password, calendar, or uriToWatch is null, then throw up a login box right here
+
+            //TODO:
+            this.UseCalendar = _chkLogToCalendar.Checked; // = (this.username, password, calendar, and uriToWatch != NOT NULL)
+
+            //end if
         }
 
         #endregion
