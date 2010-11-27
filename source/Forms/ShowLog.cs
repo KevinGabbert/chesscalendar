@@ -103,9 +103,9 @@ namespace ChessCalendar.Forms
                                                     new Uri(Constants.CHESS_DOT_COM_RSS_ECHESS + login.ChessDotComName),
                                                     login.User,
                                                     login.Password,
-                                                    login.PostURI,
-                                                    login.LogToCalendar);
+                                                    login.PostURI);
 
+            newPage.UseCalendar = login.LogToCalendar;
             newPage.Processor.DebugMode = login.DebugMode;
             newPage.Processor.UserLogged = login.ChessDotComName;
             newPage.Processor.GetPGNs = login.DownloadPGNs;
@@ -199,6 +199,7 @@ namespace ChessCalendar.Forms
                     if (currentTab.Name.StartsWith(Constants.PTAB))
                     {
                         var currentProcessorTab = ((ProcessorTab)currentTab);
+                        
                         currentProcessorTab.RefreshTab();
 
                         if (!string.IsNullOrEmpty(currentProcessorTab.Error))

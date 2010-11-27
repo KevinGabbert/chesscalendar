@@ -30,13 +30,21 @@ namespace ChessCalendar.Controls
 
         private int _fail = 0;
 
-        public ProcessorTab(string chessDotComName, string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool useCalendar)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chessDotComName"></param>
+        /// <param name="tabName"></param>
+        /// <param name="uriToWatch"></param>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="logToCalendar"></param>
+        public ProcessorTab(string chessDotComName, string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar)
         {
             this.Name = tabName;
             this.Text = chessDotComName;
-            this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar, useCalendar);
+            this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar, this.UseCalendar);
             this.MessageList = new MessageList();
-            this.UseCalendar = useCalendar;
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
 
@@ -134,6 +142,8 @@ namespace ChessCalendar.Controls
 
         public void RefreshTab()
         {
+            this.Processor.UseCalendar = this.UseCalendar;
+
             this.Processor.Refresh(out _error);
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
 
