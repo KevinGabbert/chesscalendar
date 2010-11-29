@@ -9,7 +9,7 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"v11.27.10 Prototype";
+        public const string VERSION = @"v11.29.10 Prototype";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         #region Properties
@@ -18,7 +18,6 @@ namespace ChessCalendar
         public ShowLog LogViewer { get; set; }
         public Login_Form Login { get; set; }
 
-        //TODO: make these into props
         public NotifyIcon TrayIcon { get; set; }
         public ContextMenu Menu { get; set; }
 

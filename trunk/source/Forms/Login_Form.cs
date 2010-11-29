@@ -14,23 +14,24 @@ namespace ChessCalendar.Forms
     {
         #region Properties
 
-            public string ChessDotComName { get; set; }
-            public string User { get; set; }
-            public string Password { get; set; }
-            public System.Uri PostURI { get; set; }
+            public ChessSiteInfo SiteInfo { get; set; }
+            public CalendarInfo Calendar { get; set; }
 
+            //TODO: These need to be made into a ConfigInfo object to be passed around
             public bool DebugMode { get; set; }
             public bool Beep_On_New_Move { get; set; }
             public bool ValidatedForm { get; set; }
             public bool AutoOpenLog { get; set; }
-            public bool DownloadPGNs { get; set; }
-            public bool LogToCalendar { get; set; }
 
         #endregion
 
         public Login_Form(string version)
         {
             this.InitializeComponent();
+
+            this.SiteInfo = new ChessSiteInfo();
+            this.Calendar = new CalendarInfo();
+
             this.lblVersion.Text = version;
 
             this.btnStart.Enabled = false;
@@ -38,7 +39,7 @@ namespace ChessCalendar.Forms
 
             this.cmbOpponents.Visible = this.rdoFollowGames.Checked;
 
-            this.LogToCalendar = true;
+            this.Calendar.Logging = true;
             this.Show_Calendar_Controls();
         }
 
@@ -85,7 +86,7 @@ namespace ChessCalendar.Forms
         }
         private void chkLogToCalendar_CheckedChanged(object sender, EventArgs e)
         {
-            this.LogToCalendar = this.chkLogToCalendar.Checked;
+            this.Calendar.Logging = this.chkLogToCalendar.Checked;
 
             this.Show_Calendar_Controls();
         }
@@ -93,7 +94,7 @@ namespace ChessCalendar.Forms
         {
             this.btnStart.Enabled = this.ValidateForm();
 
-            if (this.LogToCalendar)
+            if (this.Calendar.Logging)
             {
                 this.SetPostURI();
             }
@@ -101,19 +102,18 @@ namespace ChessCalendar.Forms
 
         #endregion
 
-
         #region Buttons
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            this.User = this.txtLogin.Text;
-            this.Password = this.txtPassword.Text;
+            this.Calendar.UserName = this.txtLogin.Text;
+            this.Calendar.Password = this.txtPassword.Text;
 
             cmbGoogleCalendar.Items.Clear();
-            CalendarFeed calFeed = (new GoogleCalendar()).RetrieveCalendars(this.User, this.Password);
-            foreach (CalendarEntry centry in calFeed.Entries)
+            CalendarFeed calFeed = (new GoogleCalendar()).RetrieveCalendars(this.Calendar.UserName, this.Calendar.Password);
+            foreach (CalendarEntry entry in calFeed.Entries)
             {
-                cmbGoogleCalendar.Items.Add(centry);
+                cmbGoogleCalendar.Items.Add(entry);
             }
 
             cmbGoogleCalendar.DisplayMember = "Title";
@@ -128,11 +128,14 @@ namespace ChessCalendar.Forms
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
-            this.ChessDotComName = txtChessDotComName.Text;
+            //These can be put into a config class 
             this.DebugMode = chkDebugMode.Checked;
             this.Beep_On_New_Move = chkBeep.Checked;
             this.AutoOpenLog = this.chkLogFormOpen.Checked;
-            this.DownloadPGNs = this.chkDownloadPGNs.Checked;
+
+            this.SiteInfo.UserName = txtChessDotComName.Text;
+            this.SiteInfo.UriToWatch = new Uri(Constants.CHESS_DOT_COM_RSS_ECHESS + this.SiteInfo.UserName);
+            this.Calendar.DownloadPGNs = this.chkDownloadPGNs.Checked;
 
             if (this.chkLogToCalendar.Checked)
             {
@@ -158,7 +161,7 @@ namespace ChessCalendar.Forms
         }
         private void Show_Calendar_Controls()
         {
-            if (this.LogToCalendar)
+            if (this.Calendar.Logging)
             {
                 this.lblVersion.Location = new Point(9, 534);
                 this.btnStart.Location = new Point(182, 501);
@@ -176,12 +179,11 @@ namespace ChessCalendar.Forms
         {
             if (cmbGoogleCalendar.SelectedItem != null)
             {
-                this.PostURI = new Uri(Constants.CALENDAR_FEEDS +
-                                        ((CalendarEntry) (cmbGoogleCalendar.SelectedItem)).SelfUri.ToString().
-                                            Substring(
-                                                ((CalendarEntry) (cmbGoogleCalendar.SelectedItem)).SelfUri.ToString()
-                                                    .LastIndexOf("/") + 1) +
-                                        Constants.PRIVATE_FULL);
+                var entry = ((Google.GData.Calendar.CalendarEntry) cmbGoogleCalendar.SelectedItem);
+
+                this.Calendar.Name = entry.Title.Text;
+                this.Calendar.Uri = new Uri(Constants.CALENDAR_FEEDS +
+                                            entry.SelfUri.ToString().Substring(entry.SelfUri.ToString().LastIndexOf("/") + 1) + Constants.PRIVATE_FULL);
             }
         }
 

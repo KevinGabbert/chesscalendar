@@ -40,9 +40,9 @@ namespace ChessCalendar
 
             return _service.Query(query);
         }
-        public void CreateEntry(string userName, string password, string title, string description, DateTime start, DateTime end, Uri calendar, out string error)
+        public void CreateEntry(CalendarInfo calendarInfo, string title, string description, DateTime start, DateTime end, out string error)
         {
-            _calendarToPost = calendar;
+            _calendarToPost = calendarInfo.Uri;
             error = string.Empty;
 
             //TODO: If username is null then report an error another way.  EventLog?
@@ -55,9 +55,9 @@ namespace ChessCalendar
                 entry.Locations.Add(new Where(string.Empty,string.Empty, Constants.AUTO_LOGGER));
                 entry.Times.Add(new When(start, end)); //entry.Times.Add(new When()); //how to add an all day?
 
-                if (!string.IsNullOrEmpty(userName))
+                if (!string.IsNullOrEmpty(calendarInfo.UserName))
                 {
-                    _service.setUserCredentials(userName, password);
+                    _service.setUserCredentials(calendarInfo.UserName, calendarInfo.Password);
                 }
 
                 (new GDataGAuthRequestFactory("", "")).CreateRequest(GDataRequestType.Insert, _calendarToPost);
@@ -83,9 +83,9 @@ namespace ChessCalendar
             }
         }
 
-        public  GameList GetAlreadyLoggedChessGames(string userName, string password, Uri calendar, DateTime startDate, DateTime endDate, string query, out string error)
+        public  GameList GetAlreadyLoggedChessGames(CalendarInfo calendarInfo, DateTime startDate, DateTime endDate, string query, out string error)
         {
-            EventQuery myQuery = new EventQuery(calendar.ToString());
+            EventQuery myQuery = new EventQuery(calendarInfo.Uri.ToString());
             myQuery.Query = query;
             myQuery.StartDate = startDate;
             myQuery.EndDate = endDate;
@@ -95,7 +95,7 @@ namespace ChessCalendar
 
             try
             {
-                _service.setUserCredentials(userName, password);
+                _service.setUserCredentials(calendarInfo.UserName, calendarInfo.Password);
 
                 EventFeed myResultsFeed = _service.Query(myQuery);
                 queriedGames.AddRange(myResultsFeed.Entries.Select(entry => entry));

@@ -9,14 +9,9 @@ namespace ChessCalendar
     {
         public Uri FeedUri { get; set; }
 
-        public ChessFeed()
-        {
-
-        }
-
         public ChessFeed(Uri uriToLoad)
         {
-            this.Load(uriToLoad);
+            this.FeedUri = uriToLoad;
         }
 
         public void Add(RssItem rssItem)
@@ -42,12 +37,28 @@ namespace ChessCalendar
         public void Load()
         {
             this.Clear();
-            this.AddRange(RssDocument.Load(this.FeedUri).Channel.Items);
-        }
 
-        public void Load(Uri uriToLoad)
-        {
-            this.AddRange(RssDocument.Load(uriToLoad).Channel.Items);
+            try
+            {
+                this.AddRange(RssDocument.Load(this.FeedUri).Channel.Items);
+            }
+            catch (System.Net.WebException wx)
+            {
+                if(wx.Message.StartsWith("The remote name could not be resolved"))
+                {
+                    //TODO:  When site is down we need to handle this error. currently the program will crash.
+                    
+                    //Add a fake rssItem. currently app cannot process fake rss items
+                    //var x = new RSSItem();
+                    
+                    //x.GameTitle = "site down";
+                    //this.Add()
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public IEnumerable<string> GetOpponents()

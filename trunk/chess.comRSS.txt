@@ -1,0 +1,15 @@
+http://www.chess.com/rss/events/
+http://www.chess.com/rss/articles
+http://www.chess.com/rss/articles.xml
+http://www.chess.com/rss/blogs.xml
+http://www.chess.com/rss/forums/
+http://www.chess.com/rss/forums/daily-puzzles
+http://www.chess.com/rss/forums/daily-columns
+http://www.chess.com/rss/forums/chessopedia
+http://www.chess.com/rss/news
+http://www.chess.com/rss/echess/
+http://www.chess.com/rss/blog/kevingabbert
+
+
+
+
