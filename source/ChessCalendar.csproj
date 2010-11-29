@@ -98,6 +98,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationManager.cs" />
+    <Compile Include="CalendarInfo.cs" />
+    <Compile Include="ChessSiteInfo.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="GameProcessor.cs" />
     <Compile Include="EntryList.cs" />

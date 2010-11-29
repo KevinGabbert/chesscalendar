@@ -98,23 +98,15 @@ namespace ChessCalendar.Forms
 
         public void Add_Feed_Tab(Login_Form login)
         {
-            ProcessorTab newPage = new ProcessorTab(login.ChessDotComName, 
-                                                    "PTab_" + login.ChessDotComName,
-                                                    new Uri(Constants.CHESS_DOT_COM_RSS_ECHESS + login.ChessDotComName),
-                                                    login.User,
-                                                    login.Password,
-                                                    login.PostURI);
+            ProcessorTab newPage = new ProcessorTab(login.SiteInfo, login.Calendar);
 
-            newPage.UseCalendar = login.LogToCalendar;
             newPage.Processor.DebugMode = login.DebugMode;
-            newPage.Processor.UserLogged = login.ChessDotComName;
-            newPage.Processor.GetPGNs = login.DownloadPGNs;
             newPage.Processor.Beep_On_New_Move = login.Beep_On_New_Move;
-            newPage.Text = login.ChessDotComName;
-            newPage.RefreshTab();
-            newPage.Focus();
 
             this.tabs.TabPages.Add(newPage);
+
+            newPage.RefreshTab();
+            newPage.Focus();
 
             this.ResetControls();
         }
@@ -187,7 +179,7 @@ namespace ChessCalendar.Forms
                 ((ProcessorTab) tab).ResetControls();               
             }
 
-            this.tabs.TabPages["addNewTab"].SendToBack();
+            //this.tabs.TabPages["addNewTab"].SendToBack();
         }
 
         private void RunLoop()

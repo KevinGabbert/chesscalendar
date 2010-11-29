@@ -11,6 +11,8 @@ namespace ChessCalendar.Controls
         #region Properties
             public GameProcessor Processor { get; set; }
             private MessageList MessageList { get; set; }
+            private ChessSiteInfo SiteInfo { get; set; }
+            private CalendarInfo Calendar { get; set; }
 
             private string _error;
             public string Error 
@@ -22,7 +24,7 @@ namespace ChessCalendar.Controls
                 get { return base.Text; }
                 set { base.Text = value; }
             }
-            public bool UseCalendar { get; set; }
+
         #endregion
 
         private readonly DataGridView _grid;
@@ -30,20 +32,15 @@ namespace ChessCalendar.Controls
 
         private int _fail = 0;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="chessDotComName"></param>
-        /// <param name="tabName"></param>
-        /// <param name="uriToWatch"></param>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
-        /// <param name="logToCalendar"></param>
-        public ProcessorTab(string chessDotComName, string tabName, Uri uriToWatch, string userName, string password, Uri logToCalendar)
+        public ProcessorTab(ChessSiteInfo chessSiteInfo, CalendarInfo calendarInfo)
         {
-            this.Name = tabName;
-            this.Text = chessDotComName;
-            this.Processor = new GameProcessor(chessDotComName, uriToWatch, userName, password, logToCalendar, this.UseCalendar);
+            this.Name = "PTab_" + chessSiteInfo.UserName;
+            this.SiteInfo = chessSiteInfo;
+            this.Calendar = calendarInfo;
+
+            this.Text = chessSiteInfo.UserName;
+
+            this.Processor = new GameProcessor(chessSiteInfo, calendarInfo);
             this.MessageList = new MessageList();
 
             _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
@@ -57,7 +54,9 @@ namespace ChessCalendar.Controls
 
             _chkLogToCalendar = new CheckBox();
             _chkLogToCalendar.Name = Constants.RECORD_IN_CALENDAR;
-            _chkLogToCalendar.Checked = this.UseCalendar;
+            _chkLogToCalendar.Text = "Record this game in Calendar: " + this.Calendar.Name;
+            _chkLogToCalendar.AutoSize = true;
+            _chkLogToCalendar.Checked = this.Calendar.Logging;
             _chkLogToCalendar.CheckedChanged += this._chkLogToCalendar_CheckedChanged;
 
             this.Controls.Add(_chkLogToCalendar);
@@ -74,13 +73,10 @@ namespace ChessCalendar.Controls
         private void _chkLogToCalendar_CheckedChanged(object sender, EventArgs e)
         {
             //TODO:
-            //Create props for this.Username, password, calendar, uriToWatch
-
-            //TODO:
             //if this.Username, password, calendar, or uriToWatch is null, then throw up a login box right here
 
             //TODO:
-            this.UseCalendar = _chkLogToCalendar.Checked; // = (this.username, password, calendar, and uriToWatch != NOT NULL)
+            this.Calendar.Logging = _chkLogToCalendar.Checked; // = (this.username, password, calendar, and uriToWatch != NOT NULL)
 
             //end if
         }
@@ -151,11 +147,12 @@ namespace ChessCalendar.Controls
 
         public void RefreshTab()
         {
-            this.Processor.UseCalendar = this.UseCalendar;
+            this.Processor.Calendar.Logging = this.Calendar.Logging;
 
             this.Processor.Refresh(out _error);
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
 
+            this.ResetControls();
             Application.DoEvents();
         }
 
@@ -166,9 +163,9 @@ namespace ChessCalendar.Controls
                 if (this.Parent.Parent != null)
                 {
                     this.Controls[Constants.GRID].Width = this.Parent.Parent.Width - 20;
-                    this.Controls[Constants.GRID].Height = this.Parent.Parent.Height - 130;
+                    this.Controls[Constants.GRID].Height = this.Parent.Parent.Height - 150;
 
-                    this.Controls[Constants.RECORD_IN_CALENDAR].Top = this.Height - 85;
+                    this.Controls[Constants.RECORD_IN_CALENDAR].Top = this.Height - 20;
                 }
             }
 

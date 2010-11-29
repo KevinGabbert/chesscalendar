@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using ChessCalendar.Interfaces;
-
-
-//plans:  Post moves only for user
-//        Post moves for all will just be a list of all users.
 
 namespace ChessCalendar
 {
@@ -22,9 +17,8 @@ namespace ChessCalendar
             public EntryList ToStore { get; set; }
             public ChessFeed ChessFeed { get; set;}
 
-            public Uri Calendar { get; set; }
-            public string UserName { get; set; }
-            public string Password { get; set; }
+            public ChessSiteInfo SiteInfo { get; set; }
+            public CalendarInfo Calendar { get; set; }
 
             private string _error;
             public string Error
@@ -40,13 +34,12 @@ namespace ChessCalendar
             public bool NewMessage { get; set; }
             public bool DebugMode { get; set; }
             public bool Beep_On_New_Move { get; set; }
-            public bool GetPGNs { get; set; }
 
             public bool ResetWait { get; set; }
             public bool ClearList { get; set; } //needs a better name.
             public string UserLogged { get; set; }
             public string Name { get; set; }
-            public bool UseCalendar { get; set; }
+
 
             public int WaitSeconds { get; set; }
 
@@ -69,24 +62,17 @@ namespace ChessCalendar
         /// <summary>
         /// Creates a new instance of login and Calendar information for the inherited feed.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="uriToWatch"></param>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
-        /// <param name="logToCalendar"></param>
-        /// <param name="useCalendar"></param>
-        public GameProcessor(string name, Uri uriToWatch, string userName, string password, Uri logToCalendar, bool useCalendar)
+        public GameProcessor(ChessSiteInfo chessSiteInfo, CalendarInfo calendarInfo)
         {
             this.ToStore = new EntryList();
             this.Output = new OutputClass();
-            this.ChessFeed = new ChessFeed();
+            this.ChessFeed = new ChessFeed(chessSiteInfo.UriToWatch);
 
-            this.Name = name;
-            this.ChessFeed.FeedUri = uriToWatch;
-            this.UserName = userName;
-            this.Password = password;
-            this.Calendar = logToCalendar;
-            this.UseCalendar = useCalendar;
+            this.SiteInfo = chessSiteInfo;
+            this.Calendar = calendarInfo;
+
+            this.Name = chessSiteInfo.UserName;
+            this.UserLogged = chessSiteInfo.UserName;
         }
 
         /// <summary>
@@ -101,10 +87,9 @@ namespace ChessCalendar
 
             if (this.ChessFeed.Count > 0)
             {
-                if (this.UseCalendar)
+                if (this.Calendar.Logging)
                 {
-                    this.ToStore.IgnoreList = (new GoogleCalendar()).GetAlreadyLoggedChessGames(this.UserName, this.Password,
-                                                                                this.Calendar,
+                    this.ToStore.IgnoreList = (new GoogleCalendar()).GetAlreadyLoggedChessGames(this.Calendar,
                                                                                 DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)),
                                                                                 DateTime.Now, "auto-logger", out _error);
 
@@ -157,12 +142,11 @@ namespace ChessCalendar
                 //if 504 Invalid gateway error. Chess.com is down
                 //this.Output.Post(string.Empty, "error. " + ex.Message);
 
-                if (this.UseCalendar)
+                if (this.Calendar.Logging)
                 {
-                    (new GoogleCalendar()).CreateEntry(this.UserName,
-                                                       this.Password,
-                                                       "Chess.com error",
-                                                       ex.Message + "--", DateTime.Now, DateTime.Now, this.Calendar,
+                    (new GoogleCalendar()).CreateEntry(this.Calendar,
+                                                       "Chess Site error",
+                                                       ex.Message + "--", DateTime.Now, DateTime.Now,
                                                        out _error);
                 }
             }
@@ -216,23 +200,22 @@ namespace ChessCalendar
             //TODO: this needs to be an asterisk or something on the log form.
             foreach (IChessItem current in toDo)
             {
-                this.Save_Game_Info(current, this.UserName, this.Password);
+                this.Save_Game_Info(current, this.Calendar.UserName, this.Calendar.Password);
                 toDo.Ignore(current); //we won't need to log this one again, 
             }
         }
 
         private void Save_Game_Info(IRSS_Item gameToLog, string userName, string password)
         {
-            if (this.UseCalendar)
+            if (this.Calendar.Logging)
             {
-                if (this.GetPGNs)
+                if (this.Calendar.DownloadPGNs)
                 {
                     GameProcessor.Download_PGN(gameToLog);
                 }
 
 
-                (new GoogleCalendar()).CreateEntry(userName,
-                                                    password,
+                (new GoogleCalendar()).CreateEntry(this.Calendar,
                                                     gameToLog.Title + " " +
                                                     DateTime.Parse(gameToLog.PubDate).ToShortTimeString(),
                                                     "|" + gameToLog.Link +
@@ -245,7 +228,7 @@ namespace ChessCalendar
                                                     Environment.NewLine +
                                                     "|" + "this.LogVersion",
                                                     DateTime.Now,
-                                                    DateTime.Now, this.Calendar, out _error);
+                                                    DateTime.Now, out _error);
             }
 
             if (this.DebugMode)
