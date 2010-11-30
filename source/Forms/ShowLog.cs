@@ -75,7 +75,7 @@ namespace ChessCalendar.Forms
         {
             //opens Login form for the user to select a feed
 
-            var login = new Login_Form("**");
+            var login = new Login_Form(string.Empty);
             login.ShowDialog();
 
             //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//

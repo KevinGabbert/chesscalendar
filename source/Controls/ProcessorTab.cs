@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
+using ChessCalendar.Forms;
 using ChessCalendar.Interfaces;
 
 namespace ChessCalendar.Controls
@@ -27,61 +28,51 @@ namespace ChessCalendar.Controls
 
         #endregion
 
-        private readonly DataGridView _grid;
+        private DataGridView _grid;
         CheckBox _chkLogToCalendar;
 
         private int _fail = 0;
 
         public ProcessorTab(ChessSiteInfo chessSiteInfo, CalendarInfo calendarInfo)
         {
-            this.Name = "PTab_" + chessSiteInfo.UserName;
-            this.SiteInfo = chessSiteInfo;
-            this.Calendar = calendarInfo;
-
-            this.Text = chessSiteInfo.UserName;
-
-            this.Processor = new GameProcessor(chessSiteInfo, calendarInfo);
-            this.MessageList = new MessageList();
-
-            _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
-
-            var messages = new TextBox();
-            messages.Name = Constants.MESSAGES;
-
-            _grid = new DataGridView();
-            _grid.Name = Constants.GRID;
-            _grid.CellClick += this.grid_CellClick;
-
-            _chkLogToCalendar = new CheckBox();
-            _chkLogToCalendar.Name = Constants.RECORD_IN_CALENDAR;
-            _chkLogToCalendar.Text = "Record this game in Calendar: " + this.Calendar.Name;
-            _chkLogToCalendar.AutoSize = true;
-            _chkLogToCalendar.Checked = this.Calendar.Logging;
-            _chkLogToCalendar.CheckedChanged += this._chkLogToCalendar_CheckedChanged;
-
-            this.Controls.Add(_chkLogToCalendar);
-            this.Controls.Add(_grid);
-            this.Controls.Add(messages);
-
-            _grid.Parent.Text = Processor.UserLogged;
-
-            ProcessorTab.FormatDataGrid(this._grid);
-            this.ResetControls();
+            this.SetUpTab(chessSiteInfo, calendarInfo);
         }
 
         #region Events
         private void _chkLogToCalendar_CheckedChanged(object sender, EventArgs e)
         {
-            //TODO:
-            //if this.Username, password, calendar, or uriToWatch is null, then throw up a login box right here
+            if(this.TabVariablesSet())
+                {
+                    //TODO: Login Form needs to be pre-populated with information that we already have.
+                    var login = new Login_Form(string.Empty);
+                    login.ShowDialog();
 
-            //TODO:
-            this.Calendar.Logging = _chkLogToCalendar.Checked; // = (this.username, password, calendar, and uriToWatch != NOT NULL)
+                    if (!login.ValidatedForm)
+                    {
+                        MessageBox.Show("Some of the Login information wasn't right, try again.", "ummmmmmm...");
+                        _chkLogToCalendar.Checked = !_chkLogToCalendar.Checked;
+                        return;
+                    }
+                    else
+                    {
+                        this.Calendar.Logging = !this.TabVariablesSet(); 
 
-            //end if
+                        this.SetUpTab(login.SiteInfo, login.Calendar);
+                        this.RefreshTab();
+                    }
+                }
         }
 
         #endregion
+
+        public bool TabVariablesSet()
+        {
+            return (string.IsNullOrEmpty(this.Calendar.UserName) ||
+                    string.IsNullOrEmpty(this.Calendar.Password) ||
+                    string.IsNullOrEmpty(this.SiteInfo.UserName) ||
+                    this.Calendar.Uri == null ||
+                    this.SiteInfo.UriToWatch == null);
+        }
 
         public static void FormatDataGrid(DataGridView dataGrid)
         {
@@ -145,6 +136,42 @@ namespace ChessCalendar.Controls
             dataGrid.Columns.Add(gameIDColumn);
         }
 
+        public void SetUpTab(ChessSiteInfo chessSiteInfo, CalendarInfo calendarInfo)
+        {
+            this.Name = "PTab_" + chessSiteInfo.UserName;
+            this.SiteInfo = chessSiteInfo;
+            this.Calendar = calendarInfo;
+
+            this.Text = chessSiteInfo.UserName;
+
+            this.Processor = new GameProcessor(chessSiteInfo, calendarInfo);
+            this.MessageList = new MessageList();
+
+            _grid = (DataGridView)this.Controls[this.Name + "_dgvAvailableMoves"];
+
+            var messages = new TextBox();
+            messages.Name = Constants.MESSAGES;
+
+            _grid = new DataGridView();
+            _grid.Name = Constants.GRID;
+            _grid.CellClick += this.grid_CellClick;
+
+            _chkLogToCalendar = new CheckBox();
+            _chkLogToCalendar.Name = Constants.RECORD_IN_CALENDAR;
+            _chkLogToCalendar.Text = "Record this game in Calendar: " + this.Calendar.Name;
+            _chkLogToCalendar.AutoSize = true;
+            _chkLogToCalendar.Checked = this.Calendar.Logging;
+            _chkLogToCalendar.CheckedChanged += this._chkLogToCalendar_CheckedChanged;
+
+            this.Controls.Add(_chkLogToCalendar);
+            this.Controls.Add(_grid);
+            this.Controls.Add(messages);
+
+            _grid.Parent.Text = Processor.UserLogged;
+
+            ProcessorTab.FormatDataGrid(this._grid);
+            this.ResetControls();
+        }
         public void RefreshTab()
         {
             this.Processor.Calendar.Logging = this.Calendar.Logging;
