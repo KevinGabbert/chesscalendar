@@ -22,13 +22,27 @@ namespace ChessCalendar
             set { _error = value; }
         }
 
+        public string OperationProgress { get; set; }
+
         public  Uri _calendarToPost = new Uri(Constants.DEFAULT_FEED);
         private  readonly Google.GData.Calendar.CalendarService _service = new CalendarService("ChessMoveLogService");
 
+        public GoogleCalendar()
+        {
+      
+            
+
+        }
+
         //public GoogleCalendar(OutputClass output)
         //{
-            
+
         //}
+
+        #region Events
+
+
+        #endregion
 
         public  CalendarFeed RetrieveCalendars(string userName, string password)
         {
@@ -37,6 +51,7 @@ namespace ChessCalendar
 
             var query = new CalendarQuery();
             query.Uri = new Uri(Constants.OWN_CALENDARS);
+            
 
             return _service.Query(query);
         }
@@ -51,6 +66,8 @@ namespace ChessCalendar
             {
                 var entry = new EventEntry();
                 entry.Title.Text = title;
+                //entry.Authors.Add(new AtomPerson(AtomPersonType.Author, Constants.AUTO_LOGGER));
+
                 entry.Content.Content = description;
                 entry.Locations.Add(new Where(string.Empty,string.Empty, Constants.AUTO_LOGGER));
                 entry.Times.Add(new When(start, end)); //entry.Times.Add(new When()); //how to add an all day?
@@ -68,7 +85,7 @@ namespace ChessCalendar
                 }
                 else
                 {
-                    error = "No Calendar to Insert into (CreateEntry erroneously called";
+                    error = "No Calendar to Insert into (CreateEntry Erroneously called";
                 }
 
                 //this.Log.Output(string.Empty, "Event Successfully Added", OutputMode.Form);
@@ -85,10 +102,11 @@ namespace ChessCalendar
 
         public  GameList GetAlreadyLoggedChessGames(CalendarInfo calendarInfo, DateTime startDate, DateTime endDate, string query, out string error)
         {
-            EventQuery myQuery = new EventQuery(calendarInfo.Uri.ToString());
-            myQuery.Query = query;
-            myQuery.StartDate = startDate;
-            myQuery.EndDate = endDate;
+            EventQuery chessGamesQuery = new EventQuery(calendarInfo.Uri.ToString());
+            chessGamesQuery.Query = query;
+            chessGamesQuery.StartDate = startDate;
+            chessGamesQuery.EndDate = endDate;
+            //chessGamesQuery.Author = Constants.AUTO_LOGGER; //entry.Authors.Add(new AtomPerson(AtomPersonType.Author, Constants.AUTO_LOGGER));
 
             GameList queriedGames = new GameList();
             error = string.Empty;
@@ -97,7 +115,7 @@ namespace ChessCalendar
             {
                 _service.setUserCredentials(calendarInfo.UserName, calendarInfo.Password);
 
-                EventFeed myResultsFeed = _service.Query(myQuery);
+                EventFeed myResultsFeed = _service.Query(chessGamesQuery);
                 queriedGames.AddRange(myResultsFeed.Entries.Select(entry => entry));
             }
             catch (Exception ex)
@@ -112,5 +130,6 @@ namespace ChessCalendar
 
             return queriedGames;
         }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -69,47 +70,12 @@ namespace ChessCalendar.Forms
             //this.txtNextCheck.Text = "Querying RSS Feed and Google Calendar....";
         }
 
+        private void TabSelectedCancel(object sender, CancelEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         #region Events
-
-        private void btnAddFeed_Click(object sender, EventArgs e)
-        {
-            //opens Login form for the user to select a feed
-
-            var login = new Login_Form(string.Empty);
-            login.ShowDialog();
-
-            //*** Code Execution will stop at this point and wait until user has dismissed the Login form. ***//
-
-            if (login.ValidatedForm)
-            {
-                this.Add_Feed_Tab(login);
-            }
-            else
-            {
-                MessageBox.Show("Some of the Login information wasn't right, try again.", "ummmmmmm...");
-            }
-
-            //newPage.Start();
-            //RunLoop() will update all the tabs.
-
-            //To ref the control again later..
-            //this.Controls.Find("TabPageName_chkLogToCalendar", true);
-        }
-
-        public void Add_Feed_Tab(Login_Form login)
-        {
-            ProcessorTab newPage = new ProcessorTab(login.SiteInfo, login.Calendar);
-
-            newPage.Processor.DebugMode = login.DebugMode;
-            newPage.Processor.Beep_On_New_Move = login.Beep_On_New_Move;
-
-            this.tabs.TabPages.Add(newPage);
-
-            newPage.RefreshTab();
-            newPage.Focus();
-
-            this.ResetControls();
-        }
 
         private void ShowLog_Shown(object sender, System.EventArgs e)
         {
@@ -148,9 +114,58 @@ namespace ChessCalendar.Forms
             this.ResetWait = true;
         }
 
-        private void tabs_Resize(object sender, EventArgs e)
+        private TabPage _previous;
+        private TabPage _current;
+        private bool _keyDown = false;
+
+        private void tabs_Deselected(object sender, TabControlEventArgs e)
         {
-            //TODO is this wehere the tabpages get resized?
+            _previous = e.TabPage;
+        }
+
+        private void tabs_Selected(object sender, TabControlEventArgs e)
+        {
+            if (!_keyDown)
+            {
+                if (e.TabPage.Name == "addNewTab")
+                {
+                    tabs.SelectedTab = (_previous);
+                    this.Add_New_Tab();
+                }
+                else
+                {
+                    _current = e.TabPage;
+                }
+            }
+            else
+            {
+                if (e.TabPage.Name == "addNewTab")
+                {
+                    try
+                    {
+                        tabs.SelectedTab = (this.tabs.TabPages[1]); //TODO: I hope you have more tabs than just the ADD tab
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    
+                }
+                else
+                {
+                    _current = e.TabPage;
+                }
+            }
+        }
+
+        private void tabs_KeyDown(object sender, KeyEventArgs e)
+        {
+            _keyDown = true;
+        }
+
+        private void tabs_MouseDown(object sender, MouseEventArgs e)
+        {
+            _keyDown = false;
         }
 
         #endregion
@@ -162,7 +177,6 @@ namespace ChessCalendar.Forms
             //button
             this.btnPause.Top = this.Height - 95;
             this.btnRefresh.Top = this.Height - 95;
-            this.btnAddFeed.Top = this.Height - 95;
             this.btnOpenChessDotCom.Top = this.Height - 95;
 
             //TextBox
@@ -176,10 +190,9 @@ namespace ChessCalendar.Forms
             //update all the tabs (shouldn't each tab do it themselves?
             foreach (var tab in tabs.TabPages.Cast<object>().Where(tab => ((TabPage) tab).Text != Constants.NEW))
             {
-                ((ProcessorTab) tab).ResetControls();               
+                ((ProcessorTab) tab).ResetControls();
+                tabs.SelectedTab = ((ProcessorTab)tab);
             }
-
-            //this.tabs.TabPages["addNewTab"].SendToBack();
         }
 
         private void RunLoop()
@@ -204,6 +217,31 @@ namespace ChessCalendar.Forms
                     this.Wait(this.WaitSeconds);
                 }
             }
+        }
+
+        private void Add_New_Tab()
+        {
+            var login = new Login_Form(string.Empty);
+            login.ShowDialog();
+
+            if (login.ValidatedForm)
+            {
+                this.Add_Feed_Tab(login);
+            }
+        }
+        public void Add_Feed_Tab(Login_Form login)
+        {
+            ProcessorTab newPage = new ProcessorTab(login.SiteInfo, login.Calendar);
+
+            newPage.Processor.DebugMode = login.DebugMode;
+            newPage.Processor.Beep_On_New_Move = login.Beep_On_New_Move;
+
+            this.tabs.TabPages.Add(newPage);
+
+            newPage.RefreshTab();
+            newPage.Focus();
+
+            this.ResetControls();
         }
 
         private void Update_ProgressBar()
