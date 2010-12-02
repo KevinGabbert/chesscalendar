@@ -57,6 +57,7 @@ namespace ChessCalendar
             }
             catch (Exception)
             {
+                //TODO: the user most likely typed in a bad name. trap for this and cancel everything that called this. display a message to the user.
                 throw;
             }
         }

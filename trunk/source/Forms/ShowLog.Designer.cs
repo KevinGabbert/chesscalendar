@@ -32,7 +32,6 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.addNewTab = new System.Windows.Forms.TabPage();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnAddFeed = new System.Windows.Forms.Button();
             this.pbTimeTillNextUpdate = new System.Windows.Forms.ProgressBar();
             this.txtNextCheck = new System.Windows.Forms.TextBox();
             this.btnPause = new System.Windows.Forms.Button();
@@ -48,8 +47,10 @@
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(797, 499);
             this.tabs.TabIndex = 0;
-            this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_Resize);
-            this.tabs.Resize += new System.EventHandler(this.tabs_Resize);
+            this.tabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabs_Selected);
+            this.tabs.Deselected += new System.Windows.Forms.TabControlEventHandler(this.tabs_Deselected);
+            this.tabs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tabs_KeyDown);
+            this.tabs.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabs_MouseDown);
             // 
             // addNewTab
             // 
@@ -72,16 +73,6 @@
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // btnAddFeed
-            // 
-            this.btnAddFeed.Location = new System.Drawing.Point(2, 506);
-            this.btnAddFeed.Name = "btnAddFeed";
-            this.btnAddFeed.Size = new System.Drawing.Size(121, 23);
-            this.btnAddFeed.TabIndex = 6;
-            this.btnAddFeed.Text = "Add Feed";
-            this.btnAddFeed.UseVisualStyleBackColor = true;
-            this.btnAddFeed.Click += new System.EventHandler(this.btnAddFeed_Click);
-            // 
             // pbTimeTillNextUpdate
             // 
             this.pbTimeTillNextUpdate.Location = new System.Drawing.Point(2, 561);
@@ -100,7 +91,7 @@
             // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(315, 506);
+            this.btnPause.Location = new System.Drawing.Point(3, 506);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(121, 23);
             this.btnPause.TabIndex = 4;
@@ -110,7 +101,7 @@
             // 
             // btnOpenChessDotCom
             // 
-            this.btnOpenChessDotCom.Location = new System.Drawing.Point(551, 506);
+            this.btnOpenChessDotCom.Location = new System.Drawing.Point(339, 506);
             this.btnOpenChessDotCom.Name = "btnOpenChessDotCom";
             this.btnOpenChessDotCom.Size = new System.Drawing.Size(105, 23);
             this.btnOpenChessDotCom.TabIndex = 24;
@@ -123,7 +114,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(795, 582);
             this.Controls.Add(this.btnOpenChessDotCom);
-            this.Controls.Add(this.btnAddFeed);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.tabs);
             this.Controls.Add(this.btnPause);
@@ -148,7 +138,6 @@
 
         public System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Button btnAddFeed;
         private System.Windows.Forms.ProgressBar pbTimeTillNextUpdate;
         private System.Windows.Forms.TextBox txtNextCheck;
         private System.Windows.Forms.Button btnPause;
