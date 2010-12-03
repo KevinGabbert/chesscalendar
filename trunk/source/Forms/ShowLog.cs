@@ -79,6 +79,8 @@ namespace ChessCalendar.Forms
 
         private void ShowLog_Shown(object sender, System.EventArgs e)
         {
+            this.ResetControls();
+
             this.RunLoop();
         }
         private void ShowLog_FormClosing(object sender, FormClosingEventArgs e)

@@ -39,28 +39,24 @@ namespace ChessCalendar.Controls
         }
 
         #region Events
+
         private void _chkLogToCalendar_CheckedChanged(object sender, EventArgs e)
         {
+            //TODO: This needs to be cancelled if validateForm does not work.
             if(this.TabVariablesSet())
+            {
+                //TODO: Login Form needs to be pre-populated with information that we already have.
+                var login = new Login_Form(string.Empty);
+                login.ShowDialog();
+
+                if (login.ValidatedForm)
                 {
-                    //TODO: Login Form needs to be pre-populated with information that we already have.
-                    var login = new Login_Form(string.Empty);
-                    login.ShowDialog();
+                    this.Calendar.Logging = !this.TabVariablesSet(); 
 
-                    if (!login.ValidatedForm)
-                    {
-                        MessageBox.Show("Some of the Login information wasn't right, try again.", "ummmmmmm...");
-                        _chkLogToCalendar.Checked = !_chkLogToCalendar.Checked;
-                        return;
-                    }
-                    else
-                    {
-                        this.Calendar.Logging = !this.TabVariablesSet(); 
-
-                        this.SetUpTab(login.SiteInfo, login.Calendar);
-                        this.RefreshTab();
-                    }
+                    this.SetUpTab(login.SiteInfo, login.Calendar);
+                    this.RefreshTab();
                 }
+            }
         }
 
         #endregion
@@ -69,7 +65,7 @@ namespace ChessCalendar.Controls
         {
             return (string.IsNullOrEmpty(this.Calendar.UserName) ||
                     string.IsNullOrEmpty(this.Calendar.Password) ||
-                    string.IsNullOrEmpty(this.SiteInfo.UserName) ||
+                    string.IsNullOrEmpty(this.SiteInfo.UserName) || //TODO: this.SiteInfo.UserNames != null 
                     this.Calendar.Uri == null ||
                     this.SiteInfo.UriToWatch == null);
         }
@@ -158,6 +154,7 @@ namespace ChessCalendar.Controls
 
             _chkLogToCalendar = new CheckBox();
             _chkLogToCalendar.Name = Constants.RECORD_IN_CALENDAR;
+            _chkLogToCalendar.Top = this.Height - 20;
             _chkLogToCalendar.Text = "Record this game in Calendar: " + this.Calendar.Name;
             _chkLogToCalendar.AutoSize = true;
             _chkLogToCalendar.Checked = this.Calendar.Logging;
@@ -192,7 +189,7 @@ namespace ChessCalendar.Controls
                     this.Controls[Constants.GRID].Width = this.Parent.Parent.Width - 20;
                     this.Controls[Constants.GRID].Height = this.Parent.Parent.Height - 150;
 
-                    this.Controls[Constants.RECORD_IN_CALENDAR].Top = this.Height - 20;
+                    this.Controls[Constants.RECORD_IN_CALENDAR].Top = this.Height - 18;
                 }
             }
 
