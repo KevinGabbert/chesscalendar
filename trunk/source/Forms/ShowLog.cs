@@ -144,6 +144,7 @@ namespace ChessCalendar.Forms
                     try
                     {
                         tabs.SelectedTab = (this.tabs.TabPages[1]); //TODO: I hope you have more tabs than just the ADD tab
+                        tabs.SelectTab(tabs.SelectedTab);
                     }
                     catch (Exception)
                     {
@@ -191,7 +192,6 @@ namespace ChessCalendar.Forms
             foreach (var tab in tabs.TabPages.Cast<object>().Where(tab => ((TabPage) tab).Text != Constants.NEW))
             {
                 ((ProcessorTab) tab).ResetControls();
-                tabs.SelectedTab = ((ProcessorTab)tab);
             }
         }
 
@@ -242,6 +242,7 @@ namespace ChessCalendar.Forms
             newPage.Focus();
 
             this.ResetControls();
+            tabs.SelectedTab = (this.tabs.TabPages[newPage.Name]);
         }
 
         private void Update_ProgressBar()
