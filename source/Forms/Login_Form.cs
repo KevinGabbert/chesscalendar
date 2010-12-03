@@ -73,9 +73,13 @@ namespace ChessCalendar.Forms
                     this.btnStart_Click(sender, e);
                 }
             }
+
+            //TODO:  If user typed in multiple names, then hide Calendar selection, and enable start button.
         }
         private void txtChessDotComName_Leave(object sender, EventArgs e)
         {
+            //TODO: This can be validated right here, and focus set back to this box if wrong (and box turned red
+
             this.Conditionally_Load_Opponents();
         }
         private void rdoFollowGames_CheckedChanged(object sender, EventArgs e)
@@ -133,8 +137,11 @@ namespace ChessCalendar.Forms
             this.Beep_On_New_Move = chkBeep.Checked;
             this.AutoOpenLog = this.chkLogFormOpen.Checked;
 
+            //TODO: this.SiteInfo.UserNames.Add(all names separated by commas)
+            //
+
             this.SiteInfo.UserName = txtChessDotComName.Text;
-            this.SiteInfo.UriToWatch = new Uri(Constants.CHESS_DOT_COM_RSS_ECHESS + this.SiteInfo.UserName);
+            this.SiteInfo.UriToWatch = new Uri(Constants.CHESS_DOT_COM_RSS_ECHESS + this.SiteInfo.UserName); 
             this.Calendar.DownloadPGNs = this.chkDownloadPGNs.Checked;
 
             if (this.chkLogToCalendar.Checked)
@@ -149,6 +156,7 @@ namespace ChessCalendar.Forms
 
         public bool ValidateForm()
         {
+            //TODO: Validate Commas
             bool haveChessDotComName = (this.txtChessDotComName.Text != string.Empty);
             //bool haveGoogleLogin = (this.txtLogin.TextLength > 0);
             //bool haveGooglePassword = (this.txtPassword.TextLength > 0);
