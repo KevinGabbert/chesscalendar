@@ -39,7 +39,7 @@ namespace ChessCalendar.Forms
 
             this.cmbOpponents.Visible = this.rdoFollowGames.Checked;
 
-            this.Calendar.Logging = true;
+            this.Calendar.Logging = false;
             this.Show_Calendar_Controls();
         }
 
