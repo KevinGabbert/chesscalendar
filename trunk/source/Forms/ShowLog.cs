@@ -214,10 +214,10 @@ namespace ChessCalendar.Forms
                             this.txtNextCheck.Text = this.txtNextCheck.Text + " ~ " + currentProcessorTab.Error;
                         }
                     }
-
-                    Application.DoEvents();
-                    this.Wait(this.WaitSeconds);
                 }
+
+                //Application.DoEvents();
+                this.Wait(this.WaitSeconds);
             }
         }
 
@@ -259,13 +259,13 @@ namespace ChessCalendar.Forms
                 if(this._progressBarFlash)
                 {
                     this.pbTimeTillNextUpdate.Show();
-                    Application.DoEvents();
+                    //Application.DoEvents();
                     //Thread.Sleep(100);
                 }
                 else
                 {
                     this.pbTimeTillNextUpdate.Hide();
-                    Application.DoEvents();
+                    //Application.DoEvents();
                     //Thread.Sleep(100);
                 }
             }

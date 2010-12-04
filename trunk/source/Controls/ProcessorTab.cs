@@ -42,20 +42,27 @@ namespace ChessCalendar.Controls
 
         private void _chkLogToCalendar_CheckedChanged(object sender, EventArgs e)
         {
-            //TODO: This needs to be cancelled if validateForm does not work.
-            if(this.TabVariablesSet())
+            if(this._chkLogToCalendar.CheckState == CheckState.Unchecked)
             {
-                //TODO: Login Form needs to be pre-populated with information that we already have.
-                var login = new Login_Form(string.Empty);
-                login.ShowDialog();
-
-                if (login.ValidatedForm)
+                this.Calendar.Logging = false;
+            }
+            else
+            {
+                //TODO: This needs to be cancelled if validateForm does not work.
+                if (this.TabVariablesSet())
                 {
-                    this.Calendar.Logging = !this.TabVariablesSet(); 
+                    //TODO: Login Form needs to be pre-populated with information that we already have.
+                    var login = new Login_Form(string.Empty);
+                    login.ShowDialog();
 
-                    this.SetUpTab(login.SiteInfo, login.Calendar);
-                    this.RefreshTab();
-                }
+                    if (login.ValidatedForm)
+                    {
+                        this.Calendar.Logging = true;
+
+                        this.SetUpTab(login.SiteInfo, login.Calendar);
+                        this.RefreshTab();
+                    }
+                } 
             }
         }
 
@@ -177,7 +184,7 @@ namespace ChessCalendar.Controls
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
 
             this.ResetControls();
-            Application.DoEvents();
+           //Application.DoEvents();
         }
 
         public void ResetControls()
@@ -191,9 +198,11 @@ namespace ChessCalendar.Controls
 
                     this.Controls[Constants.RECORD_IN_CALENDAR].Top = this.Height - 18;
                 }
+
+                
             }
 
-            Application.DoEvents();
+            //Application.DoEvents();
         }
 
         private void Update_GridView()

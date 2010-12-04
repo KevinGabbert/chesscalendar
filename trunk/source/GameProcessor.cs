@@ -95,11 +95,12 @@ namespace ChessCalendar
 
                     error = this.Error;
                     //TODO: if this.ToStore.IgnoreList == null, then set a prop in this object to error, so it can be displayed
-                }
 
-                this.Reconcile_Add_Or_Update(this.ToStore, this.ChessFeed);
-                this.Post_NewMoves(this.ChessFeed); //tab should clear its datagrid and post whats in the feed.
-                this.Store(this.ToStore);
+                    this.Reconcile_Add_Or_Update(this.ToStore, this.ChessFeed);
+                    this.Store(this.ToStore);
+                }
+       
+                this.Post_NewMoves(this.ChessFeed); //tab should clear its datagrid and post whats in the feed.  
             }
             else
             {
