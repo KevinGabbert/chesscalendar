@@ -57,8 +57,6 @@ namespace ChessCalendar.Controls
 
                     if (login.ValidatedForm)
                     {
-                        this.Calendar.Logging = true;
-
                         this.SetUpTab(login.SiteInfo, login.Calendar);
                         this.RefreshTab();
                     }
@@ -167,6 +165,7 @@ namespace ChessCalendar.Controls
             _chkLogToCalendar.Checked = this.Calendar.Logging;
             _chkLogToCalendar.CheckedChanged += this._chkLogToCalendar_CheckedChanged;
 
+            this.Controls.Clear();
             this.Controls.Add(_chkLogToCalendar);
             this.Controls.Add(_grid);
             this.Controls.Add(messages);
