@@ -107,6 +107,7 @@
             this.btnOpenChessDotCom.TabIndex = 24;
             this.btnOpenChessDotCom.Text = "Open Chess.com";
             this.btnOpenChessDotCom.UseVisualStyleBackColor = true;
+            this.btnOpenChessDotCom.Click += new System.EventHandler(this.btnOpenChessDotCom_Click);
             // 
             // ShowLog
             // 

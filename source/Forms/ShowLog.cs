@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -114,6 +115,10 @@ namespace ChessCalendar.Forms
         {
             this.txtNextCheck.Text = "Checking...";
             this.ResetWait = true;
+        }
+        private void btnOpenChessDotCom_Click(object sender, EventArgs e)
+        {
+            Process.Start(Constants.CHESS_DOT_COM);
         }
 
         private TabPage _previous;
@@ -355,5 +360,6 @@ namespace ChessCalendar.Forms
 
             this.NewMessage = false;
         }
+
     }
 }
