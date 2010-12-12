@@ -298,8 +298,6 @@
             // chkLogToCalendar
             // 
             this.chkLogToCalendar.AutoSize = true;
-            this.chkLogToCalendar.Checked = true;
-            this.chkLogToCalendar.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkLogToCalendar.Location = new System.Drawing.Point(5, 260);
             this.chkLogToCalendar.Name = "chkLogToCalendar";
             this.chkLogToCalendar.Size = new System.Drawing.Size(101, 17);
