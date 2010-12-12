@@ -103,9 +103,14 @@ namespace ChessCalendar
         public  GameList GetAlreadyLoggedChessGames(CalendarInfo calendarInfo, DateTime startDate, DateTime endDate, string query, out string error)
         {
             EventQuery chessGamesQuery = new EventQuery(calendarInfo.Uri.ToString());
+            
+            chessGamesQuery.NumberToRetrieve = 100;
             chessGamesQuery.Query = query;
             chessGamesQuery.StartDate = startDate;
             chessGamesQuery.EndDate = endDate;
+
+            //chessGamesQuery.ExtraParameters = "distinct";
+            
             //chessGamesQuery.Author = Constants.AUTO_LOGGER; //entry.Authors.Add(new AtomPerson(AtomPersonType.Author, Constants.AUTO_LOGGER));
 
             GameList queriedGames = new GameList();
@@ -115,8 +120,20 @@ namespace ChessCalendar
             {
                 _service.setUserCredentials(calendarInfo.UserName, calendarInfo.Password);
 
+                chessGamesQuery.StartIndex = 0;
                 EventFeed myResultsFeed = _service.Query(chessGamesQuery);
-                queriedGames.AddRange(myResultsFeed.Entries.Select(entry => entry));
+
+                queriedGames.AddRange(myResultsFeed.Entries);
+                
+                //Is this part even needed? Because NextChunk never has any entries.
+                //while (myResultsFeed.NextChunk != null)
+                //{
+                //    chessGamesQuery.StartIndex += chessGamesQuery.NumberToRetrieve;
+                //    chessGamesQuery.Query = myResultsFeed.NextChunk;
+                //    myResultsFeed = _service.Query(chessGamesQuery);
+
+                //    queriedGames.AddRange(myResultsFeed.Entries);
+                //}
             }
             catch (Exception ex)
             {
