@@ -39,7 +39,7 @@ namespace ChessCalendar
             public bool ClearList { get; set; } //needs a better name.
             public string UserLogged { get; set; }
             public string Name { get; set; }
-
+            public int PreviouslyLoggedCount { get; set; }
 
             public int WaitSeconds { get; set; }
 
@@ -89,9 +89,13 @@ namespace ChessCalendar
             {
                 if (this.Calendar.Logging)
                 {
-                    this.ToStore.IgnoreList = (new GoogleCalendar()).GetAlreadyLoggedChessGames(this.Calendar,
+                    GameList previouslyLoggedGames = (new GoogleCalendar()).GetAlreadyLoggedChessGames(this.Calendar,
                                                                                 DateTime.Now.Subtract(new TimeSpan(15, 0, 0, 0)),
                                                                                 DateTime.Now, "auto-logger", out _error);
+
+                    this.PreviouslyLoggedCount = previouslyLoggedGames.Count;
+
+                    this.ToStore.IgnoreList = previouslyLoggedGames;
 
                     error = this.Error;
                     //TODO: if this.ToStore.IgnoreList == null, then set a prop in this object to error, so it can be displayed
@@ -356,6 +360,7 @@ namespace ChessCalendar
         //{
         //    this._stop = false;
         //}  
+
     }
 }
 

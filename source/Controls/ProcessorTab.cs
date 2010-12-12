@@ -15,6 +15,7 @@ namespace ChessCalendar.Controls
             private ChessSiteInfo SiteInfo { get; set; }
             private CalendarInfo Calendar { get; set; }
 
+            private bool DebugMode { get; set; }
             private string _error;
             public string Error 
             {
@@ -30,11 +31,13 @@ namespace ChessCalendar.Controls
 
         private DataGridView _grid;
         CheckBox _chkLogToCalendar;
+        private Label _lblPreviouslyLogged;
 
         private int _fail = 0;
 
         public ProcessorTab(ChessSiteInfo chessSiteInfo, CalendarInfo calendarInfo)
         {
+            this.DebugMode = true;
             this.SetUpTab(chessSiteInfo, calendarInfo);
         }
 
@@ -165,8 +168,15 @@ namespace ChessCalendar.Controls
             _chkLogToCalendar.Checked = this.Calendar.Logging;
             _chkLogToCalendar.CheckedChanged += this._chkLogToCalendar_CheckedChanged;
 
+            _lblPreviouslyLogged = new Label();
+            _lblPreviouslyLogged.Name = Constants.PREVIOUSLY_LOGGED;
+            _lblPreviouslyLogged.Top = this.Height - 20;
+            _lblPreviouslyLogged.Left = 300;
+            _lblPreviouslyLogged.AutoSize = true;
+
             this.Controls.Clear();
             this.Controls.Add(_chkLogToCalendar);
+            this.Controls.Add(_lblPreviouslyLogged);
             this.Controls.Add(_grid);
             this.Controls.Add(messages);
 
@@ -181,9 +191,12 @@ namespace ChessCalendar.Controls
 
             this.Processor.Refresh(out _error);
             this.Update_GridView(); //Tells Processor to go read its associated RSS Feed
-
+            
+            if (this.DebugMode)
+            {
+                _lblPreviouslyLogged.Text = "Previously Logged: " + this.Processor.PreviouslyLoggedCount;
+            }
             this.ResetControls();
-           //Application.DoEvents();
         }
 
         public void ResetControls()
@@ -192,16 +205,17 @@ namespace ChessCalendar.Controls
             {
                 if (this.Parent.Parent != null)
                 {
-                    this.Controls[Constants.GRID].Width = this.Parent.Parent.Width - 20;
-                    this.Controls[Constants.GRID].Height = this.Parent.Parent.Height - 150;
+                    _grid.Width = this.Parent.Parent.Width - 20;
+                    _grid.Height = this.Parent.Parent.Height - 150;
 
-                    this.Controls[Constants.RECORD_IN_CALENDAR].Top = this.Height - 18;
-                }
+                    _chkLogToCalendar.Top = this.Height - 18;
 
-                
+                    if (this.DebugMode)
+                    {
+                        _lblPreviouslyLogged.Top = this.Height - 16;
+                    }
+                }   
             }
-
-            //Application.DoEvents();
         }
 
         private void Update_GridView()

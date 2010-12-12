@@ -221,7 +221,6 @@ namespace ChessCalendar.Forms
                     }
                 }
 
-                //Application.DoEvents();
                 this.Wait(this.WaitSeconds);
             }
         }

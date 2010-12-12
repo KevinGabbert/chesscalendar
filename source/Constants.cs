@@ -16,6 +16,7 @@
         public const string PRIVATE_FULL = "/private/full";
 
         public const string GRID = "TabPage_Grid";
+        public const string PREVIOUSLY_LOGGED = "TabPage_PreviouslyLogged";
         public const string RECORD_IN_CALENDAR = "TabPageName_chkLogToCalendar";
         public const string MESSAGES = "TabPage_txtMessages";
         public const string PTAB = "PTab_";
