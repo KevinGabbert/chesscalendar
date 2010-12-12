@@ -9,7 +9,7 @@ namespace ChessCalendar
 {
     public class ApplicationManager
     {
-        public const string VERSION = @"v12.07.10";
+        public const string VERSION = @"v12.11.10";
         //public const string CONFIG_FILE_PATH = @"..\..\GamesToLog.xml"; //Not used.. yet
 
         #region Properties
